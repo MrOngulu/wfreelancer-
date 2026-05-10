@@ -2,7 +2,7 @@ const axios = require("axios");
 const moment = require("moment");
 const getAccessToken = require("../utils/mpesaAuth");
 const Transaction = require("../models/Transaction");
-const config = require("../config/mpesa");
+const config = require("../routes/mpesaConfig");
 
 exports.mpesaPay = async (req, res) => {
   const { phone, amount } = req.body;
