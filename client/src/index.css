@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=Geist+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg:        #04040a;
+  --bg2:       #09090f;
+  --bg3:       #0f0f18;
+  --bg4:       #161622;
+  --surface:   rgba(255,255,255,0.03);
+  --surface2:  rgba(255,255,255,0.06);
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.13);
+  --border3:   rgba(255,255,255,0.22);
+  --white:     #eeeef5;
+  --white2:    #c8c8d8;
+  --muted:     #5a5a70;
+  --muted2:    #8888a0;
+  --ai:        #7b68ee;
+  --ai2:       #9c8ff5;
+  --ai3:       #bdb0fc;
+  --ai-glow:   rgba(123,104,238,0.15);
+  --ai-glow2:  rgba(123,104,238,0.3);
+  --green:     #1de9b6;
+  --green-dim: rgba(29,233,182,0.08);
+  --amber:     #ffa040;
+  --red:       #ff4d6d;
+  --head: 'Cabinet Grotesk', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--head);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: var(--head); cursor: pointer; border: none; }
+input, textarea, select { font-family: var(--head); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::selection { background: var(--ai-glow2); color: var(--ai3); }

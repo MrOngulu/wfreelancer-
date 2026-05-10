@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+  <service>
+    <title>Website Development</title>
+    <price>$300</price>
+    <duration>2-3 Weeks</duration>
+    <features>
+      <feature>Responsive Design</feature>
+      <feature>SEO Ready</feature>
+      <feature>Fast & Secure</feature>
+    </features>
+  </service>
+  <service>
+    <title>Mobile App Development</title>
+    <price>$500</price>
+    <duration>4-6 Weeks</duration>
+    <features>
+      <feature>React Native or Flutter</feature>
+      <feature>Firebase Backend</feature>
+      <feature>Push Notifications</feature>
+    </features>
+  </service>
+  <service>
+    <title>UI/UX Design</title>
+    <price>$350</price>
+    <duration>1-2 Weeks</duration>
+    <features>
+      <feature>Figma or Adobe XD</feature>
+      <feature>User Testing</feature>
+      <feature>Design System</feature>
+    </features>
+  </service>
+  <service>
+    <title>SEO & Hosting Setup</title>
+    <price>$100</price>
+    <duration>3-5 Days</duration>
+    <features>
+      <feature>Google Analytics</feature>
+      <feature>SSL Certificate</feature>
+      <feature>Speed Optimization</feature>
+    </features>
+  </service>
+</services>

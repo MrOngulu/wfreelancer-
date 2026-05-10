@@ -1,0 +1,564 @@
+/* ===== Reset & Base Styles ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* ===== DEFAULT: DARK MODE ===== */
+body {
+  background-color: #000;
+  color: #fff;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ===== LIGHT MODE ===== */
+body.light-mode {
+  background-color: #fff;
+  color: #000;
+}
+
+body.light-mode .centered-section,
+body.light-mode .service-card,
+body.light-mode header,
+body.light-mode footer {
+  background-color: #f9f9f9;
+  color: #000;
+}
+
+body.light-mode a:not(.logo) {
+  color: #000000;
+}
+
+/* ===== Typography ===== */
+h1, h2 {
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+
+p {
+  color: #ccc;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+a:not(.logo) {
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.0);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav li a {
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+/* ✅ CORRECT HOVER: Black BG, White Text */
+/* Enhanced Hover Effect for Nav Links (Works in Both Modes) */
+nav li a:hover {
+  background-color: #ffffff; /* Black background */
+  color: #000000;             /* White text */
+  padding: 10px 20px;      /* Add padding to create space */
+  border-radius: 10px;     /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Subtle glow in dark mode */
+  transform: scale(1.05);  /* Slight zoom for interactivity */
+  transition: all 0.3s ease;
+}
+
+/* Light mode nav */
+body.light-mode nav {
+  background-color: #fff;
+  color: #000;
+}
+
+body.light-mode nav li a {
+  color: #000;
+}
+
+body.light-mode nav li a:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* ===== Header Section ===== */
+header {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding-top: 60px;
+}
+
+.header-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+  background-color: transparent;
+}
+
+/* Header Content Styling */
+.header-content h1 {
+  color: #fff; /* Default dark mode */
+}
+
+/* Light Mode: Change font color to black */
+body.light-mode .header-content h1 {
+  color: #000; /* Black text for light mode */
+}
+
+/* Light Mode: Ensure header content has a white background */
+body.light-mode .header-content {
+  background-color: #fff; /* White background for light mode */
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 2;
+}
+
+.logo {
+  position: fixed;
+  top: -6%;
+  left: 20px;
+  z-index: 1000;
+  background-color: black;
+}
+
+.logo img {
+  display: block;
+  width: 60px;
+  height: auto;
+  background-color: black;
+  transition: background-color 0.4s ease;
+}
+
+/* Light Mode: Logo Background */
+body.light-mode .logo {
+  background-color: transparent;
+}
+
+body.light-mode .logo img {
+  background-color: transparent;
+}
+
+.slogan {
+  padding: 10px 20px;
+  top: 10%;
+  left: 50%;
+  transform: translate(-4%, -60%);
+  text-align: center;
+  font-size: 24px;
+  z-index: 3;
+}
+
+.slogan-card {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 20px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.slogan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Light Mode Specific Styles ===== */
+body.light-mode .header-content {
+  background-color: #fff; /* White background for light mode */
+}
+
+body.light-mode .slogan h2 {
+  color: #000; /* Black text for light mode */
+}
+
+/* ===== Sections ===== */
+section {
+  padding: 60px 20px;
+  max-width: 800px;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: rgb(165, 166, 165);
+  width: 100%;
+  background-color: black;
+}
+
+/* ===== Animations ===== */
+.wfree {
+  color: rgb(174, 174, 174);
+  font-size: 80px;
+  font-weight: 700;
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: -3px;
+  line-height: 1;
+  vertical-align: middle;
+  transform: translateZ(0);
+  transition: transform 0.3s ease;
+}
+
+.special-f {
+  color: grey
+}
+
+.slide-text {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideFadeIn 1s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.4s; }
+.delay-2 { animation-delay: 1s; }
+
+@keyframes slideFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Utility ===== */
+div {
+  max-width: 800px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+.slogan h2 {
+  margin-top: 20px;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== Centered Section ===== */
+.centered-section {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #000000;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  border-radius: 12px;
+  margin: 30px auto;
+  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.4s ease;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #555, transparent);
+}
+
+.section-description {
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 14px 32px;
+  background-color: #222;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  border: 2px solid #555;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+.cta-button:hover {
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Services Grid ===== */
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 280px;
+  min-height: 420px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.service-card h3,
+.service-card p,
+.service-card li {
+  color: #fff;
+}
+
+.service-card:hover {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+}
+
+
+/* ===== Dark Mode Toggle ===== */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000000d4;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(0, 0, 0);
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #fff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+  background-color: white;
+}
+
+.slider::before {
+  content: "🌙";
+  font-size: 18px;
+  color: black;
+  line-height: 34px;
+  text-align: center;
+}
+
+input:checked + .slider::before {
+  content: "☀️";
+  color: white;
+}
+
+/* ===== Media Queries ===== */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .centered-section,
+  .slogan {
+    font-size: 16px;
+  }
+  .services-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .service-card {
+    max-width: 100%;
+  }
+}
+
+/* XML Services Section */
+.xml-services {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.xml-services h2 {
+  color: #FFC107;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.xml-service-card {
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.xml-service-card:hover {
+  background-color: #222;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.xml-service-card h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.xml-service-card p {
+  color: #ccc;
+  margin: 8px 0;
+}
+
+.xml-service-card ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.xml-service-card ul li {
+  color: #999;
+  margin-bottom: 6px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.xml-service-card ul li::before {
+  content: "✅";
+  position: absolute;
+  left: 0;
+  color: #FFC107;
+}
