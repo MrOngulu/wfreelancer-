@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const paypal = require('../config/paypalConfig');
+const paypal = require('./paypalConfig');
 const axios = require('axios');
 require('dotenv').config();
 
