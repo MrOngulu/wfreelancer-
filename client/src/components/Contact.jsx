@@ -16,7 +16,7 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     const data = Object.fromEntries(new FormData(e.target));
-    fetch('/submit-contact', {
+    fetch('https://wfreelancer.onrender.com/submit-contact', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify(data),
     }).catch(() => {});

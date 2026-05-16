@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { BtnPrimary, BtnGhost, fadeUp, staggerContainer } from './ui';
 
-const TradingCard = () => (
+const TradingCard = ({ onBuy }) => (
   <motion.div
     initial={{ opacity:0, x:40, rotateY:-8 }}
     animate={{ opacity:1, x:0, rotateY:0 }}
@@ -94,6 +94,7 @@ const TradingCard = () => (
           <motion.button
             whileHover={{ scale:1.04 }}
             whileTap={{ scale:0.96 }}
+            onClick={() => onBuy('WF AI Trading Bot','Automated ML-powered trading bot for Forex, crypto & stocks.',299)}
             style={{
               background:'linear-gradient(135deg,var(--ai),#6a5acd)',
               color:'#fff', padding:'0.5rem 1.1rem', borderRadius:10,
@@ -115,7 +116,7 @@ const stats = [
   { val:'M-Pesa', label:'& PayPal accepted' },
 ];
 
-export default function Hero() {
+export default function Hero({ onBuy }) {
   const scrollTo = (href) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior:'smooth' });
@@ -216,7 +217,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Right: live card */}
-        <TradingCard />
+        <TradingCard onBuy={onBuy} />
       </div>
 
       <style>{`
