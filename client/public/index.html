@@ -991,7 +991,7 @@ function switchPay(id, btn) {
 function doMpesa() {
   const ph = document.getElementById('mph').value.trim();
   if (!ph) { alert('Enter your M-Pesa phone number.'); return; }
-  fetch('/mpesa-pay', {
+  fetch('https://wfreelancer.onrender.com/mpesa-pay', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ phone: ph, amount: curPrice, product: curProduct })
   }).catch(() => {});
@@ -1000,7 +1000,7 @@ function doMpesa() {
 }
 
 function doPaypal() {
-  window.location.href = '/pay?product=' + encodeURIComponent(curProduct) + '&amount=' + curPrice;
+  window.location.href = 'https://wfreelancer.onrender.com/pay?product=' + encodeURIComponent(curProduct) + '&amount=' + curPrice;
 }
 
 function submitForm(e) {
