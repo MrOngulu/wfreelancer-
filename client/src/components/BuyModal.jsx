@@ -14,7 +14,7 @@ export default function BuyModal({ product, price, desc, onClose }) {
 
   const doMpesa = () => {
     if (!phone.trim()) { alert('Enter your M-Pesa number'); return; }
-    fetch('/mpesa-pay', {
+    fetch('https://wfreelancer.onrender.com/mpesa-pay', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ phone, amount:price, product }),
     }).catch(() => {});
@@ -22,7 +22,7 @@ export default function BuyModal({ product, price, desc, onClose }) {
   };
 
   const doPaypal = () => {
-    window.location.href = `/pay?product=${encodeURIComponent(product)}&amount=${price}`;
+    window.location.href = `https://wfreelancer.onrender.com/pay?product=${encodeURIComponent(product)}&amount=${price}`; 
   };
 
   const inputStyle = {
