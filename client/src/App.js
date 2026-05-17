@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import FeaturedProducts from "./components/FeaturedProducts";
@@ -8,8 +9,9 @@ import { Services, Testimonials, Process } from "./components/Sections";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BuyModal from "./components/BuyModal";
+import ProductPage from "./pages/ProductPage";
 
-function App() {
+function HomePage() {
   const [modal, setModal] = useState(null);
   const openBuy = (product, desc, price) => setModal({ product, desc, price });
   const closeBuy = () => setModal(null);
@@ -38,4 +40,13 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/product/:slug" element={<ProductPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

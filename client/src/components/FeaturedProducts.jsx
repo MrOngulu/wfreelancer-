@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { SectionLabel, SectionTitle, Badge, GlassCard, BtnPrimary, staggerContainer, fadeUp } from './ui';
+import { useNavigate } from 'react-router-dom';
+import { SectionLabel, SectionTitle, Badge, fadeUp, staggerContainer } from './ui';
 
 const featured = [
   {
@@ -11,7 +12,7 @@ const featured = [
     desc: 'Machine-learning trading algorithm that scans markets 24/7 and executes positions automatically on Forex, crypto & stocks.',
     price: '$299',
     per: '/ license',
-    href: '#trading-bot',
+    slug: 'wf-ai-trading-bot',
     glow: 'rgba(123,104,238,0.2)',
     accentColor: 'var(--ai2)',
   },
@@ -24,7 +25,7 @@ const featured = [
     desc: 'Deploy a smart chatbot on any website. Handles customer support, qualifies leads, and answers questions — fully customizable.',
     price: '$199',
     per: '/ license',
-    href: '#assistant',
+    slug: 'wf-ai-assistant',
     glow: 'rgba(29,233,182,0.15)',
     accentColor: 'var(--green)',
   },
@@ -38,12 +39,15 @@ const featured = [
     price: '—',
     per: 'in development',
     comingSoon: true,
+    slug: null,
     glow: 'rgba(255,160,64,0.12)',
     accentColor: 'var(--amber)',
   },
 ];
 
-function FeatCard({ item, index }) {
+function FeatCard({ item }) {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       variants={fadeUp}
@@ -97,22 +101,22 @@ function FeatCard({ item, index }) {
           <span style={{ fontSize:'0.72rem', color:'var(--muted)', marginLeft:4 }}>{item.per}</span>
         </div>
         {!item.comingSoon && (
-          <a href={item.href}>
-            <motion.button
-              whileHover={{ scale:1.05 }}
-              whileTap={{ scale:0.95 }}
-              style={{
-                background:'rgba(255,255,255,0.07)', color:'var(--white2)',
-                border:'1px solid var(--border2)', borderRadius:10,
-                padding:'0.45rem 1rem', fontSize:'0.78rem', fontWeight:600,
-                cursor:'pointer', transition:'all 0.2s',
-              }}
-              onMouseEnter={e => { e.target.style.background='var(--ai)'; e.target.style.color='#fff'; }}
-              onMouseLeave={e => { e.target.style.background='rgba(255,255,255,0.07)'; e.target.style.color='var(--white2)'; }}
-            >
-              Learn more →
-            </motion.button>
-          </a>
+          <motion.button
+            whileHover={{ scale:1.05 }}
+            whileTap={{ scale:0.95 }}
+            onClick={() => navigate(`/product/${item.slug}`)}
+            style={{
+              background:'rgba(255,255,255,0.07)', color:'var(--white2)',
+              border:'1px solid var(--border2)', borderRadius:10,
+              padding:'0.45rem 1rem', fontSize:'0.78rem', fontWeight:600,
+              cursor:'pointer', transition:'all 0.2s',
+              fontFamily:'var(--head)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background='var(--ai)'; e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='var(--ai)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.07)'; e.currentTarget.style.color='var(--white2)'; e.currentTarget.style.borderColor='var(--border2)'; }}
+          >
+            Learn more →
+          </motion.button>
         )}
       </div>
     </motion.div>
@@ -137,7 +141,7 @@ export default function FeaturedProducts() {
             </p>
           </motion.div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(290px,1fr))', gap:'1.25rem' }}>
-            {featured.map((item, i) => <FeatCard key={item.name} item={item} index={i} />)}
+            {featured.map((item) => <FeatCard key={item.name} item={item} />)}
           </div>
         </motion.div>
       </div>

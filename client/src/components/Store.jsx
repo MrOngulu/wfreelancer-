@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { SectionLabel, SectionTitle, Badge, fadeUp, staggerContainer } from './ui';
 
 const FILTERS = [
@@ -12,17 +13,19 @@ const FILTERS = [
 ];
 
 const PRODUCTS = [
-  { cat:'ai', emoji:'📈', bg:'#060e0a', name:'WF AI Trading Bot', desc:'ML trading bot for Forex, crypto & stocks. Configurable risk, 24/7 execution.', price:299, badge:'AI', badgeV:'ai', hot:true, product:'WF AI Trading Bot', productDesc:'ML trading bot for Forex, crypto & stocks.' },
-  { cat:'ai', emoji:'💬', bg:'#07070f', name:'WF AI Assistant', desc:'Intelligent chatbot you embed on any site. Support, leads & Q&A — ready to go.', price:199, badge:'New', badgeV:'green', product:'WF AI Assistant', productDesc:'Intelligent chatbot for websites & apps.' },
-  { cat:'web', emoji:'🌐', bg:'#07070d', name:'Business Landing Page', desc:'Node.js + EJS landing page. Dark mode, contact form, M-Pesa/PayPal ready.', price:299, badge:'Popular', badgeV:'muted', product:'Business Landing Page', productDesc:'Professional landing page template.' },
-  { cat:'web', emoji:'🛍️', bg:'#070a07', name:'E-commerce Store', desc:'Full online store with cart, checkout, M-Pesa & PayPal integration.', price:449, badge:null, product:'E-commerce Store', productDesc:'Full e-commerce template.' },
-  { cat:'mob', emoji:'📱', bg:'#08060f', name:'React Native Starter', desc:'Cross-platform mobile app: auth, Firebase, push notifications, app store ready.', price:499, badge:null, product:'React Native Starter Kit', productDesc:'Mobile app starter kit.' },
-  { cat:'ui', emoji:'🎨', bg:'#0a060d', name:'Dashboard UI Kit', desc:'80+ Figma screens for SaaS. Auto-layout, variables, light & dark mode.', price:349, badge:'Figma', badgeV:'muted', product:'Dashboard UI Kit', productDesc:'Premium Figma UI kit.' },
-  { cat:'saas', emoji:'🚀', bg:'#06080f', name:'SaaS Boilerplate', desc:'Full-stack boilerplate: auth, billing, admin panel, API & deploy guide.', price:599, badge:'Full stack', badgeV:'ai', product:'SaaS Boilerplate', productDesc:'Full-stack SaaS template.' },
-  { cat:'web', emoji:'✦', bg:'#07070f', name:'Developer Portfolio', desc:'Animated one-page portfolio for developers. Responsive, fast to customize.', price:199, badge:null, product:'Developer Portfolio', productDesc:'Portfolio site template.' },
+  { cat:'ai', emoji:'📈', bg:'#060e0a', name:'WF AI Trading Bot', desc:'ML trading bot for Forex, crypto & stocks. Configurable risk, 24/7 execution.', price:299, badge:'AI', badgeV:'ai', hot:true, product:'WF AI Trading Bot', productDesc:'ML trading bot for Forex, crypto & stocks.', slug:'wf-ai-trading-bot' },
+  { cat:'ai', emoji:'💬', bg:'#07070f', name:'WF AI Assistant', desc:'Intelligent chatbot you embed on any site. Support, leads & Q&A — ready to go.', price:199, badge:'New', badgeV:'green', product:'WF AI Assistant', productDesc:'Intelligent chatbot for websites & apps.', slug:'wf-ai-assistant' },
+  { cat:'web', emoji:'🌐', bg:'#07070d', name:'Business Landing Page', desc:'Node.js + EJS landing page. Dark mode, contact form, M-Pesa/PayPal ready.', price:299, badge:'Popular', badgeV:'muted', product:'Business Landing Page', productDesc:'Professional landing page template.', slug:'business-landing-page' },
+  { cat:'web', emoji:'🛍️', bg:'#070a07', name:'E-commerce Store', desc:'Full online store with cart, checkout, M-Pesa & PayPal integration.', price:449, badge:null, product:'E-commerce Store', productDesc:'Full e-commerce template.', slug:'ecommerce-store' },
+  { cat:'mob', emoji:'📱', bg:'#08060f', name:'React Native Starter', desc:'Cross-platform mobile app: auth, Firebase, push notifications, app store ready.', price:499, badge:null, product:'React Native Starter Kit', productDesc:'Mobile app starter kit.', slug:'react-native-starter' },
+  { cat:'ui', emoji:'🎨', bg:'#0a060d', name:'Dashboard UI Kit', desc:'80+ Figma screens for SaaS. Auto-layout, variables, light & dark mode.', price:349, badge:'Figma', badgeV:'muted', product:'Dashboard UI Kit', productDesc:'Premium Figma UI kit.', slug:'dashboard-ui-kit' },
+  { cat:'saas', emoji:'🚀', bg:'#06080f', name:'SaaS Boilerplate', desc:'Full-stack boilerplate: auth, billing, admin panel, API & deploy guide.', price:599, badge:'Full stack', badgeV:'ai', product:'SaaS Boilerplate', productDesc:'Full-stack SaaS template.', slug:'saas-boilerplate' },
+  { cat:'web', emoji:'✦', bg:'#07070f', name:'Developer Portfolio', desc:'Animated one-page portfolio for developers. Responsive, fast to customize.', price:199, badge:null, product:'Developer Portfolio', productDesc:'Portfolio site template.', slug:'developer-portfolio' },
 ];
 
 function ProductCard({ p, onBuy, visible }) {
+  const navigate = useNavigate();
+
   return (
     <AnimatePresence>
       {visible && (
@@ -52,6 +55,7 @@ function ProductCard({ p, onBuy, visible }) {
             )}
             {p.emoji}
           </div>
+
           {/* Body */}
           <div style={{ padding:'1.1rem' }}>
             <p style={{ fontSize:'0.65rem', fontFamily:'var(--mono)', color:'var(--muted)',
@@ -60,27 +64,48 @@ function ProductCard({ p, onBuy, visible }) {
             </p>
             <h3 style={{ fontSize:'0.95rem', fontWeight:800, letterSpacing:'-0.02em', marginBottom:'0.4rem' }}>{p.name}</h3>
             <p style={{ fontSize:'0.8rem', color:'var(--muted2)', lineHeight:1.55, marginBottom:'1rem' }}>{p.desc}</p>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
               <span style={{ fontSize:'1.1rem', fontWeight:900, fontFamily:'var(--mono)',
                 color: p.cat === 'ai' ? 'var(--green)' : 'var(--white)' }}>
                 ${p.price}
               </span>
-              <motion.button
-                whileHover={{ scale:1.05 }}
-                whileTap={{ scale:0.95 }}
-                onClick={() => onBuy(p.product, p.productDesc, p.price)}
-                style={{
-                  background:'rgba(255,255,255,0.06)', color:'var(--white2)',
-                  border:'1px solid var(--border2)', borderRadius:9,
-                  /* Larger tap target on mobile */
-                  padding:'0.5rem 1rem', fontSize:'0.75rem', fontWeight:700, cursor:'pointer',
-                  transition:'all 0.2s', minHeight:40,
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background='var(--ai)'; e.currentTarget.style.borderColor='var(--ai)'; e.currentTarget.style.color='#fff'; }}
-                onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--white2)'; }}
-              >
-                Buy →
-              </motion.button>
+
+              <div style={{ display:'flex', gap:'0.4rem' }}>
+                {/* View details */}
+                <motion.button
+                  whileHover={{ scale:1.05 }}
+                  whileTap={{ scale:0.95 }}
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                  style={{
+                    background:'transparent', color:'var(--muted2)',
+                    border:'1px solid var(--border)', borderRadius:9,
+                    padding:'0.5rem 0.75rem', fontSize:'0.72rem', fontWeight:600,
+                    cursor:'pointer', transition:'all 0.2s', minHeight:40,
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--white2)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--muted2)'; }}
+                >
+                  Details
+                </motion.button>
+
+                {/* Buy */}
+                <motion.button
+                  whileHover={{ scale:1.05 }}
+                  whileTap={{ scale:0.95 }}
+                  onClick={() => onBuy(p.product, p.productDesc, p.price)}
+                  style={{
+                    background:'rgba(255,255,255,0.06)', color:'var(--white2)',
+                    border:'1px solid var(--border2)', borderRadius:9,
+                    padding:'0.5rem 1rem', fontSize:'0.75rem', fontWeight:700,
+                    cursor:'pointer', transition:'all 0.2s', minHeight:40,
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background='var(--ai)'; e.currentTarget.style.borderColor='var(--ai)'; e.currentTarget.style.color='#fff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--white2)'; }}
+                >
+                  Buy →
+                </motion.button>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -106,7 +131,6 @@ export default function Store({ onBuy }) {
               <SectionTitle style={{ marginBottom:'0.5rem' }}>Browse all products</SectionTitle>
               <p style={{ color:'var(--muted2)', fontSize:'0.95rem' }}>Instant download after payment — all yours to keep and customize.</p>
             </div>
-            {/* Filter tabs */}
             <div className="store-filters">
               {FILTERS.map(f => (
                 <motion.button
@@ -114,7 +138,6 @@ export default function Store({ onBuy }) {
                   whileTap={{ scale:0.95 }}
                   onClick={() => setActive(f.key)}
                   style={{
-                    /* Min 44px tap target height for mobile */
                     padding:'0.45rem 0.9rem', borderRadius:9, minHeight:44,
                     fontSize:'0.78rem', fontWeight:600,
                     border: active === f.key ? '1px solid var(--ai)' : '1px solid var(--border)',
@@ -159,7 +182,6 @@ export default function Store({ onBuy }) {
           gap: 0.5rem;
           flex-wrap: wrap;
         }
-
         @media(max-width:600px) {
           #store { padding: 4rem 1.25rem !important; }
           .store-header { align-items: flex-start !important; }
