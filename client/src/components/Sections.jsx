@@ -51,7 +51,7 @@ export function Services() {
                   background:'rgba(123,104,238,0.1)', border:'1px solid rgba(123,104,238,0.2)',
                   display:'flex', alignItems:'center', justifyContent:'center',
                   fontSize:'1.35rem', marginBottom:'1.1rem',
-                }} >{s.icon}</div>
+                }}>{s.icon}</div>
                 <h3 style={{ fontSize:'1rem', fontWeight:800, letterSpacing:'-0.02em', marginBottom:'0.45rem' }}>{s.name}</h3>
                 <p style={{ fontSize:'0.83rem', color:'var(--muted2)', lineHeight:1.65, marginBottom:'0.875rem' }}>{s.desc}</p>
                 <span style={{ fontSize:'0.75rem', fontFamily:'var(--mono)', color:'var(--ai2)', fontWeight:600 }}>{s.from}</span>
@@ -89,7 +89,6 @@ export function Testimonials() {
                   position:'relative', overflow:'hidden',
                 }}
               >
-                {/* subtle top glow line */}
                 <div style={{ position:'absolute', top:0, left:'20%', right:'20%', height:1,
                   background:'linear-gradient(90deg,transparent,rgba(123,104,238,0.4),transparent)' }} />
                 <div style={{ color:'var(--amber)', fontSize:'0.875rem', letterSpacing:3, marginBottom:'1rem' }}>
@@ -104,6 +103,7 @@ export function Testimonials() {
                     background:'rgba(123,104,238,0.15)', border:'1px solid rgba(123,104,238,0.2)',
                     display:'flex', alignItems:'center', justifyContent:'center',
                     fontSize:'0.75rem', fontWeight:800, color:'var(--ai3)',
+                    flexShrink:0,
                   }}>
                     {t.name.split(' ').map(w=>w[0]).join('')}
                   </div>
@@ -117,6 +117,7 @@ export function Testimonials() {
           </div>
         </motion.div>
       </div>
+      <style>{`@media(max-width:600px){ #reviews { padding:4rem 1.25rem !important; } }`}</style>
     </section>
   );
 }
@@ -130,12 +131,15 @@ export function Process() {
             <SectionLabel>How it works</SectionLabel>
             <SectionTitle>Simple process, real results</SectionTitle>
           </motion.div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'1px', background:'var(--border)', borderRadius:20, overflow:'hidden' }}>
+
+          {/* Desktop: the gap:1px + background border trick */}
+          <div className="process-grid">
             {STEPS.map((s, i) => (
               <motion.div
                 key={s.num}
                 variants={fadeUp}
                 whileHover={{ background:'rgba(123,104,238,0.06)' }}
+                className="process-step"
                 style={{ background:'var(--bg3)', padding:'2rem 1.75rem', position:'relative', transition:'background 0.3s' }}
               >
                 <div style={{ position:'absolute', top:0, left:0, right:0, height:2,
@@ -149,6 +153,34 @@ export function Process() {
           </div>
         </motion.div>
       </div>
+
+      <style>{`
+        .process-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1px;
+          background: var(--border);
+          border-radius: 20px;
+          overflow: hidden;
+        }
+        .process-step {
+          /* On mobile each step gets a bottom border instead of the gap trick */
+        }
+
+        @media(max-width:600px) {
+          section:has(.process-grid) { padding: 4rem 1.25rem !important; }
+          .process-grid {
+            grid-template-columns: 1fr !important;
+            border-radius: 16px !important;
+          }
+          .process-step {
+            border-bottom: 1px solid var(--border);
+          }
+          .process-step:last-child {
+            border-bottom: none;
+          }
+        }
+      `}</style>
     </section>
   );
 }

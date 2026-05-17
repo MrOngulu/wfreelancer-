@@ -6,7 +6,7 @@ const TradingCard = ({ onBuy }) => (
     initial={{ opacity:0, x:40, rotateY:-8 }}
     animate={{ opacity:1, x:0, rotateY:0 }}
     transition={{ delay:0.5, duration:0.9, ease:[0.22,1,0.36,1] }}
-    style={{ perspective:1000 }}
+    style={{ perspective:1000, width:'100%' }}
   >
     <div style={{
       background:'linear-gradient(160deg,rgba(123,104,238,0.1),rgba(255,255,255,0.03))',
@@ -30,7 +30,7 @@ const TradingCard = ({ onBuy }) => (
           wf-trading-bot v2.1 · live
         </span>
         <span style={{ width:6,height:6,borderRadius:'50%',background:'var(--green)',
-          boxShadow:'0 0 8px var(--green)', animation:'pulse 2s infinite' }} />
+          boxShadow:'0 0 8px var(--green)', animation:'pulse 2s infinite', flexShrink:0 }} />
       </div>
 
       <div style={{ padding:'1.25rem' }}>
@@ -46,7 +46,7 @@ const TradingCard = ({ onBuy }) => (
             border:'1px solid rgba(29,233,182,0.2)',
             fontSize:'0.65rem', fontFamily:'var(--mono)', fontWeight:600,
             padding:'0.25rem 0.6rem', borderRadius:100,
-            animation:'floatBadge 3s ease-in-out infinite',
+            animation:'floatBadge 3s ease-in-out infinite', flexShrink:0,
           }}>+12.4% today</span>
         </div>
 
@@ -129,14 +129,12 @@ export default function Hero({ onBuy }) {
     }}>
       {/* Background effects */}
       <div style={{ position:'absolute', inset:0, pointerEvents:'none' }}>
-        {/* Grid */}
         <div style={{
           position:'absolute', inset:0,
           backgroundImage:'linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px)',
           backgroundSize:'72px 72px',
           maskImage:'radial-gradient(ellipse 100% 80% at 50% 50%,black 20%,transparent 75%)',
         }} />
-        {/* AI glow */}
         <div style={{
           position:'absolute', top:'15%', left:'55%',
           width:700, height:500, borderRadius:'50%',
@@ -150,9 +148,8 @@ export default function Hero({ onBuy }) {
         }} />
       </div>
 
-      <div style={{ maxWidth:1140, margin:'0 auto', width:'100%',
-        display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4rem', alignItems:'center',
-        position:'relative' }}>
+      <div style={{ maxWidth:1140, margin:'0 auto', width:'100%', position:'relative' }}
+        className="hero-grid">
 
         {/* Left */}
         <motion.div
@@ -174,10 +171,7 @@ export default function Hero({ onBuy }) {
             </div>
           </motion.div>
 
-          <motion.h1 variants={fadeUp} style={{
-            fontSize:'clamp(2.75rem,5.5vw,4.5rem)', fontWeight:900,
-            lineHeight:1.0, letterSpacing:'-0.05em', marginBottom:'1.25rem',
-          }}>
+          <motion.h1 variants={fadeUp} className="hero-h1">
             Software that<br />
             <span style={{ background:'linear-gradient(135deg,var(--ai2),var(--ai3))',
               WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
@@ -202,10 +196,7 @@ export default function Hero({ onBuy }) {
             </BtnGhost>
           </motion.div>
 
-          <motion.div variants={fadeUp} style={{
-            display:'flex', gap:'2.5rem', paddingTop:'2rem',
-            borderTop:'1px solid var(--border)', flexWrap:'wrap'
-          }}>
+          <motion.div variants={fadeUp} className="hero-stats">
             {stats.map(s => (
               <div key={s.label}>
                 <div style={{ fontSize:'1.6rem', fontWeight:900, fontFamily:'var(--mono)',
@@ -223,12 +214,51 @@ export default function Hero({ onBuy }) {
       <style>{`
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
         @keyframes floatBadge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-        @media(max-width:900px) {
-          #home > div > div { grid-template-columns:1fr !important; }
-          #home > div > div > div:last-child { max-width:420px; margin:0 auto; }
+
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4rem;
+          align-items: center;
         }
+        .hero-h1 {
+          font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+          font-weight: 900;
+          line-height: 1.0;
+          letter-spacing: -0.05em;
+          margin-bottom: 1.25rem;
+        }
+        .hero-stats {
+          display: flex;
+          gap: 2.5rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--border);
+          flex-wrap: wrap;
+        }
+
+        /* Tablet */
+        @media(max-width:900px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 3rem !important;
+          }
+          #home {
+            padding: 7rem 2rem 4rem !important;
+            align-items: flex-start !important;
+          }
+        }
+
+        /* Mobile */
         @media(max-width:600px) {
-          #home { padding:6rem 1.25rem 4rem !important; }
+          #home {
+            padding: 6rem 1.25rem 3.5rem !important;
+          }
+          .hero-h1 {
+            font-size: 2.2rem !important;
+          }
+          .hero-stats {
+            gap: 1.5rem !important;
+          }
         }
       `}</style>
     </section>

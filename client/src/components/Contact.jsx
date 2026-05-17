@@ -38,7 +38,7 @@ export default function Contact() {
             <SectionLabel>Get started</SectionLabel>
             <SectionTitle>Buy, ask, or build</SectionTitle>
           </motion.div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1.25fr', gap:'5rem', alignItems:'start', marginTop:'3rem' }}>
+          <div className="contact-grid">
             {/* Left info */}
             <motion.div variants={fadeUp}>
               <p style={{ fontSize:'0.9375rem', color:'var(--muted2)', lineHeight:1.75, marginBottom:'2rem' }}>
@@ -55,7 +55,7 @@ export default function Contact() {
                       borderRadius:14, padding:'0.875rem 1.1rem', transition:'all 0.2s',
                     }}
                   >
-                    <span style={{ fontSize:'1.35rem', width:36, textAlign:'center' }}>{p.icon}</span>
+                    <span style={{ fontSize:'1.35rem', width:36, textAlign:'center', flexShrink:0 }}>{p.icon}</span>
                     <div>
                       <p style={{ fontSize:'0.875rem', fontWeight:700 }}>{p.name}</p>
                       <p style={{ fontSize:'0.72rem', color:'var(--muted)' }}>{p.sub}</p>
@@ -78,7 +78,8 @@ export default function Contact() {
             {/* Form */}
             <motion.div variants={fadeUp}>
               <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:'0.875rem' }}>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
+                {/* Name + Email — responsive 2col */}
+                <div className="contact-name-email">
                   {[['name','Name','Your name'],['email','Email','you@example.com']].map(([n,l,p]) => (
                     <div key={n} style={{ display:'flex', flexDirection:'column', gap:'0.35rem' }}>
                       <label style={{ fontSize:'0.7rem', fontFamily:'var(--mono)', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.07em' }}>{l}</label>
@@ -143,9 +144,38 @@ export default function Contact() {
           </div>
         </motion.div>
       </div>
+
       <style>{`
-        @media(max-width:800px){ #contact > div > div > div:last-child { grid-template-columns:1fr !important; gap:2.5rem !important; } }
-        @media(max-width:600px){ #contact { padding:4rem 1.25rem !important; } }
+        .contact-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.25fr;
+          gap: 5rem;
+          align-items: start;
+          margin-top: 3rem;
+        }
+        .contact-name-email {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.75rem;
+        }
+
+        /* Tablet */
+        @media(max-width:800px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+        }
+
+        /* Mobile */
+        @media(max-width:500px) {
+          #contact {
+            padding: 4rem 1.25rem !important;
+          }
+          .contact-name-email {
+            grid-template-columns: 1fr !important;
+          }
+        }
       `}</style>
     </section>
   );

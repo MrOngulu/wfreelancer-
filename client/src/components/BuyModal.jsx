@@ -22,7 +22,7 @@ export default function BuyModal({ product, price, desc, onClose }) {
   };
 
   const doPaypal = () => {
-    window.location.href = `https://wfreelancer.onrender.com/pay?product=${encodeURIComponent(product)}&amount=${price}`; 
+    window.location.href = `https://wfreelancer.onrender.com/pay?product=${encodeURIComponent(product)}&amount=${price}`;
   };
 
   const inputStyle = {
@@ -42,7 +42,9 @@ export default function BuyModal({ product, price, desc, onClose }) {
         style={{
           position:'fixed', inset:0, zIndex:500,
           background:'rgba(0,0,0,0.88)', backdropFilter:'blur(8px)',
-          display:'flex', alignItems:'center', justifyContent:'center', padding:'1.5rem',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          padding:'1rem',
+          overflowY:'auto',
         }}
       >
         <motion.div
@@ -55,21 +57,24 @@ export default function BuyModal({ product, price, desc, onClose }) {
             border:'1px solid rgba(123,104,238,0.25)',
             borderRadius:24, padding:'2rem', maxWidth:460, width:'100%',
             position:'relative', boxShadow:'0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(123,104,238,0.1)',
+            /* Ensure modal doesn't get taller than viewport */
+            maxHeight:'90vh', overflowY:'auto',
+            margin:'auto',
           }}
         >
           {/* Close */}
           <button onClick={onClose} style={{
             position:'absolute', top:'1rem', right:'1rem',
             background:'rgba(255,255,255,0.07)', border:'1px solid var(--border)',
-            borderRadius:'50%', width:30, height:30, color:'var(--muted2)',
+            borderRadius:'50%', width:34, height:34, color:'var(--muted2)',
             display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer',
-            fontSize:'0.9rem', transition:'all 0.2s',
+            fontSize:'0.9rem', transition:'all 0.2s', flexShrink:0,
           }}
           onMouseEnter={e=>{e.currentTarget.style.color='var(--white)';e.currentTarget.style.background='rgba(255,255,255,0.12)';}}
           onMouseLeave={e=>{e.currentTarget.style.color='var(--muted2)';e.currentTarget.style.background='rgba(255,255,255,0.07)';}}
           >✕</button>
 
-          <h3 style={{ fontSize:'1.25rem', fontWeight:900, letterSpacing:'-0.03em', marginBottom:'0.25rem' }}>{product}</h3>
+          <h3 style={{ fontSize:'1.25rem', fontWeight:900, letterSpacing:'-0.03em', marginBottom:'0.25rem', paddingRight:'2rem' }}>{product}</h3>
           <p style={{ fontSize:'0.82rem', color:'var(--muted2)', marginBottom:'0.875rem', lineHeight:1.6 }}>{desc}</p>
           <p style={{ fontSize:'2rem', fontWeight:900, fontFamily:'var(--mono)',
             background:'linear-gradient(135deg,var(--ai2),var(--ai3))',
@@ -79,13 +84,16 @@ export default function BuyModal({ product, price, desc, onClose }) {
           </p>
 
           {/* Payment tabs */}
-          <div style={{ display:'flex', gap:'0.5rem', marginBottom:'1.5rem' }}>
+          <div style={{ display:'flex', gap:'0.5rem', marginBottom:'1.5rem', flexWrap:'wrap' }}>
             {TABS.map(t => (
               <button
                 key={t.key}
                 onClick={() => { setTab(t.key); setDone(''); }}
                 style={{
-                  flex:1, padding:'0.55rem', borderRadius:10, fontSize:'0.8rem', fontWeight:700,
+                  flex:1, minWidth:80, padding:'0.6rem 0.5rem',
+                  borderRadius:10, fontSize:'0.8rem', fontWeight:700,
+                  /* 44px min tap target */
+                  minHeight:44,
                   border: tab === t.key ? '1px solid var(--ai)' : '1px solid var(--border2)',
                   background: tab === t.key ? 'var(--ai)' : 'rgba(255,255,255,0.04)',
                   color: tab === t.key ? '#fff' : 'var(--muted2)',
@@ -109,7 +117,7 @@ export default function BuyModal({ product, price, desc, onClose }) {
                   <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={doMpesa}
                     style={{ background:'linear-gradient(135deg,var(--ai),#6a5acd)', color:'#fff', border:'none',
                       padding:'0.875rem', borderRadius:12, fontSize:'0.95rem', fontWeight:800,
-                      cursor:'pointer', boxShadow:'0 0 24px var(--ai-glow)' }}>
+                      cursor:'pointer', boxShadow:'0 0 24px var(--ai-glow)', minHeight:48 }}>
                     Send STK Push →
                   </motion.button>
                 </div>
@@ -121,7 +129,8 @@ export default function BuyModal({ product, price, desc, onClose }) {
                   </p>
                   <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={doPaypal}
                     style={{ background:'#0070ba', color:'#fff', border:'none',
-                      padding:'0.875rem', borderRadius:12, fontSize:'0.95rem', fontWeight:800, cursor:'pointer' }}>
+                      padding:'0.875rem', borderRadius:12, fontSize:'0.95rem', fontWeight:800,
+                      cursor:'pointer', minHeight:48 }}>
                     Continue to PayPal →
                   </motion.button>
                 </div>

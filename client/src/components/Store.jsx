@@ -72,8 +72,9 @@ function ProductCard({ p, onBuy, visible }) {
                 style={{
                   background:'rgba(255,255,255,0.06)', color:'var(--white2)',
                   border:'1px solid var(--border2)', borderRadius:9,
-                  padding:'0.4rem 1rem', fontSize:'0.75rem', fontWeight:700, cursor:'pointer',
-                  transition:'all 0.2s',
+                  /* Larger tap target on mobile */
+                  padding:'0.5rem 1rem', fontSize:'0.75rem', fontWeight:700, cursor:'pointer',
+                  transition:'all 0.2s', minHeight:40,
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background='var(--ai)'; e.currentTarget.style.borderColor='var(--ai)'; e.currentTarget.style.color='#fff'; }}
                 onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--white2)'; }}
@@ -99,21 +100,22 @@ export default function Store({ onBuy }) {
           viewport={{ once:true, margin:'-80px' }}
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUp} style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', flexWrap:'wrap', gap:'1.5rem', marginBottom:'2.5rem' }}>
+          <motion.div variants={fadeUp} className="store-header">
             <div>
               <SectionLabel>Full store</SectionLabel>
               <SectionTitle style={{ marginBottom:'0.5rem' }}>Browse all products</SectionTitle>
               <p style={{ color:'var(--muted2)', fontSize:'0.95rem' }}>Instant download after payment — all yours to keep and customize.</p>
             </div>
             {/* Filter tabs */}
-            <div style={{ display:'flex', gap:'0.5rem', flexWrap:'wrap' }}>
+            <div className="store-filters">
               {FILTERS.map(f => (
                 <motion.button
                   key={f.key}
                   whileTap={{ scale:0.95 }}
                   onClick={() => setActive(f.key)}
                   style={{
-                    padding:'0.35rem 0.9rem', borderRadius:9,
+                    /* Min 44px tap target height for mobile */
+                    padding:'0.45rem 0.9rem', borderRadius:9, minHeight:44,
                     fontSize:'0.78rem', fontWeight:600,
                     border: active === f.key ? '1px solid var(--ai)' : '1px solid var(--border)',
                     background: active === f.key ? 'var(--ai)' : 'transparent',
@@ -142,7 +144,28 @@ export default function Store({ onBuy }) {
           ))}
         </motion.div>
       </div>
-      <style>{`@media(max-width:600px){ #store { padding:4rem 1.25rem !important; } }`}</style>
+
+      <style>{`
+        .store-header {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 1.5rem;
+          margin-bottom: 2.5rem;
+        }
+        .store-filters {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+
+        @media(max-width:600px) {
+          #store { padding: 4rem 1.25rem !important; }
+          .store-header { align-items: flex-start !important; }
+          .store-filters { gap: 0.4rem !important; }
+        }
+      `}</style>
     </section>
   );
 }
