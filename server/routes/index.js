@@ -224,6 +224,7 @@ router.get('/paypal-execute', (req, res) => {
 // Body: { name, email, message }
 // ─────────────────────────────────────────────
 router.post('/submit-contact', async (req, res) => {
+  console.log('RESEND KEY:', process.env.RESEND_API_KEY ? 'SET' : 'MISSING');  // add this
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
