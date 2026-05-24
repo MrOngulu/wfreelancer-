@@ -5,7 +5,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const moment = require('moment');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const paypal = require('../config/paypalConfig');
 const mpesaConfig = require('../config/mpesaConfig');
@@ -252,7 +253,19 @@ router.post('/submit-contact', async (req, res) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: 'WF Freelancers <onboarding@resend.dev>',
+      to: process.env.EMAIL_USER,
+      replyTo: email,
+      subject: `New message from ${name} — WF Freelancers`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+        <p><strong>Message:</strong></p>
+        <p style="white-space: pre-wrap;">${message}</p>
+      `,
+    });
     return res.json({ success: true, message: 'Message sent successfully' });
   } catch (err) {
     console.error('Email send error:', err.message);
