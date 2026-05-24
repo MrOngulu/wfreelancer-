@@ -1,18 +1,17 @@
-const axios = require("axios");
-const base64 = require("base-64");
-const config = require("../config/mpesa");
+// utils/mpesaAuth.js
+
+const axios = require('axios');
+const config = require('../config/mpesaConfig');
 
 const getAccessToken = async () => {
-  const auth = base64.encode(
+  const auth = Buffer.from(
     `${config.consumerKey}:${config.consumerSecret}`
-  );
+  ).toString('base64');
 
   const response = await axios.get(
-    "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+    `${config.baseUrl}/oauth/v1/generate?grant_type=client_credentials`,
     {
-      headers: {
-        Authorization: `Basic ${auth}`,
-      },
+      headers: { Authorization: `Basic ${auth}` },
     }
   );
 

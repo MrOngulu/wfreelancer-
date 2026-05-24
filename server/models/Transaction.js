@@ -1,13 +1,20 @@
-const mongoose = require("mongoose");
+// models/Transaction.js
 
-const transactionSchema = new mongoose.Schema({
-  phone: String,
-  amount: Number,
-  status: {
-    type: String,
-    default: "PENDING", // PENDING | SUCCESS | FAILED
+const mongoose = require('mongoose');
+
+const transactionSchema = new mongoose.Schema(
+  {
+    phone: { type: String, required: true },
+    amount: { type: Number, required: true },
+    productName: { type: String, default: 'WF Product' },
+    status: {
+      type: String,
+      enum: ['PENDING', 'SUCCESS', 'FAILED'],
+      default: 'PENDING',
+    },
+    checkoutRequestId: { type: String },
   },
-  checkoutRequestId: String,
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Transaction", transactionSchema);
+module.exports = mongoose.model('Transaction', transactionSchema);
