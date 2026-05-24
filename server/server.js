@@ -15,10 +15,16 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  if (origin.endsWith('.vercel.app')) return true;
+  return false;
+};
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (Render health checks, Postman, etc.)
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
     callback(new Error(`CORS: origin ${origin} not allowed`));
@@ -26,9 +32,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
 }));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // ======================
 // SOCKET.IO (real-time M-Pesa status updates)
@@ -38,7 +41,10 @@ const { Server } = require('socket.io');
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) return callback(null, true);
+      callback(new Error('CORS not allowed'));
+    },
     methods: ['GET', 'POST'],
   },
 });
