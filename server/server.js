@@ -33,6 +33,9 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // ======================
 // SOCKET.IO (real-time M-Pesa status updates)
 // ======================
