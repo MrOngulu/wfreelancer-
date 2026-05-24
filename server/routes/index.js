@@ -223,14 +223,6 @@ router.get('/paypal-execute', (req, res) => {
 // CONTACT FORM — sends email via Gmail
 // Body: { name, email, message }
 // ─────────────────────────────────────────────
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // Gmail app password (not login password)
-  },
-});
-
 router.post('/submit-contact', async (req, res) => {
   const { name, email, message } = req.body;
 
