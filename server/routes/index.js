@@ -231,6 +231,23 @@ router.post('/submit-contact', async (req, res) => {
     return res.status(400).json({ message: 'name, email and message are required' });
   }
 
+  try {
+    const result = await resend.emails.send({
+      from: 'WF Freelancers <onboarding@resend.dev>',
+      to: process.env.EMAIL_USER,
+      replyTo: email,
+      subject: `New message from ${name} — WF Freelancers`,
+      html: `<p>${message}</p>`,
+    });
+    console.log('Resend result:', JSON.stringify(result));  // add this
+    return res.json({ success: true, message: 'Message sent successfully' });
+  } catch (err) {
+    console.error('Email send error:', err.message);
+    return res.status(500).json({ success: false, message: 'Failed to send message.' });
+  }
+});
+
+
   const mailOptions = {
     from: `"WF Freelancers Contact" <${process.env.EMAIL_USER}>`,
     to: process.env.EMAIL_USER, // sends to wfreelancers1@gmail.com
