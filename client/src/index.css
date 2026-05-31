@@ -65,3 +65,49 @@ input, textarea, select { font-family: var(--head); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 ::selection { background: var(--ai-glow2); color: var(--ai3); }
+/* ─── Premium typography scale ────────────────────────────────────────────── */
+h1 { letter-spacing: -0.05em; line-height: 1.0; }
+h2 { letter-spacing: -0.045em; line-height: 1.05; }
+h3 { letter-spacing: -0.025em; }
+
+/* ─── Smooth scroll — native with offset for fixed nav ───────────────────── */
+html { scroll-padding-top: 80px; }
+
+/* ─── Page transition wrapper ────────────────────────────────────────────── */
+#root { isolation: isolate; }
+
+/* ─── Premium focus rings ──────────────────────────────────────────────────  */
+:focus-visible {
+  outline: 2px solid var(--ai2);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ─── Selection ────────────────────────────────────────────────────────────  */
+::selection { background: rgba(123,104,238,0.35); color: var(--ai3); }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(123,104,238,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(123,104,238,0.5); }
+
+/* ─── Animated gradient border utility ──────────────────────────────────── */
+@keyframes borderPulse {
+  0%,100% { border-color: rgba(123,104,238,0.2); }
+  50% { border-color: rgba(123,104,238,0.5); }
+}
+
+/* ─── Section reveal utility ─────────────────────────────────────────────── */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Prose spacing improvements ─────────────────────────────────────────── */
+p + p { margin-top: 1em; }

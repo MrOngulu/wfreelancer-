@@ -1,13 +1,14 @@
-import { motion } from 'framer-motion';
-import { SectionLabel, SectionTitle, BtnPrimary, BtnGhost, fadeUp, staggerContainer } from './ui';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { SectionLabel, AnimatedHeadline, RevealText, BtnPrimary, BtnGhost, ease } from './ui';
 
 const CheckItem = ({ text }) => (
-  <div style={{ display:'flex', alignItems:'flex-start', gap:10, fontSize:'0.875rem', color:'var(--muted2)' }}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, fontSize: '0.9rem', color: 'var(--muted2)' }}>
     <div style={{
-      width:20, height:20, borderRadius:7, flexShrink:0, marginTop:1,
-      background:'rgba(29,233,182,0.1)', border:'1px solid rgba(29,233,182,0.2)',
-      display:'flex', alignItems:'center', justifyContent:'center',
-      fontSize:'0.6rem', color:'var(--green)', fontWeight:900,
+      width: 22, height: 22, borderRadius: 8, flexShrink: 0, marginTop: 1,
+      background: 'rgba(29,233,182,0.1)', border: '1px solid rgba(29,233,182,0.22)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: '0.6rem', color: 'var(--green)', fontWeight: 900,
     }}>✓</div>
     {text}
   </div>
@@ -16,14 +17,21 @@ const CheckItem = ({ text }) => (
 function Terminal({ lines }) {
   return (
     <div style={{
-      background:'rgba(0,0,0,0.5)', borderRadius:14, padding:'1.25rem',
-      fontFamily:'var(--mono)', fontSize:'0.78rem', lineHeight:1.9,
-      border:'1px solid var(--border)',
+      background: 'rgba(0,0,0,0.55)', borderRadius: 14, padding: '1.25rem 1.5rem',
+      fontFamily: 'var(--mono)', fontSize: '0.78rem', lineHeight: 2,
+      border: '1px solid var(--border)',
     }}>
+      <div style={{ display: 'flex', gap: 6, marginBottom: '1rem' }}>
+        {['#ff5f57','#febc2e','#28c840'].map(c => (
+          <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+        ))}
+      </div>
       {lines.map((l, i) => (
-        <div key={i} style={{ color: l.t === 'comment' ? 'var(--muted)' : l.t === 'key' ? 'var(--ai3)' : l.t === 'str' ? 'var(--green)' : l.t === 'num' ? 'var(--amber)' : 'var(--white2)' }}>
-          {l.v}
-        </div>
+        <div key={i} style={{
+          color: l.t === 'comment' ? 'var(--muted)' : l.t === 'key' ? 'var(--ai3)'
+            : l.t === 'str' ? 'var(--green)' : l.t === 'num' ? 'var(--amber)'
+            : l.t === 'out' ? 'var(--white2)' : 'var(--white2)',
+        }}>{l.v}</div>
       ))}
     </div>
   );
@@ -31,73 +39,113 @@ function Terminal({ lines }) {
 
 function StatGrid({ stats }) {
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginTop:'0.75rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
       {stats.map(([val, lab, col]) => (
         <div key={lab} style={{
-          background:'rgba(0,0,0,0.4)', border:'1px solid var(--border)',
-          borderRadius:12, padding:'0.875rem', textAlign:'center',
+          background: 'rgba(0,0,0,0.35)', border: '1px solid var(--border)',
+          borderRadius: 14, padding: '1rem', textAlign: 'center',
         }}>
-          <div style={{ fontSize:'1.25rem', fontWeight:900, fontFamily:'var(--mono)', color:col || 'var(--green)', marginBottom:2 }}>{val}</div>
-          <div style={{ fontSize:'0.68rem', color:'var(--muted)' }}>{lab}</div>
+          <div style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--mono)', color: col || 'var(--green)', marginBottom: 4 }}>{val}</div>
+          <div style={{ fontSize: '0.68rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{lab}</div>
         </div>
       ))}
     </div>
   );
 }
 
-function SpotlightSection({ id, bg, label, title, desc, features, cta, visual, reverse, onBuy }) {
+function SpotlightSection({ id, bg, label, title, titleAccent, desc, features, cta, visual, reverse, onBuy }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-100px' });
+
   return (
-    <section id={id} style={{ background: bg || 'var(--bg)', padding:'7rem 2.5rem', overflow:'hidden' }}>
+    <section id={id} style={{ background: bg || 'var(--bg)', padding: '9rem 2.5rem', overflow: 'hidden', position: 'relative' }}>
+      {/* Ambient glow */}
       <div style={{
-        maxWidth:1140, margin:'0 auto',
-        display:'grid', gridTemplateColumns:'1fr 1fr',
-        gap:'4rem', alignItems:'center',
-      }} className={reverse ? 'spotlight-rev' : ''}>
+        position: 'absolute', top: '50%', left: reverse ? '20%' : '80%',
+        transform: 'translate(-50%,-50%)', width: 500, height: 500,
+        borderRadius: '50%', pointerEvents: 'none',
+        background: 'radial-gradient(ellipse, rgba(123,104,238,0.06) 0%, transparent 70%)',
+      }} />
 
-        <motion.div
-          initial="hidden" whileInView="visible"
-          viewport={{ once:true, margin:'-80px' }}
-          variants={staggerContainer}
-          style={{ order: reverse ? 2 : 1 }}
-        >
-          <motion.div variants={fadeUp}>
-            <SectionLabel>{label}</SectionLabel>
-            <SectionTitle style={{ fontSize:'clamp(1.75rem,3.5vw,2.75rem)' }}>{title}</SectionTitle>
-            <p style={{ color:'var(--muted2)', fontSize:'1rem', lineHeight:1.75, marginBottom:'1.75rem' }}>{desc}</p>
-          </motion.div>
-          <motion.div variants={fadeUp} style={{ display:'flex', flexDirection:'column', gap:'0.75rem', marginBottom:'2rem' }}>
-            {features.map(f => <CheckItem key={f} text={f} />)}
-          </motion.div>
-          <motion.div variants={fadeUp} style={{ display:'flex', gap:'0.75rem', flexWrap:'wrap' }}>
-            {cta.map((c, i) => i === 0
-              ? <BtnPrimary key={i} onClick={() => onBuy(c.product, c.desc, c.price)}>{c.label}</BtnPrimary>
-              : <BtnGhost key={i} onClick={() => document.querySelector('#contact')?.scrollIntoView({behavior:'smooth'})}>{c.label}</BtnGhost>
-            )}
-          </motion.div>
-        </motion.div>
+      <div style={{ maxWidth: 1140, margin: '0 auto', position: 'relative' }}>
+        <div ref={ref} style={{
+          display: 'grid', gridTemplateColumns: '1fr 1fr',
+          gap: '5rem', alignItems: 'center',
+        }} className={`spotlight-inner${reverse ? ' rev' : ''}`}>
 
-        <motion.div
-          initial={{ opacity:0, x: reverse ? -40 : 40 }}
-          whileInView={{ opacity:1, x:0 }}
-          viewport={{ once:true, margin:'-80px' }}
-          transition={{ duration:0.9, ease:[0.22,1,0.36,1] }}
-          style={{
-            background:'linear-gradient(160deg,rgba(123,104,238,0.08),rgba(255,255,255,0.02))',
-            border:'1px solid var(--border)', borderRadius:24, overflow:'hidden',
-            order: reverse ? 1 : 2,
-          }}
-        >
-          <div style={{ padding:'1.25rem' }}>{visual}</div>
-          <StatGrid stats={cta[0].stats} />
-          <div style={{ height:'0.75rem' }} />
-        </motion.div>
+          {/* Text column */}
+          <div style={{ order: reverse ? 2 : 1 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, ease }}
+            >
+              <SectionLabel>{label}</SectionLabel>
+            </motion.div>
+
+            <AnimatedHeadline
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.045em', lineHeight: 1.0, marginBottom: '1.25rem' }}
+              delay={0.1}
+            >
+              {title}
+            </AnimatedHeadline>
+
+            <RevealText delay={0.25}>
+              <p style={{ color: 'var(--muted2)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2rem' }}>{desc}</p>
+            </RevealText>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.35, duration: 0.7 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', marginBottom: '2.5rem' }}
+            >
+              {features.map(f => <CheckItem key={f} text={f} />)}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.45, duration: 0.6 }}
+              style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}
+            >
+              {cta.map((c, i) => i === 0
+                ? <BtnPrimary key={i} onClick={() => onBuy(c.product, c.desc, c.price)}>{c.label}</BtnPrimary>
+                : <BtnGhost key={i} onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}>{c.label}</BtnGhost>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Visual column */}
+          <motion.div
+            initial={{ opacity: 0, x: reverse ? -50 : 50, y: 20 }}
+            animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
+            transition={{ duration: 1.0, ease, delay: 0.15 }}
+            style={{ order: reverse ? 1 : 2 }}
+          >
+            <div style={{
+              background: 'linear-gradient(160deg,rgba(123,104,238,0.1),rgba(255,255,255,0.02))',
+              border: '1px solid var(--border)', borderRadius: 28, overflow: 'hidden',
+              boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
+            }}>
+              <div style={{ padding: '1.5rem 1.5rem 0' }}>{visual}</div>
+              <div style={{ padding: '1.5rem' }}>
+                <StatGrid stats={cta[0].stats} />
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
+
       <style>{`
+        .spotlight-inner { }
         @media(max-width:900px){
-          #${id} > div > div { grid-template-columns:1fr !important; }
-          .spotlight-rev > * { order:unset !important; }
+          .spotlight-inner { grid-template-columns:1fr !important; gap:3rem !important; }
+          .spotlight-inner > * { order:unset !important; }
         }
-        @media(max-width:600px){ #${id} { padding:4rem 1.25rem !important; } }
+        @media(max-width:600px){
+          #${id} { padding:5rem 1.25rem !important; }
+        }
       `}</style>
     </section>
   );
@@ -120,24 +168,24 @@ export default function Spotlights({ onBuy }) {
           'One-time license fee — no monthly subscriptions',
         ]}
         cta={[
-          { label:'Buy license — $299', product:'WF AI Trading Bot', desc:'ML-powered algorithmic trading bot.', price:299,
-            stats:[['87%','Backtested win rate','var(--green)'],['24/7','Automated','var(--ai2)'],['12+','Exchanges','var(--amber)'],['0.3s','Execution','var(--white)']] },
-          { label:'Ask a question' },
+          { label: 'Buy license — $299', product: 'WF AI Trading Bot', desc: 'ML-powered algorithmic trading bot.', price: 299,
+            stats: [['87%','Win rate','var(--green)'],['24/7','Automated','var(--ai2)'],['12+','Exchanges','var(--amber)'],['0.3s','Execution','var(--white)']] },
+          { label: 'Ask a question' },
         ]}
         onBuy={onBuy}
         visual={
           <Terminal lines={[
-            {t:'comment',v:'# WF Trading Bot v2.1 — live session'},
-            {t:'',v:''},
-            {t:'key',v:'strategy'}, {t:'',v:'  = "momentum_ml"'},
-            {t:'key',v:'pairs'},{t:'',v:'     = ["BTC/USDT", "EUR/USD"]'},
-            {t:'key',v:'risk'},{t:'',v:'      = 0.02  # 2% per trade'},
-            {t:'',v:''},
-            {t:'comment',v:'>>> Scanning signals...'},
-            {t:'out',v:'✓ BUY signal — BTC/USDT @ $67,420'},
-            {t:'out',v:'✓ Order placed — 0.045 BTC'},
-            {t:'out',v:'✓ Stop-loss set — $65,900'},
-            {t:'comment',v:'>>> Monitoring position...'},
+            { t:'comment', v:'# WF Trading Bot v2.1 — live session' },
+            { t:'', v:'' },
+            { t:'key', v:'strategy  = "momentum_ml"' },
+            { t:'key', v:'pairs     = ["BTC/USDT", "EUR/USD"]' },
+            { t:'key', v:'risk      = 0.02  # 2% per trade' },
+            { t:'', v:'' },
+            { t:'comment', v:'>>> Scanning signals...' },
+            { t:'out', v:'✓ BUY signal — BTC/USDT @ $67,420' },
+            { t:'out', v:'✓ Order placed — 0.045 BTC' },
+            { t:'out', v:'✓ Stop-loss set — $65,900' },
+            { t:'comment', v:'>>> Monitoring position...' },
           ]} />
         }
       />
@@ -147,7 +195,7 @@ export default function Spotlights({ onBuy }) {
         bg="var(--bg2)"
         label="AI Product #02"
         title="WF AI Assistant"
-        desc="Drop a smart AI chatbot onto any website or app. It handles customer questions, qualifies leads, and works around the clock — trained on your content."
+        desc="Drop a smart AI chatbot onto any website. It handles customer questions, qualifies leads, and works around the clock — trained on your content."
         features={[
           'Embed on any website with a single script tag',
           'Train it on your own FAQs, docs, or product info',
@@ -156,35 +204,32 @@ export default function Spotlights({ onBuy }) {
           'Full chat history dashboard and export',
         ]}
         cta={[
-          { label:'Buy license — $199', product:'WF AI Assistant', desc:'Intelligent chatbot for websites & apps.', price:199,
-            stats:[['98%','FAQ accuracy','var(--green)'],['5s','Setup time','var(--ai2)'],['10+','Languages','var(--amber)'],['∞','Conversations','var(--white)']] },
-          { label:'Request a demo' },
+          { label: 'Buy license — $199', product: 'WF AI Assistant', desc: 'Intelligent chatbot for websites & apps.', price: 199,
+            stats: [['98%','FAQ accuracy','var(--green)'],['5s','Setup time','var(--ai2)'],['10+','Languages','var(--amber)'],['∞','Conversations','var(--white)']] },
+          { label: 'Request a demo' },
         ]}
         onBuy={onBuy}
         reverse
         visual={
-          <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:8, paddingBottom:'0.875rem', borderBottom:'1px solid var(--border)' }}>
-              <div style={{ width:28,height:28,borderRadius:'50%',background:'var(--ai)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'0.7rem',fontWeight:800 }}>WF</div>
-              <span style={{ fontSize:'0.85rem', fontWeight:700 }}>WF Assistant</span>
-              <span style={{ marginLeft:'auto', fontSize:'0.65rem', background:'var(--green-dim)', color:'var(--green)', padding:'0.15rem 0.55rem', borderRadius:100, fontFamily:'var(--mono)' }}>● Online</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: '0.875rem', borderBottom: '1px solid var(--border)' }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,var(--ai),#6a5acd)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 800, color: '#fff' }}>WF</div>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>WF Assistant</span>
+              <span style={{ marginLeft: 'auto', fontSize: '0.65rem', background: 'rgba(29,233,182,0.1)', color: 'var(--green)', padding: '0.15rem 0.55rem', borderRadius: 100, fontFamily: 'var(--mono)', border: '1px solid rgba(29,233,182,0.2)' }}>● Online</span>
             </div>
             {[
-              { me:false, text:"Hi! How can I help you today? 👋" },
-              { me:true, text:"What are your prices for a website?" },
-              { me:false, text:"Our packages start from $299 for a landing page and go up to $800+ for custom apps. Want a quote?" },
-              { me:true, text:"Yes please!" },
+              { me: false, text: 'Hi! How can I help you today? 👋' },
+              { me: true, text: 'What are your prices for a website?' },
+              { me: false, text: 'Our packages start from $299 for a landing page and go up to $800+ for custom apps. Want a quote?' },
+              { me: true, text: 'Yes please!' },
             ].map((m, i) => (
               <div key={i} style={{
-                background: m.me ? 'var(--ai-glow)' : 'rgba(255,255,255,0.04)',
-                border: m.me ? '1px solid var(--ai-glow2)' : '1px solid var(--border)',
-                borderRadius: m.me ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                padding:'0.65rem 0.875rem', fontSize:'0.8rem', color:'var(--white2)',
-                alignSelf: m.me ? 'flex-end' : 'flex-start',
-                maxWidth:'88%',
-              }}>
-                {m.text}
-              </div>
+                background: m.me ? 'rgba(123,104,238,0.12)' : 'rgba(255,255,255,0.04)',
+                border: m.me ? '1px solid rgba(123,104,238,0.2)' : '1px solid var(--border)',
+                borderRadius: m.me ? '14px 14px 2px 14px' : '14px 14px 14px 2px',
+                padding: '0.7rem 0.9rem', fontSize: '0.82rem', color: 'var(--white2)',
+                alignSelf: m.me ? 'flex-end' : 'flex-start', maxWidth: '88%', display: 'flex',
+              }}>{m.text}</div>
             ))}
           </div>
         }
