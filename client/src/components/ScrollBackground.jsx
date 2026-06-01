@@ -175,7 +175,7 @@ void main(){
   vec2  uv   = gl_PointCoord - 0.5;
   float dist = length(uv);
   float soft = 1.0 - smoothstep(0.28, 0.5, dist);
-  float glow = exp(-dist * 5.5) * 0.45;
+  float glow = exp(-dist * 5.5) * 0.55;
   gl_FragColor = vec4(v_col, (soft + glow) * v_alpha);
 }`;
 
@@ -206,7 +206,7 @@ void main(){
   float bandHi = 0.4 + m * 0.05;
   float band   = smoothstep(bandLo, bandLo+0.3, uv.y)
                * (1.0 - smoothstep(bandHi, bandHi+0.15, uv.y));
-  aur *= band * 0.12;
+  aur *= band * 0.18;
 
   // Bottom accent glow
   float bottom = (1.0 - smoothstep(0.0, 0.35, uv.y)) * 0.06;
@@ -306,6 +306,8 @@ export default function ScrollBackground() {
     const onScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? window.scrollY / max : 0;
+      // Map progress to mood — each section gets equal slice of 0..8
+      // Eased so transition happens in middle of each section scroll, not at edges
       targetMood = clamp(progress, 0, 1) * 8;
     };
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -318,7 +320,7 @@ export default function ScrollBackground() {
 
       // Smooth mood transition — speed up when far, slow down when close
       const diff = targetMood - currentMood;
-      currentMood += diff * 0.05;
+      currentMood += diff * 0.08;
 
       const mi  = clamp(currentMood, 0, 8);
       const lo  = Math.min(Math.floor(mi), 7);

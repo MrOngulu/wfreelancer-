@@ -19,15 +19,15 @@ import ProductPage       from "./pages/ProductPage";
 // 120vh = very fast transition, section fills screen almost immediately
 // 130vh = slightly more breathing room for content-heavy sections
 const HEIGHTS = [
-  '130vh',  // Hero
-  '120vh',  // Narrative
-  '130vh',  // Featured Products
-  '130vh',  // Spotlights
-  '130vh',  // Store
-  '125vh',  // Services
-  '120vh',  // Testimonials
-  '120vh',  // Process
-  '125vh',  // Contact
+  '120vh',  // Hero
+  '115vh',  // Narrative
+  '120vh',  // Featured Products
+  '120vh',  // Spotlights
+  '120vh',  // Store
+  '115vh',  // Services
+  '115vh',  // Testimonials
+  '115vh',  // Process
+  '115vh',  // Contact
 ];
 
 function HomePage() {
