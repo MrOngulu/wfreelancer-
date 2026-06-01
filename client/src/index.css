@@ -111,3 +111,48 @@ html { scroll-padding-top: 80px; }
 
 /* ─── Prose spacing improvements ─────────────────────────────────────────── */
 p + p { margin-top: 1em; }
+
+/* ── Stacked scroll layout ─────────────────────────────────────────── */
+/* Sections are 100vh sticky panels — content must fill the viewport */
+html, body, #root {
+  /* Don't override overflow on the body — sticky needs normal scroll */
+}
+
+/* Each sticky inner panel fills its container */
+.sticky-panel {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Dala-style body text: lighter, wider spaced */
+body {
+  line-height: 1.85;
+  font-weight: 400;
+}
+
+/* Tighten headings back */
+h1, h2, h3 {
+  font-weight: 900;
+  line-height: 1.0;
+}
+
+/* Generous content blocks */
+section > div, .section-inner {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Remove any stray section background that would cover WebGL */
+section {
+  background: transparent !important;
+}
+
+/* Sections that need a slight backdrop for readability */
+.needs-backdrop {
+  background: rgba(4, 4, 10, 0.55) !important;
+  backdrop-filter: blur(0px);
+}
