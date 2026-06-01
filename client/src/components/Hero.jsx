@@ -220,7 +220,7 @@ export default function Hero({ onBuy }) {
       {/* Bottom fade into next section */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 160,
-        background: 'linear-gradient(transparent, rgba(4,4,10,0.6))',
+        background: 'linear-gradient(transparent, rgba(4,4,10,0.4))',
         pointerEvents: 'none', zIndex: 2,
       }} />
 

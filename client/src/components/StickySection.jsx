@@ -85,12 +85,22 @@ export default function StickySection({
             transformOrigin: 'center top',
           }}
         >
+          {/* Dark scrim — sits between WebGL canvas and content */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(rgba(4,4,10,0.78) 0%, rgba(4,4,10,0.70) 40%, rgba(4,4,10,0.80) 100%)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }} />
           <motion.div
             style={{
               y,
               opacity,
               width: '100%',
               height: '100%',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
             {children}

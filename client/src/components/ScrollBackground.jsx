@@ -56,8 +56,8 @@ const MOODS = [
     speed: 1.1,
   },
   { // 3 Services – warm amber aurora
-    primary:   [1.0, 0.63, 0.25],   // amber
-    secondary: [0.95, 0.30, 0.43],  // red-pink
+    primary:   [0.7, 0.44, 0.18],   // amber — dimmed for readability
+    secondary: [0.65, 0.21, 0.30],  // red-pink — dimmed
     bg:        [0.024, 0.016, 0.01],
     particleSize: 1.6,
     speed: 0.5,
@@ -70,8 +70,8 @@ const MOODS = [
     speed: 0.35,
   },
   { // 5 Contact – vortex purple
-    primary:   [0.60, 0.35, 1.00],
-    secondary: [0.90, 0.55, 1.00],
+    primary:   [0.42, 0.25, 0.70],
+    secondary: [0.62, 0.38, 0.70],
     bg:        [0.02, 0.01, 0.06],
     particleSize: 1.5,
     speed: 1.4,
@@ -197,7 +197,7 @@ void main(){
   float dist = length(uv);
   float circle = 1.0 - smoothstep(0.3, 0.5, dist);
   // Glow ring
-  float glow = exp(-dist * 6.0) * 0.6;
+  float glow = exp(-dist * 6.0) * 0.3;
   float alpha = (circle + glow) * v_alpha;
   gl_FragColor = vec4(v_color, alpha);
 }`;
@@ -230,7 +230,7 @@ void main(){
 
   // Keep aurora to upper/mid band
   float band = smoothstep(0.0, 0.4, uv.y) * (1.0 - smoothstep(0.85, 1.0, uv.y));
-  aurora *= band * 0.18;
+  aurora *= band * 0.10;
 
   vec3 col = u_bg + u_primary * aurora + u_secondary * (aurora * 0.4);
 

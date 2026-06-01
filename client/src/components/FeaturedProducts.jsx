@@ -71,7 +71,7 @@ export default function FeaturedProducts({ onBuy }) {
                 borderColor:p.glow.replace('0.2','0.45').replace('0.16','0.38').replace('0.13','0.35'),
                 boxShadow:`0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px ${p.glow}` }}
               style={{
-                background:'linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))',
+                background:'linear-gradient(160deg,rgba(14,14,24,0.92),rgba(8,8,18,0.88))',
                 border:'1px solid var(--border)', borderRadius:24, padding:'2rem',
                 position:'relative', overflow:'hidden',
                 display:'flex', flexDirection:'column',

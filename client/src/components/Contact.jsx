@@ -9,7 +9,7 @@ const PAY = [
 ];
 
 const inputStyle = {
-  background:'rgba(255,255,255,0.04)', border:'1px solid var(--border2)',
+  background:'rgba(255,255,255,0.07)', border:'1px solid var(--border2)',
   color:'var(--white)', padding:'0.8rem 1rem', borderRadius:12,
   fontSize:'0.875rem', width:'100%', outline:'none',
   transition:'border-color 0.25s', fontFamily:'var(--head)',

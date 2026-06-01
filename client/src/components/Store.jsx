@@ -30,7 +30,7 @@ function Card({ p, onBuy }) {
       transition={{duration:0.35,ease}}
       whileHover={{ y:-5, borderColor:'rgba(123,104,238,0.3)',
         boxShadow:'0 24px 60px rgba(0,0,0,0.45)' }}
-      style={{ background:'var(--bg)', border:'1px solid var(--border)',
+      style={{ background:'rgba(8,8,18,0.92)', border:'1px solid var(--border)',
         borderRadius:18, overflow:'hidden', cursor:'pointer',
         transition:'border-color 0.3s, box-shadow 0.4s, transform 0.35s' }}
     >

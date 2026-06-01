@@ -14,7 +14,7 @@ const Check = ({ text }) => (
 
 function Terminal({ lines }) {
   return (
-    <div style={{ background:'rgba(0,0,0,0.6)', borderRadius:14, padding:'1.1rem 1.4rem',
+    <div style={{ background:'rgba(4,4,14,0.96)', borderRadius:14, padding:'1.1rem 1.4rem',
       fontFamily:'var(--mono)', fontSize:'0.76rem', lineHeight:2,
       border:'1px solid var(--border)' }}>
       <div style={{ display:'flex', gap:6, marginBottom:'0.875rem' }}>

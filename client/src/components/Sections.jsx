@@ -64,7 +64,7 @@ export function Services() {
               viewport={{once:true,margin:'-40px'}}
               transition={{duration:0.6,ease,delay:i*0.06}}
               whileHover={{ background:s.color }}
-              style={{ background:'rgba(4,4,10,0.95)', padding:'2rem 1.75rem',
+              style={{ background:'rgba(8,8,20,0.94)', padding:'2rem 1.75rem',
                 transition:'background 0.4s', position:'relative', cursor:'pointer' }}
             >
               <div style={{ width:46, height:46, borderRadius:14, background:s.color,
@@ -117,7 +117,7 @@ export function Testimonials() {
               transition={{duration:0.75,ease,delay:i*0.1}}
               whileHover={{ y:-6, borderColor:'rgba(123,104,238,0.3)',
                 boxShadow:'0 32px 80px rgba(0,0,0,0.4)' }}
-              style={{ background:'rgba(255,255,255,0.02)', border:'1px solid var(--border)',
+              style={{ background:'rgba(10,10,22,0.92)', border:'1px solid var(--border)',
                 borderRadius:24, padding:'2rem', position:'relative', overflow:'hidden',
                 transition:'border-color 0.3s, box-shadow 0.4s, transform 0.4s' }}
             >
@@ -176,7 +176,7 @@ export function Process() {
               initial={{opacity:0,y:24}} animate={inView?{opacity:1,y:0}:{}}
               transition={{duration:0.6,ease,delay:i*0.09}}
               whileHover={{ background:'rgba(123,104,238,0.06)' }}
-              style={{ background:'rgba(9,9,15,0.97)', padding:'2.5rem 2rem',
+              style={{ background:'rgba(8,8,20,0.95)', padding:'2.5rem 2rem',
                 position:'relative', transition:'background 0.3s' }}
             >
               <div style={{ position:'absolute', top:0, left:0, right:0, height:3,
