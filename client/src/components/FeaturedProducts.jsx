@@ -39,6 +39,7 @@ export default function FeaturedProducts({ onBuy }) {
     <div ref={ref} id="products" style={{
       width:'100%', height:'100%',
       display:'flex', alignItems:'center',
+      background:'rgb(5,5,14)',
       padding:'0 2.5rem', overflow:'hidden',
     }}>
       <div style={{ maxWidth:1140, margin:'0 auto', width:'100%' }}>

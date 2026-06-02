@@ -36,6 +36,7 @@ export function Services() {
     <div ref={ref} id="services" style={{
       width:'100%', height:'100%',
       display:'flex', alignItems:'center',
+      background:'rgb(5,5,14)',
       padding:'0 2.5rem', overflow:'hidden',
     }}>
       <div style={{ maxWidth:1140, margin:'0 auto', width:'100%' }}>
@@ -90,6 +91,7 @@ export function Testimonials() {
     <div ref={ref} id="reviews" style={{
       width:'100%', height:'100%',
       display:'flex', alignItems:'center',
+      background:'rgb(5,5,14)',
       padding:'0 2.5rem', overflow:'hidden',
     }}>
       <div style={{ maxWidth:1140, margin:'0 auto', width:'100%' }}>
@@ -155,6 +157,7 @@ export function Process() {
     <div ref={ref} id="process" style={{
       width:'100%', height:'100%',
       display:'flex', alignItems:'center',
+      background:'rgb(5,5,14)',
       padding:'0 2.5rem', overflow:'hidden',
     }}>
       <div style={{ maxWidth:1140, margin:'0 auto', width:'100%' }}>

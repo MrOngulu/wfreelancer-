@@ -16,18 +16,19 @@ import Footer            from "./components/Footer";
 import BuyModal          from "./components/BuyModal";
 import ProductPage       from "./pages/ProductPage";
 
-// 120vh = very fast transition, section fills screen almost immediately
-// 130vh = slightly more breathing room for content-heavy sections
+// scrollHeight controls transition speed:
+// 110vh = section appears almost immediately after scrolling starts
+// Hold window = scrollHeight minus ~30vh for enter/exit = dwell time
 const HEIGHTS = [
-  '120vh',  // Hero
-  '115vh',  // Narrative
-  '120vh',  // Featured Products
-  '120vh',  // Spotlights
-  '120vh',  // Store
-  '115vh',  // Services
-  '115vh',  // Testimonials
-  '115vh',  // Process
-  '115vh',  // Contact
+  '115vh',  // Hero
+  '112vh',  // Narrative
+  '115vh',  // Products
+  '115vh',  // Spotlights
+  '115vh',  // Store
+  '112vh',  // Services
+  '112vh',  // Testimonials
+  '112vh',  // Process
+  '112vh',  // Contact
 ];
 
 function HomePage() {
@@ -37,12 +38,17 @@ function HomePage() {
 
   return (
     <>
+      {/* z:0 — WebGL always behind */}
       <ScrollBackground />
+      {/* z:200 — navbar always on top */}
       <Navbar />
 
-      <StickySection index={0} scrollHeight={HEIGHTS[0]} id="home-wrap">
+      {/* Hero: isFirst=true — fades in on load, no slide, semi-transparent so WebGL shows */}
+      <StickySection index={0} scrollHeight={HEIGHTS[0]} id="home" isFirst>
         <Hero onBuy={openBuy} />
       </StickySection>
+
+      {/* All other sections: fully opaque, slide up from below */}
       <StickySection index={1} scrollHeight={HEIGHTS[1]}>
         <Narrative />
       </StickySection>

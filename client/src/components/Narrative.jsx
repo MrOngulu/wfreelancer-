@@ -23,6 +23,7 @@ export default function Narrative() {
     <div ref={ref} style={{
       width: '100%', height: '100%',
       display: 'flex', alignItems: 'center',
+      background: 'rgb(5,5,14)',
       padding: '0 2.5rem',
       overflow: 'hidden',
     }}>
