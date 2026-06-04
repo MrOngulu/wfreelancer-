@@ -1,202 +1,221 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { BtnPrimary, BtnGhost, ease } from './ui';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { BtnPrimary, BtnGhost, AnimatedHeadline, ease } from './ui';
 
-const LINES = ['Build faster.', 'Scale smarter.', 'Automate everything.'];
-
-function CyclingHeadline() {
-  const [idx, setIdx] = useState(0);
-  const [show, setShow] = useState(true);
-
+// ─── Three.js background canvas (unchanged) ───────────────────────────────────
+function ThreeBackground() {
+  const canvasRef = useRef(null);
   useEffect(() => {
-    const t = setInterval(() => {
-      setShow(false);
-      setTimeout(() => { setIdx(i => (i + 1) % LINES.length); setShow(true); }, 400);
-    }, 2800);
-    return () => clearInterval(t);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let THREE, renderer, scene, camera, animId;
+    let objects = [];
+    let mouse = { x: 0, y: 0 };
+    let targetMouse = { x: 0, y: 0 };
+    const onMouseMove = (e) => {
+      targetMouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    import('three').then((mod) => {
+      THREE = mod;
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 6;
+      const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+      scene.add(ambient);
+      const purple = new THREE.PointLight(0x7b68ee, 3, 20);
+      purple.position.set(3, 3, 3);
+      scene.add(purple);
+      const teal = new THREE.PointLight(0x1de9b6, 2, 20);
+      teal.position.set(-3, -2, 2);
+      scene.add(teal);
+      const geometries = [
+        new THREE.IcosahedronGeometry(0.5, 0), new THREE.OctahedronGeometry(0.45, 0),
+        new THREE.TetrahedronGeometry(0.45, 0), new THREE.IcosahedronGeometry(0.3, 0),
+        new THREE.OctahedronGeometry(0.35, 0), new THREE.IcosahedronGeometry(0.25, 0),
+        new THREE.TetrahedronGeometry(0.3, 0), new THREE.OctahedronGeometry(0.2, 0),
+      ];
+      const matOptions = [
+        { color: 0x7b68ee, emissive: 0x3a2f88, wireframe: false },
+        { color: 0x1de9b6, emissive: 0x0a6b50, wireframe: false },
+        { color: 0x9c8ff5, emissive: 0x4a3fa0, wireframe: false },
+        { color: 0x7b68ee, wireframe: true }, { color: 0x1de9b6, wireframe: true },
+      ];
+      const positions = [
+        [-4,2,-2],[4,1,-3],[-3,-2,-1],[3,-1,-2],[0,3,-3],[-5,0,-2],[5,-2,-3],[1,-3,-1],
+      ];
+      geometries.forEach((geo, i) => {
+        const opt = matOptions[i % matOptions.length];
+        const mat = opt.wireframe
+          ? new THREE.MeshBasicMaterial({ color: opt.color, wireframe: true, opacity: 0.25, transparent: true })
+          : new THREE.MeshPhongMaterial({ color: opt.color, emissive: opt.emissive, shininess: 80, opacity: 0.7, transparent: true });
+        const mesh = new THREE.Mesh(geo, mat);
+        const pos = positions[i];
+        mesh.position.set(pos[0], pos[1], pos[2]);
+        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+        const speed = 0.003 + Math.random() * 0.004;
+        const floatAmp = 0.15 + Math.random() * 0.2;
+        const floatOffset = Math.random() * Math.PI * 2;
+        objects.push({ mesh, speed, floatAmp, floatOffset, baseY: pos[1] });
+        scene.add(mesh);
+      });
+      const particleCount = 120;
+      const pGeo = new THREE.BufferGeometry();
+      const positions3 = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        positions3[i*3] = (Math.random()-0.5)*20;
+        positions3[i*3+1] = (Math.random()-0.5)*12;
+        positions3[i*3+2] = (Math.random()-0.5)*8-3;
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(positions3, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0x7b68ee, size: 0.025, opacity: 0.5, transparent: true });
+      const particles = new THREE.Points(pGeo, pMat);
+      scene.add(particles);
+      const onResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      };
+      window.addEventListener('resize', onResize);
+      let t = 0;
+      const animate = () => {
+        animId = requestAnimationFrame(animate);
+        t += 0.01;
+        mouse.x += (targetMouse.x - mouse.x) * 0.05;
+        mouse.y += (targetMouse.y - mouse.y) * 0.05;
+        scene.rotation.y = mouse.x * 0.08;
+        scene.rotation.x = mouse.y * 0.05;
+        objects.forEach(obj => {
+          obj.mesh.rotation.x += obj.speed;
+          obj.mesh.rotation.y += obj.speed * 0.7;
+          obj.mesh.position.y = obj.baseY + Math.sin(t + obj.floatOffset) * obj.floatAmp;
+        });
+        particles.rotation.y = t * 0.02;
+        renderer.render(scene, camera);
+      };
+      animate();
+      return () => window.removeEventListener('resize', onResize);
+    }).catch(() => {});
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      if (animId) cancelAnimationFrame(animId);
+      if (renderer) renderer.dispose();
+    };
   }, []);
-
-  const gradients = [
-    null,
-    'linear-gradient(135deg, var(--ai2) 0%, var(--ai3) 100%)',
-    'linear-gradient(135deg, var(--green) 0%, var(--ai2) 100%)',
-  ];
-
   return (
-    <div style={{ marginBottom: '1.75rem' }}>
-      {/* Static lines */}
-      <div style={{ overflow: 'hidden' }}>
-        <motion.h1
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.7, ease }}
-          style={{
-            fontSize: 'clamp(2.8rem, 5.5vw, 5.2rem)',
-            fontWeight: 900, letterSpacing: '-0.055em',
-            lineHeight: 1.0, margin: 0, color: 'var(--white)',
-          }}
-        >
-          The future of
-        </motion.h1>
-      </div>
-      <div style={{ overflow: 'hidden' }}>
-        <motion.h1
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.42, duration: 0.7, ease }}
-          style={{
-            fontSize: 'clamp(2.8rem, 5.5vw, 5.2rem)',
-            fontWeight: 900, letterSpacing: '-0.055em',
-            lineHeight: 1.0, margin: 0, color: 'var(--white)',
-          }}
-        >
-          freelancing is
-        </motion.h1>
-      </div>
-      {/* Cycling line */}
-      <div style={{
-        height: 'clamp(2.8rem, 5.5vw, 5.2rem)',
-        overflow: 'hidden',
-        display: 'flex', alignItems: 'center',
-      }}>
-        <motion.h1
-          key={idx}
-          initial={{ y: '110%' }}
-          animate={show ? { y: 0 } : { y: '-110%' }}
-          transition={{ duration: 0.45, ease }}
-          style={{
-            fontSize: 'clamp(2.8rem, 5.5vw, 5.2rem)',
-            fontWeight: 900, letterSpacing: '-0.055em',
-            lineHeight: 1.0, margin: 0,
-            background: gradients[idx] || 'var(--white)',
-            WebkitBackgroundClip: gradients[idx] ? 'text' : undefined,
-            WebkitTextFillColor: gradients[idx] ? 'transparent' : undefined,
-            color: gradients[idx] ? undefined : 'var(--white)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {LINES[idx]}
-        </motion.h1>
-      </div>
-    </div>
+    <canvas ref={canvasRef} style={{
+      position: 'absolute', inset: 0, width: '100%', height: '100%',
+      pointerEvents: 'none', zIndex: 0,
+    }} />
   );
 }
 
+// ─── TiltCard (preserved) ─────────────────────────────────────────────────────
 function TiltCard({ onBuy }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-
-  const onMove = (e) => {
-    const r = cardRef.current?.getBoundingClientRect();
-    if (!r) return;
-    setTilt({
-      x: ((e.clientY - r.top  - r.height/2) / (r.height/2)) * -10,
-      y: ((e.clientX - r.left - r.width/2)  / (r.width/2))  *  10,
-    });
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const dx = (e.clientX - rect.left - rect.width/2) / (rect.width/2);
+    const dy = (e.clientY - rect.top - rect.height/2) / (rect.height/2);
+    setTilt({ x: dy * -12, y: dx * 12 });
   };
-
+  const handleMouseLeave = () => { setTilt({ x: 0, y: 0 }); setHovered(false); };
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.7, duration: 1.0, ease }}
-      style={{ perspective: 1000, width: '100%' }}
+      initial={{ opacity: 0, x: 60, rotateY: -15 }}
+      animate={{ opacity: 1, x: 0, rotateY: 0 }}
+      transition={{ delay: 0.7, duration: 1.1, ease }}
+      style={{ perspective: 1000, width: '100%', zIndex: 1 }}
     >
       <div
         ref={cardRef}
-        onMouseMove={onMove}
+        onMouseMove={handleMouseMove}
         onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => { setTilt({ x:0, y:0 }); setHovered(false); }}
+        onMouseLeave={handleMouseLeave}
         style={{
-          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered?1.02:1})`,
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
           transition: hovered ? 'transform 0.1s ease' : 'transform 0.6s ease',
           transformStyle: 'preserve-3d', borderRadius: 24, overflow: 'hidden',
-          background: 'linear-gradient(160deg,rgba(123,104,238,0.18),rgba(255,255,255,0.03))',
-          border: '1px solid rgba(123,104,238,0.35)',
+          background: 'linear-gradient(160deg,rgba(123,104,238,0.12),rgba(255,255,255,0.03))',
+          border: '1px solid rgba(123,104,238,0.3)',
           boxShadow: hovered
-            ? '0 40px 80px rgba(0,0,0,0.7), 0 0 50px rgba(123,104,238,0.25)'
-            : '0 24px 60px rgba(0,0,0,0.5)',
+            ? '0 60px 120px rgba(0,0,0,0.7), 0 0 60px rgba(123,104,238,0.2)'
+            : '0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(123,104,238,0.1)',
         }}
       >
-        {/* Glare */}
-        <div style={{
-          position:'absolute', inset:0, borderRadius:24, zIndex:10, pointerEvents:'none',
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', borderRadius: 24,
           background: hovered
-            ? `radial-gradient(circle at ${50+tilt.y*2}% ${50+tilt.x*2}%,rgba(255,255,255,0.07) 0%,transparent 55%)`
+            ? `radial-gradient(circle at ${50+tilt.y*2}% ${50+tilt.x*2}%, rgba(255,255,255,0.08) 0%, transparent 60%)`
             : 'none',
+          transition: 'background 0.1s', zIndex: 10,
         }} />
-        {/* Titlebar */}
-        <div style={{
-          background:'rgba(255,255,255,0.04)', borderBottom:'1px solid rgba(255,255,255,0.08)',
-          padding:'0.875rem 1.25rem', display:'flex', alignItems:'center', gap:8,
-        }}>
-          <div style={{ display:'flex', gap:6 }}>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--border)',
+          padding: '0.875rem 1.25rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 6 }}>
             {['#ff5f57','#febc2e','#28c840'].map(c => (
-              <div key={c} style={{ width:10, height:10, borderRadius:'50%', background:c }} />
+              <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
             ))}
           </div>
-          <span style={{ fontSize:'0.68rem', fontFamily:'var(--mono)', color:'var(--muted)', marginLeft:'auto' }}>
+          <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', color: 'var(--muted)', marginLeft: 'auto' }}>
             wf-trading-bot v2.1 · live
           </span>
-          <span style={{ width:7, height:7, borderRadius:'50%', background:'var(--green)',
-            boxShadow:'0 0 8px var(--green)', flexShrink:0, animation:'pulse 2s infinite' }} />
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green)',
+            boxShadow: '0 0 8px var(--green)', flexShrink: 0 }} />
         </div>
-        {/* Body */}
-        <div style={{ padding:'1.35rem' }}>
-          <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'1rem' }}>
+        <div style={{ padding: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
             <div>
-              <p style={{ fontSize:'0.65rem', fontFamily:'var(--mono)', color:'var(--muted)',
-                textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:4 }}>AI Product</p>
-              <h3 style={{ fontSize:'1.1rem', fontWeight:800, letterSpacing:'-0.025em' }}>WF Trading Bot</h3>
+              <p style={{ fontSize: '0.65rem', fontFamily: 'var(--mono)', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>AI Product</p>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em' }}>WF Trading Bot</h3>
             </div>
-            <span style={{
-              background:'rgba(29,233,182,0.12)', color:'var(--green)',
-              border:'1px solid rgba(29,233,182,0.25)',
-              fontSize:'0.65rem', fontFamily:'var(--mono)', fontWeight:600,
-              padding:'0.25rem 0.65rem', borderRadius:100, flexShrink:0,
-            }}>+12.4% today</span>
+            <span style={{ background: 'var(--green-dim)', color: 'var(--green)', border: '1px solid rgba(29,233,182,0.2)',
+              fontSize: '0.65rem', fontFamily: 'var(--mono)', fontWeight: 600, padding: '0.25rem 0.6rem', borderRadius: 100, flexShrink: 0 }}>
+              +12.4% today
+            </span>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'0.6rem', marginBottom:'1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '0.625rem', marginBottom: '1rem' }}>
             {[['87%','Win rate'],['24/7','Active'],['0.3s','Execute']].map(([v,l]) => (
-              <div key={l} style={{
-                background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.08)',
-                borderRadius:12, padding:'0.75rem 0.5rem', textAlign:'center',
-              }}>
-                <div style={{ fontSize:'1rem', fontWeight:800, fontFamily:'var(--mono)', color:'var(--green)' }}>{v}</div>
-                <div style={{ fontSize:'0.62rem', color:'var(--muted)', marginTop:2 }}>{l}</div>
+              <div key={l} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                borderRadius: 12, padding: '0.75rem', textAlign: 'center', transform: 'translateZ(20px)' }}>
+                <div style={{ fontSize: '1.05rem', fontWeight: 800, fontFamily: 'var(--mono)', color: 'var(--green)' }}>{v}</div>
+                <div style={{ fontSize: '0.62rem', color: 'var(--muted)', marginTop: 2 }}>{l}</div>
               </div>
             ))}
           </div>
-          <div style={{ height:52, background:'rgba(255,255,255,0.03)', borderRadius:10,
-            marginBottom:'1rem', overflow:'hidden' }}>
-            <svg width="100%" height="100%" viewBox="0 0 300 52" preserveAspectRatio="none">
+          <div style={{ height: 56, background: 'rgba(255,255,255,0.03)', borderRadius: 10, marginBottom: '1rem', overflow: 'hidden' }}>
+            <svg width="100%" height="100%" viewBox="0 0 300 56" preserveAspectRatio="none">
               <defs>
-                <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#1de9b6" stopOpacity="0.3"/>
-                  <stop offset="100%" stopColor="#1de9b6" stopOpacity="0"/>
+                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#1de9b6" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#1de9b6" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              <polygon points="0,52 0,42 30,36 60,38 90,27 120,29 150,17 180,14 210,21 240,9 270,6 300,2 300,52" fill="url(#cg)"/>
-              <polyline points="0,42 30,36 60,38 90,27 120,29 150,17 180,14 210,21 240,9 270,6 300,2"
-                fill="none" stroke="#1de9b6" strokeWidth="2.5" strokeLinecap="round"/>
+              <polygon points="0,56 0,46 30,36 60,38 90,26 120,28 150,16 180,14 210,20 240,8 270,6 300,2 300,56" fill="url(#chartGrad)" />
+              <polyline points="0,46 30,36 60,38 90,26 120,28 150,16 180,14 210,20 240,8 270,6 300,2"
+                fill="none" stroke="var(--green)" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </div>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <span style={{ fontSize:'1.35rem', fontWeight:900, fontFamily:'var(--mono)' }}>$299</span>
-              <span style={{ fontSize:'0.72rem', color:'var(--muted)', marginLeft:5 }}>/ license</span>
+              <span style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--mono)' }}>$299</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--muted)', marginLeft: 4 }}>/ license</span>
             </div>
             <motion.button
-              whileHover={{ scale:1.05, boxShadow:'0 0 32px rgba(123,104,238,0.5)' }}
-              whileTap={{ scale:0.95 }}
-              onClick={() => onBuy('WF AI Trading Bot','ML-powered trading bot.',299)}
-              style={{
-                background:'linear-gradient(135deg,var(--ai),#6a5acd)', color:'#fff',
-                padding:'0.5rem 1.2rem', borderRadius:10, fontSize:'0.82rem',
-                fontWeight:700, border:'none', cursor:'pointer',
-                boxShadow:'0 0 20px var(--ai-glow)',
-              }}
+              whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(123,104,238,0.5)' }}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => onBuy('WF AI Trading Bot','Automated ML-powered trading bot.',299)}
+              style={{ background: 'linear-gradient(135deg,var(--ai),#6a5acd)', color: '#fff',
+                padding: '0.5rem 1.1rem', borderRadius: 10, fontSize: '0.8rem', fontWeight: 700,
+                border: 'none', cursor: 'pointer', boxShadow: '0 0 20px var(--ai-glow)' }}
             >Buy now</motion.button>
           </div>
         </div>
@@ -205,133 +224,213 @@ function TiltCard({ onBuy }) {
   );
 }
 
-function Counter({ val, suffix='' }) {
-  const [n, setN] = useState(0);
-  const ref = useRef(null);
+// ─── Parallax orbs ────────────────────────────────────────────────────────────
+function ParallaxOrbs() {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      let cur = 0;
-      const end = parseInt(String(val).replace(/\D/g,'')) || 0;
-      const step = end / 45;
-      const t = setInterval(() => {
-        cur += step;
-        if (cur >= end) { setN(end); clearInterval(t); }
-        else setN(Math.floor(cur));
-      }, 30);
-    }, { threshold: 0.5 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [val]);
-  return <span ref={ref}>{n}{suffix}</span>;
+    const h = (e) => setMouse({ x: e.clientX/window.innerWidth - 0.5, y: e.clientY/window.innerHeight - 0.5 });
+    window.addEventListener('mousemove', h);
+    return () => window.removeEventListener('mousemove', h);
+  }, []);
+  const orbs = [
+    { size: 700, x: '62%', y: '8%', color: 'rgba(123,104,238,0.07)', depth: 0.03 },
+    { size: 400, x: '8%', y: '65%', color: 'rgba(29,233,182,0.05)', depth: 0.06 },
+    { size: 300, x: '80%', y: '72%', color: 'rgba(123,104,238,0.05)', depth: 0.04 },
+  ];
+  return (
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+      {orbs.map((orb, i) => (
+        <div key={i} style={{
+          position: 'absolute', left: orb.x, top: orb.y,
+          width: orb.size, height: orb.size, borderRadius: '50%',
+          background: `radial-gradient(ellipse, ${orb.color} 0%, transparent 70%)`,
+          transform: `translate(-50%,-50%) translate(${mouse.x*orb.depth*1000}px,${mouse.y*orb.depth*1000}px)`,
+          transition: 'transform 0.15s ease-out',
+        }} />
+      ))}
+    </div>
+  );
 }
 
-const STATS = [
-  { val:50, suffix:'+',         label:'Products shipped' },
-  { val:199, prefix:'$',        label:'Starting price'   },
-  { val:3,  suffix:' countries',label:'Active clients'   },
+// ─── Animated counter ─────────────────────────────────────────────────────────
+function Counter({ target, suffix = '' }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        let start = 0;
+        const end = parseInt(target.replace(/\D/g, '')) || 0;
+        const step = end / 40;
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else setCount(Math.floor(start));
+        }, 35);
+      }
+    }, { threshold: 0.5 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target]);
+
+  const isNumeric = /^\d/.test(target.replace(/\D/g, ''));
+  return <span ref={ref}>{isNumeric ? `${count}${suffix}` : target}</span>;
+}
+
+const stats = [
+  { val: '50', suffix: '+', label: 'Projects delivered' },
+  { val: '199', prefix: '$', label: 'Starting price' },
+  { val: '3', suffix: ' countries', label: 'Clients across Africa' },
 ];
 
+// ─── Main Hero ────────────────────────────────────────────────────────────────
 export default function Hero({ onBuy }) {
-  const scrollTo = h => document.querySelector(h)?.scrollIntoView({ behavior:'smooth' });
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+
+  const scrollTo = (href) => {
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div style={{
-      width:'100%', height:'100%',
-      display:'flex', alignItems:'center',
-      padding:'0 clamp(1.25rem, 4vw, 3rem)',
-      paddingTop:'80px', // offset for fixed navbar
-      overflow:'hidden',
+    <section ref={sectionRef} id="home" style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center',
+      padding: '8rem 2.5rem 6rem', position: 'relative', overflow: 'hidden',
     }}>
-      <div style={{ maxWidth:1140, margin:'0 auto', width:'100%' }}
+      <ThreeBackground />
+      <ParallaxOrbs />
+
+      {/* Grid */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px)',
+        backgroundSize: '72px 72px',
+        maskImage: 'radial-gradient(ellipse 100% 80% at 50% 50%,black 20%,transparent 75%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 100% 80% at 50% 50%,black 20%,transparent 75%)',
+      }} />
+
+      {/* Bottom gradient fade */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: 200,
+        background: 'linear-gradient(transparent,var(--bg))', pointerEvents: 'none', zIndex: 2,
+      }} />
+
+      <motion.div style={{ y, opacity, maxWidth: 1140, margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}
         className="hero-grid">
 
-        {/* ── Left col ── */}
+        {/* Left column */}
         <div>
+          {/* Badge */}
           <motion.div
-            initial={{ opacity:0, y:16 }}
-            animate={{ opacity:1, y:0 }}
-            transition={{ delay:0.15, duration:0.6, ease }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6, ease }}
           >
             <div style={{
-              display:'inline-flex', alignItems:'center', gap:8,
-              background:'rgba(123,104,238,0.12)', border:'1px solid rgba(123,104,238,0.3)',
-              padding:'0.3rem 0.9rem', borderRadius:100,
-              fontSize:'0.72rem', fontFamily:'var(--mono)', color:'var(--ai3)',
-              marginBottom:'1.75rem',
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(123,104,238,0.1)', border: '1px solid rgba(123,104,238,0.25)',
+              padding: '0.3rem 0.9rem', borderRadius: 100,
+              fontSize: '0.72rem', fontFamily: 'var(--mono)', color: 'var(--ai3)',
+              marginBottom: '2rem',
             }}>
-              <span style={{ width:6, height:6, borderRadius:'50%', background:'var(--ai2)',
-                boxShadow:'0 0 8px var(--ai)', flexShrink:0, animation:'pulse 2s infinite' }} />
-              AI software · Made in Africa
+              <span style={{
+                width: 6, height: 6, borderRadius: '50%', background: 'var(--ai2)',
+                boxShadow: '0 0 8px var(--ai)', flexShrink: 0, animation: 'pulse 2s infinite',
+              }} />
+              AI-powered software · Made in Africa
             </div>
           </motion.div>
 
-          <CyclingHeadline />
+          {/* Headline */}
+          <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
+            {['Build faster.', 'Scale smarter.', 'Automate everything.'].map((line, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: '100%' }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.1, duration: 0.8, ease }}
+                style={{ overflow: 'hidden' }}
+              >
+                <h1 className="hero-h1" style={{
+                  fontSize: 'clamp(2.4rem, 5.5vw, 4.8rem)',
+                  fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.05em',
+                  margin: 0,
+                  background: i === 1
+                    ? 'linear-gradient(135deg,var(--ai2),var(--ai3))'
+                    : 'var(--white)',
+                  WebkitBackgroundClip: i === 1 ? 'text' : 'unset',
+                  WebkitTextFillColor: i === 1 ? 'transparent' : 'unset',
+                }}>
+                  {line}
+                </h1>
+              </motion.div>
+            ))}
+          </div>
 
           <motion.p
-            initial={{ opacity:0, y:16 }}
-            animate={{ opacity:1, y:0 }}
-            transition={{ delay:0.55, duration:0.7, ease }}
-            style={{ fontSize:'1.05rem', color:'var(--muted2)', fontWeight:400,
-              lineHeight:1.8, maxWidth:420, marginBottom:'2rem' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.7, ease }}
+            style={{ fontSize: '1.05rem', color: 'var(--muted2)', fontWeight: 400, maxWidth: 440, marginBottom: '2.25rem', lineHeight: 1.75 }}
           >
-            AI trading bots, intelligent assistants, website templates, and mobile apps —
-            ready to deploy or custom-built for your business.
+            AI trading bots, intelligent assistants, website templates, and mobile apps — ready to deploy or custom-built for your business.
           </motion.p>
 
           <motion.div
-            initial={{ opacity:0, y:12 }}
-            animate={{ opacity:1, y:0 }}
-            transition={{ delay:0.68, duration:0.6, ease }}
-            style={{ display:'flex', gap:'0.75rem', flexWrap:'wrap', marginBottom:'2.75rem' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.7, ease }}
+            style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '3rem' }}
           >
             <BtnPrimary onClick={() => scrollTo('#products')}>Explore products ↓</BtnPrimary>
-            <BtnGhost   onClick={() => scrollTo('#contact')}>Custom project →</BtnGhost>
+            <BtnGhost onClick={() => scrollTo('#contact')}>Custom project →</BtnGhost>
           </motion.div>
 
+          {/* Stats */}
           <motion.div
-            initial={{ opacity:0 }}
-            animate={{ opacity:1 }}
-            transition={{ delay:0.85, duration:0.8 }}
-            style={{ display:'flex', gap:'2.5rem', flexWrap:'wrap',
-              paddingTop:'1.75rem', borderTop:'1px solid var(--border)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            style={{ display: 'flex', gap: '2.5rem', paddingTop: '2rem', borderTop: '1px solid var(--border)', flexWrap: 'wrap' }}
           >
-            {STATS.map((s,i) => (
+            {stats.map((s, i) => (
               <motion.div key={s.label}
-                initial={{ opacity:0, y:12 }}
-                animate={{ opacity:1, y:0 }}
-                transition={{ delay:0.9+i*0.08, duration:0.5, ease }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.85 + i * 0.08, duration: 0.6, ease }}
               >
-                <div style={{ fontSize:'1.7rem', fontWeight:900, fontFamily:'var(--mono)',
-                  letterSpacing:'-0.04em', color:'var(--white)' }}>
-                  {s.prefix||''}<Counter val={s.val} suffix={s.suffix||''} />
+                <div style={{ fontSize: '1.7rem', fontWeight: 900, fontFamily: 'var(--mono)', letterSpacing: '-0.04em', color: 'var(--white)' }}>
+                  {s.prefix || ''}<Counter target={s.val} />{s.suffix || ''}
                 </div>
-                <div style={{ fontSize:'0.7rem', color:'var(--muted)',
-                  textTransform:'uppercase', letterSpacing:'0.07em', marginTop:3 }}>{s.label}</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginTop: 2 }}>{s.label}</div>
               </motion.div>
             ))}
           </motion.div>
         </div>
 
-        {/* ── Right col: tilt card ── */}
+        {/* Right: 3D tilt card */}
         <TiltCard onBuy={onBuy} />
-      </div>
+      </motion.div>
 
       <style>{`
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
         .hero-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 4rem;
+          gap: 5rem;
           align-items: center;
         }
         @media(max-width:900px){
-          .hero-grid { grid-template-columns:1fr !important; gap:2.5rem !important; }
+          .hero-grid { grid-template-columns:1fr !important; gap:3rem !important; }
+          #home { padding:8rem 2rem 5rem !important; }
         }
         @media(max-width:600px){
-          .hero-grid > div:last-child { display:none; }
+          #home { padding:7rem 1.25rem 4rem !important; }
         }
       `}</style>
-    </div>
+    </section>
   );
 }
