@@ -58,7 +58,7 @@ function SpotlightSection({ id, bg, label, title, titleAccent, desc, features, c
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id={id} style={{ background: bg || 'var(--bg)', padding: '9rem 2.5rem', overflow: 'hidden', position: 'relative' }}>
+    <section id={id} style={{ background: bg || 'transparent', padding: '9rem 2.5rem', overflow: 'hidden', position: 'relative' }}>
       {/* Ambient glow */}
       <div style={{
         position: 'absolute', top: '50%', left: reverse ? '20%' : '80%',

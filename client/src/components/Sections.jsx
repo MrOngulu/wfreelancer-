@@ -105,7 +105,7 @@ export function Testimonials() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="reviews" style={{ padding: '9rem 2.5rem', background: 'var(--bg2)', position: 'relative', overflow: 'hidden' }}>
+    <section id="reviews" style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1140, margin: '0 auto' }}>
         <div ref={ref}>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease }}>
@@ -178,7 +178,7 @@ export function Process() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="process" style={{ padding: '9rem 2.5rem', background: 'var(--bg3)', position: 'relative', overflow: 'hidden' }}>
+    <section id="process" style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1140, margin: '0 auto' }}>
         <div ref={ref} style={{ textAlign: 'center', marginBottom: '5rem' }}>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease }}>
@@ -208,7 +208,7 @@ export function Process() {
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.6, ease, delay: i * 0.1 }}
               whileHover={{ background: 'rgba(123,104,238,0.06)' }}
-              style={{ background: 'var(--bg3)', padding: '2.5rem 2rem', position: 'relative', transition: 'background 0.3s' }}
+              style={{ background: 'rgba(255,255,255,0.03)', padding: '2.5rem 2rem', position: 'relative', transition: 'background 0.3s' }}
             >
               {/* Step number — large muted */}
               <div style={{

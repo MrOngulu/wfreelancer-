@@ -22,7 +22,7 @@ export default function Narrative() {
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
-    <section style={{ padding: '9rem 2.5rem', background: 'var(--bg2)', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       {/* Parallax gradient bg */}
       <motion.div style={{ y, position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <div style={{

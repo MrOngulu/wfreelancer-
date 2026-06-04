@@ -118,7 +118,7 @@ export default function FeaturedProducts() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="products" style={{ padding: '8rem 2.5rem', background: 'var(--bg2)', position: 'relative', overflow: 'hidden' }}>
+    <section id="products" style={{ padding: '8rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       {/* Background pattern */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
