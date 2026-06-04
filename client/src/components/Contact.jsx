@@ -34,7 +34,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" style={{ padding: '9rem 2.5rem', background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       {/* Background orb */}
       <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: 600, height: 600, borderRadius: '50%',
         background: 'radial-gradient(ellipse, rgba(123,104,238,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />

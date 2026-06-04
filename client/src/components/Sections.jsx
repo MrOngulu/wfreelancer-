@@ -30,7 +30,7 @@ export function Services() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="services" style={{ padding: '9rem 2.5rem', background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
+    <section id="services" style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       {/* Subtle bg glow */}
       <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%,-50%)',
         width: 800, height: 600, borderRadius: '50%',
@@ -71,7 +71,7 @@ export function Services() {
               transition={{ duration: 0.6, ease, delay: i * 0.07 }}
               whileHover={{ background: s.color }}
               style={{
-                background: 'var(--bg)', padding: '2.25rem 2rem',
+                background: 'transparent', padding: '2.25rem 2rem',
                 transition: 'background 0.4s', position: 'relative',
               }}
             >
