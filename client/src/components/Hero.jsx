@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { BtnPrimary, BtnGhost, AnimatedHeadline, ease } from './ui';
+import { BtnPrimary, BtnGhost, ease } from './ui';
 
-// ─── Three.js background canvas (unchanged) ───────────────────────────────────
+// ─── Three.js background canvas ───────────────────────────────────────────────
 function ThreeBackground() {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -115,7 +115,7 @@ function ThreeBackground() {
   );
 }
 
-// ─── TiltCard (preserved) ─────────────────────────────────────────────────────
+// ─── TiltCard ─────────────────────────────────────────────────────────────────
 function TiltCard({ onBuy }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -175,7 +175,7 @@ function TiltCard({ onBuy }) {
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
             <div>
               <p style={{ fontSize: '0.65rem', fontFamily: 'var(--mono)', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>AI Product</p>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em' }}>WF Trading Bot</h3>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--white)' }}>WF Trading Bot</h3>
             </div>
             <span style={{ background: 'var(--green-dim)', color: 'var(--green)', border: '1px solid rgba(29,233,182,0.2)',
               fontSize: '0.65rem', fontFamily: 'var(--mono)', fontWeight: 600, padding: '0.25rem 0.6rem', borderRadius: 100, flexShrink: 0 }}>
@@ -206,7 +206,7 @@ function TiltCard({ onBuy }) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <span style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--mono)' }}>$299</span>
+              <span style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--mono)', color: 'var(--white)' }}>$299</span>
               <span style={{ fontSize: '0.72rem', color: 'var(--muted)', marginLeft: 4 }}>/ license</span>
             </div>
             <motion.button
@@ -272,15 +272,19 @@ function Counter({ target, suffix = '' }) {
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, [target]);
-
-  const isNumeric = /^\d/.test(target.replace(/\D/g, ''));
-  return <span ref={ref}>{isNumeric ? `${count}${suffix}` : target}</span>;
+  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 const stats = [
   { val: '50', suffix: '+', label: 'Projects delivered' },
   { val: '199', prefix: '$', label: 'Starting price' },
   { val: '3', suffix: ' countries', label: 'Clients across Africa' },
+];
+
+const LINES = [
+  { text: 'Build faster.',        gradient: false },
+  { text: 'Scale smarter.',       gradient: true  },
+  { text: 'Automate everything.', gradient: false },
 ];
 
 // ─── Main Hero ────────────────────────────────────────────────────────────────
@@ -312,7 +316,7 @@ export default function Hero({ onBuy }) {
         WebkitMaskImage: 'radial-gradient(ellipse 100% 80% at 50% 50%,black 20%,transparent 75%)',
       }} />
 
-      {/* Bottom gradient fade */}
+      {/* Bottom fade */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 200,
         background: 'linear-gradient(transparent,var(--bg))', pointerEvents: 'none', zIndex: 2,
@@ -344,29 +348,32 @@ export default function Hero({ onBuy }) {
             </div>
           </motion.div>
 
-          {/* Headline */}
-          <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
-            {['Build faster.', 'Scale smarter.', 'Automate everything.'].map((line, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: '100%' }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.8, ease }}
-                style={{ overflow: 'hidden' }}
-              >
-                <h1 className="hero-h1" style={{
-                  fontSize: 'clamp(2.4rem, 5.5vw, 4.8rem)',
-                  fontWeight: 900, lineHeight: 1.0, letterSpacing: '-0.05em',
-                  margin: 0,
-                  background: i === 1
-                    ? 'linear-gradient(135deg,var(--ai2),var(--ai3))'
-                    : 'var(--white)',
-                  WebkitBackgroundClip: i === 1 ? 'text' : 'unset',
-                  WebkitTextFillColor: i === 1 ? 'transparent' : 'unset',
-                }}>
-                  {line}
-                </h1>
-              </motion.div>
+          {/* Headline — each line slides up independently */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            {LINES.map((line, i) => (
+              <div key={i} style={{ overflow: 'hidden' }}>
+                <motion.h1
+                  initial={{ y: '105%' }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.12, duration: 0.75, ease }}
+                  style={{
+                    fontSize: 'clamp(2.4rem, 5.5vw, 4.8rem)',
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.05em',
+                    margin: 0,
+                    color: 'var(--white)',
+                    ...(line.gradient ? {
+                      background: 'linear-gradient(135deg, var(--ai2), var(--ai3))',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    } : {}),
+                  }}
+                >
+                  {line.text}
+                </motion.h1>
+              </div>
             ))}
           </div>
 
