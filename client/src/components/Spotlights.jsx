@@ -17,7 +17,7 @@ const CheckItem = ({ text }) => (
 function Terminal({ lines }) {
   return (
     <div style={{
-      background: 'rgba(0,0,0,0.55)', borderRadius: 14, padding: '1.25rem 1.5rem',
+      background: 'transparent', borderRadius: 14, padding: '1.25rem 1.5rem',
       fontFamily: 'var(--mono)', fontSize: '0.78rem', lineHeight: 2,
       border: '1px solid var(--border)',
     }}>
@@ -42,7 +42,7 @@ function StatGrid({ stats }) {
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
       {stats.map(([val, lab, col]) => (
         <div key={lab} style={{
-          background: 'rgba(0,0,0,0.35)', border: '1px solid var(--border)',
+          background: 'transparent', border: '1px solid var(--border)',
           borderRadius: 14, padding: '1rem', textAlign: 'center',
         }}>
           <div style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--mono)', color: col || 'var(--green)', marginBottom: 4 }}>{val}</div>
