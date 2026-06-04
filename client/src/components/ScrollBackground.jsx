@@ -39,7 +39,7 @@ export default function ScrollBackground() {
       vx: (Math.random() - 0.5) * 0.35,
       vy: (Math.random() - 0.5) * 0.35,
       r:  Math.random() * 1.6 + 0.6,
-      opacity: Math.random() * 0.5 + 0.25,
+      opacity: Math.random() * 0.4 + 0.6,
     }));
 
     const LINK_DIST   = 160;
@@ -139,7 +139,7 @@ export default function ScrollBackground() {
         // Draw dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 165, 255, ${p.opacity})`;
+        ctx.fillStyle = `rgba(220, 210, 255, ${p.opacity})`;
         ctx.fill();
       });
 
