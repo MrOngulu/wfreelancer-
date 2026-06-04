@@ -38,8 +38,8 @@ export default function ScrollBackground() {
       y:       Math.random() * H,
       vx:      (Math.random() - 0.5) * 0.5,
       vy:      (Math.random() - 0.5) * 0.5,
-      r:       Math.random() * 0.8 + 0.3,
-      opacity: Math.random() * 0.3 + 0.1,
+      r:       Math.random() * 1.2 + 0.5,
+      opacity: Math.random() * 0.5 + 0.35,
     }));
 
     const LINK_DIST   = 180;
@@ -138,7 +138,7 @@ export default function ScrollBackground() {
         ctx.fill();
 
         // Solid bright dot
-        const twinkle = p.opacity * (0.5 + 0.5 * Math.sin(t * 2 + p.x));
+        const twinkle = p.opacity * (0.3 + 0.9 * Math.abs(Math.sin(t * 3 + p.x * 0.01)));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(220, 225, 255, ${twinkle})`;
@@ -152,7 +152,7 @@ export default function ScrollBackground() {
           const dy   = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < LINK_DIST) {
-            const alpha = (1 - dist / LINK_DIST) * 0.08;
+            const alpha = (1 - dist / LINK_DIST) * 0.14;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
