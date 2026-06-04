@@ -93,7 +93,7 @@ function SpotRow({label,title,desc,features,price,product,productDesc,cta,visual
         <motion.div initial={{opacity:0,y:10}} animate={inView?{opacity:1,y:0}:{}}
           transition={{delay:delay+0.3,duration:0.5}}
           style={{display:'flex',gap:'0.6rem',flexWrap:'wrap',alignItems:'center'}}>
-          <BtnPrimary onClick={()=>onBuy(product,productDesc,price)}>{cta} — ${price}</BtnPrimary>
+          <BtnPrimary onClick={()=>onBuy(product,productDesc,price)}>{cta.label} — ${price}</BtnPrimary>
           <BtnGhost onClick={()=>document.querySelector('#contact')?.scrollIntoView({behavior:'smooth'})}>Ask →</BtnGhost>
         </motion.div>
       </div>
