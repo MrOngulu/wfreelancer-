@@ -70,7 +70,7 @@ export default function ScrollBackground() {
     const MOUSE_DIST  = 200;
     const MOUSE_FORCE = 0.08;
     const SPEED_CAP   = 2.2;
-    const COLOR_LERP  = 0.008; // how fast colors transition
+    const COLOR_LERP  = 1; // how fast colors transition
 
     const onScroll = () => {
       const s = window.scrollY * 0.04;
