@@ -69,7 +69,7 @@ export default function ScrollBackground() {
     let t = 0;
     const draw = () => {
       animId = requestAnimationFrame(draw);
-      t += 0.004;
+      t += 0.012;
 
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = '#04040a';
@@ -130,7 +130,8 @@ export default function ScrollBackground() {
 
         // Glow effect — draw a larger faint circle behind the dot
         const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-        glow.addColorStop(0,   `rgba(180,160,255,${p.opacity * 0.35})`);
+        const twinkle = p.opacity * (0.3 + 0.9 * Math.abs(Math.sin(t * 3 + p.x * 0.01)));
+        glow.addColorStop(0,   `rgba(180,160,255,${twinkle * 0.35})`);
         glow.addColorStop(1,   `rgba(180,160,255,0)`);
         ctx.fillStyle = glow;
         ctx.beginPath();
@@ -138,7 +139,6 @@ export default function ScrollBackground() {
         ctx.fill();
 
         // Solid bright dot
-        const twinkle = p.opacity * (0.3 + 0.9 * Math.abs(Math.sin(t * 3 + p.x * 0.01)));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(220, 225, 255, ${twinkle})`;
