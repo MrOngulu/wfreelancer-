@@ -42,7 +42,6 @@ export default function ScrollBackground() {
       opacity: Math.random() * 0.5 + 0.35,
     }));
 
-    const LINK_DIST   = 180;
     const MOUSE_DIST  = 200;
     const MOUSE_FORCE = 0.08;
     const SPEED_CAP   = 2.2;
@@ -144,24 +143,6 @@ export default function ScrollBackground() {
         ctx.fillStyle = `rgba(220, 225, 255, ${twinkle})`;
         ctx.fill();
       });
-
-      // Connection lines
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx   = particles[i].x - particles[j].x;
-          const dy   = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < LINK_DIST) {
-            const alpha = (1 - dist / LINK_DIST) * 0.11;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(180, 155, 255, ${alpha})`;
-            ctx.lineWidth = 0.9;
-            ctx.stroke();
-          }
-        }
-      }
     };
 
     draw();
