@@ -63,9 +63,9 @@ export default function ScrollBackground() {
         speed:   Math.random() * (speedMax - speedMin) + speedMin,
       }));
 
-    const distantStars = makeStars(200, 0.2, 0.6,  0.10, 0.40, 0.3, 1.0);
-    const midStars     = makeStars(90,  0.4, 1.0,  0.25, 0.55, 0.6, 1.8);
-    const closeStars   = makeStars(35,  0.8, 1.8,  0.40, 0.75, 1.0, 2.8);
+    const distantStars = makeStars(200, 0.2, 0.6,  0.40, 0.75, 0.3, 1.0);
+    const midStars = makeStars(90,  0.4, 1.0,  0.55, 0.85, 0.6, 1.8);
+    const closeStars = makeStars(35,  0.8, 1.8,  0.70, 1.00, 1.0, 2.8);
 
     const MOUSE_DIST  = 160;
     const MOUSE_FORCE = 0.05;
