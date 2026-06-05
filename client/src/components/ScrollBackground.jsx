@@ -25,28 +25,27 @@ export default function ScrollBackground() {
     // Colors reference real nebula photography:
     // Pillars of Creation, Crab Nebula, Orion, Eagle, Helix, Horsehead
     const NEBULA_PALETTES = [
-      // Hero — deep space purple / cold blue (like the Pillars of Creation)
-      [[60,20,140],[10,60,180],[40,10,120],[80,30,160],[15,80,200],[50,15,130]],
-      // Narrative — midnight blue / indigo void
-      [[20,10,120],[5,40,160],[15,5,100],[30,15,140],[8,50,170],[18,8,110]],
-      // Featured Products — violet nebula / soft blue
-      [[100,30,180],[20,50,160],[70,20,150],[120,40,190],[25,65,170],[90,25,160]],
-      // Trading Bot — Crab Nebula — teal/cyan emission
-      [[10,120,160],[5,160,180],[8,100,140],[15,140,170],[5,180,190],[10,110,150]],
-      // Assistant — Orion Nebula — warm hydrogen pink / purple
-      [[140,20,120],[80,10,100],[110,15,110],[160,25,130],[90,12,105],[130,18,115]],
-      // Store — Helix Nebula — electric blue / teal
-      [[10,80,200],[5,120,180],[8,60,170],[15,100,210],[5,140,190],[10,70,185]],
-      // Services — dark void / deep indigo
-      [[15,10,100],[5,20,130],[10,5,90],[20,12,115],[6,25,140],[12,8,95]],
-      // Testimonials — Eagle Nebula — dusty rose / warm purple
-      [[120,40,100],[70,20,80],[95,30,90],[140,50,110],[80,25,85],[110,35,95]],
-      // Process — Horsehead Nebula — cold blue / dark teal
-      [[10,60,140],[5,90,160],[8,50,120],[15,75,150],[5,100,170],[10,55,130]],
-      // Contact — return to deep purple (home galaxy)
-      [[60,20,140],[10,60,180],[40,10,120],[80,30,160],[15,80,200],[50,15,130]],
+      // Hero — deep purple
+      [[80,20,180],[10,60,160],[60,10,150],[100,30,200],[15,80,180],[60,15,160]],
+      // Narrative — bright teal/cyan
+      [[0,160,180],[0,200,200],[0,140,160],[0,180,190],[0,220,210],[0,150,170]],
+      // Featured Products — violet/magenta
+      [[160,20,200],[120,10,180],[140,15,190],[180,25,210],[130,12,185],[155,18,195]],
+      // Trading Bot — strong green
+      [[0,180,80],[0,220,100],[0,160,60],[0,200,90],[0,240,110],[0,170,70]],
+      // Assistant — electric blue
+      [[0,80,220],[0,120,200],[0,60,190],[0,100,230],[0,140,210],[0,70,200]],
+      // Store — warm orange/red nebula
+      [[200,80,20],[180,60,10],[190,70,15],[220,90,25],[185,65,12],[195,75,18]],
+      // Services — cold deep blue
+      [[10,20,180],[5,30,160],[8,15,150],[15,25,190],[6,35,170],[10,18,160]],
+      // Testimonials — hot pink/magenta
+      [[220,10,140],[180,5,120],[200,8,130],[240,15,150],[190,6,125],[210,10,135]],
+      // Process — bright teal/green
+      [[0,200,150],[0,230,170],[0,180,130],[0,210,160],[0,250,180],[0,190,140]],
+      // Contact — back to purple
+      [[80,20,180],[10,60,160],[60,10,150],[100,30,200],[15,80,180],[60,15,160]],
     ];
-
     // ── Nebula blobs — 6 large soft clouds ─────────────────────────────────
     const blobs = [
       { x: W*0.15, y: H*0.08, r: 750, color:[60,20,140],  vx:0.14, vy:0.09, a:0.14 },
