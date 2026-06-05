@@ -98,14 +98,13 @@ export default function ScrollBackground() {
       t += 0.010;
 
       // Scroll → atmosphere index
-      const pageHeight     = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = pageHeight > 0 ? Math.min(window.scrollY / pageHeight, 1) : 0;
-      const atmCount       = ATMOSPHERES.length;
-      const rawIndex       = scrollProgress * (atmCount - 1);
-      const atmIndex       = Math.min(Math.floor(rawIndex), atmCount - 2);
-      const atmFrac        = rawIndex - atmIndex;
-      const atmA           = ATMOSPHERES[atmIndex];
-      const atmB           = ATMOSPHERES[atmIndex + 1];
+      const atmCount   = ATMOSPHERES.length;
+      const cycleDur   = 8.0; // seconds per atmosphere — increase for slower
+      const rawIndex   = (t / cycleDur) % atmCount;
+      const atmIndex   = Math.floor(rawIndex) % atmCount;
+      const atmFrac    = rawIndex - Math.floor(rawIndex);
+      const atmA       = ATMOSPHERES[atmIndex];
+      const atmB       = ATMOSPHERES[(atmIndex + 1) % atmCount];
 
       // Lerp ambient bg color
       const targetR = atmA.bg[0] + (atmB.bg[0] - atmA.bg[0]) * atmFrac;
