@@ -57,8 +57,6 @@ export default function ScrollBackground() {
     const midStars     = makeStars(90,  0.4, 1.0,  0.25, 0.55, 0.6, 1.8);
     const closeStars   = makeStars(35,  0.8, 1.8,  0.40, 0.75, 1.0, 2.8);
 
-
-
     const MOUSE_DIST  = 160;
     const MOUSE_FORCE = 0.05;
     const SPEED_CAP   = 1.5;
@@ -81,6 +79,7 @@ export default function ScrollBackground() {
     let t = 0;
     const draw = () => {
       animId = requestAnimationFrame(draw);
+      ctx.clearRect(0, 0, W, H);
       t += 0.010;
 
       // Scroll → atmosphere index
@@ -100,11 +99,6 @@ export default function ScrollBackground() {
       ambient.r += (targetR - ambient.r) * LERP;
       ambient.g += (targetG - ambient.g) * LERP;
       ambient.b += (targetB - ambient.b) * LERP;
-
-      // ── Draw background with ambient tint ─────────────────────────────────
-      // Base near-black + ambient color wash
-      ctx.fillStyle = `rgb(${ambient.r|0},${ambient.g|0},${ambient.b|0})`;
-      ctx.fillRect(0, 0, W, H);
 
       // Vignette — darkens edges, keeps centre lit by ambient
       const vignette = ctx.createRadialGradient(W/2, H*0.4, 0, W/2, H*0.4, Math.max(W, H) * 0.75);
