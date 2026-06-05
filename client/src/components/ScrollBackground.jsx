@@ -78,11 +78,11 @@ export default function ScrollBackground() {
       });
 
     // Distant: tiny 1px crisp dots, very subtle twinkle, stationary
-    const distantStars = makeStars(600, 0.3, 0.7,  0.15, 0.55, 0.15, 0.4,  0.0,  0.45);
+    const distantStars = makeStars(1000, 0.3, 0.7,  0.15, 0.55, 0.15, 0.4,  0.0,  0.45);
     // Mid: slightly larger, very slow drift, minimal twinkle
-    const midStars     = makeStars(180,  0.5, 1.1,  0.30, 0.65, 0.12, 0.35, 0.04, 0.3);
+    const midStars     = makeStars(680,  0.5, 1.1,  0.30, 0.65, 0.12, 0.35, 0.04, 0.3);
     // Close: brightest, mouse reactive, still crisp (no glow)
-    const closeStars   = makeStars(60,  0.9, 1.6,  0.50, 0.85, 0.10, 0.28, 0.08, 0.2);
+    const closeStars   = makeStars(300,  0.9, 1.6,  0.50, 0.85, 0.10, 0.28, 0.08, 0.2);
 
     const MOUSE_DIST  = 160;
     const MOUSE_FORCE = 0.05;
