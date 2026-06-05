@@ -67,28 +67,7 @@ export default function ScrollBackground() {
     const midStars     = makeStars(90,  0.4, 1.0,  0.25, 0.55, 0.6, 1.8);
     const closeStars   = makeStars(35,  0.8, 1.8,  0.40, 0.75, 1.0, 2.8);
 
-    // ── Shooting stars ───────────────────────────────────────────────────────
-    const shootingStars = [];
-    let nextShoot = 4.0; // seconds until next shooting star
 
-    const spawnShootingStar = () => {
-      // Start from a random point along the top or left edge
-      const fromTop = Math.random() > 0.3;
-      const angle   = (Math.PI / 6) + Math.random() * (Math.PI / 6); // 30–60 deg diagonal
-      const speed   = 6 + Math.random() * 8;
-      shootingStars.push({
-        x:       fromTop ? Math.random() * W : 0,
-        y:       fromTop ? 0 : Math.random() * (H * 0.4),
-        vx:      Math.cos(angle) * speed,
-        vy:      Math.sin(angle) * speed,
-        len:     80 + Math.random() * 120, // trail length
-        opacity: 0.9 + Math.random() * 0.1,
-        life:    1.0, // fades from 1 → 0
-        decay:   0.018 + Math.random() * 0.012,
-      });
-      // Schedule next one: 4–10 seconds
-      nextShoot = t + 4 + Math.random() * 6;
-    };
 
     const MOUSE_DIST  = 160;
     const MOUSE_FORCE = 0.05;
@@ -201,41 +180,6 @@ export default function ScrollBackground() {
         ctx.fillStyle = `rgba(${coreColor},${tw})`;
         ctx.fill();
       };
-
-      // ── Spawn shooting stars ─────────────────────────────────────────────
-      if (t >= nextShoot) spawnShootingStar();
-
-      // ── Draw shooting stars ──────────────────────────────────────────────
-      for (let i = shootingStars.length - 1; i >= 0; i--) {
-        const s = shootingStars[i];
-        s.x    += s.vx;
-        s.y    += s.vy;
-        s.life -= s.decay;
-        if (s.life <= 0 || s.x > W + 200 || s.y > H + 200) {
-          shootingStars.splice(i, 1);
-          continue;
-        }
-        const spd  = Math.sqrt(s.vx*s.vx + s.vy*s.vy);
-        const tailX = s.x - (s.vx / spd) * s.len;
-        const tailY = s.y - (s.vy / spd) * s.len;
-        const trail = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
-        trail.addColorStop(0,   `rgba(255,255,255,0)`);
-        trail.addColorStop(0.7, `rgba(220,230,255,${s.life * 0.4})`);
-        trail.addColorStop(1,   `rgba(255,255,255,${s.life * s.opacity})`);
-        ctx.beginPath();
-        ctx.moveTo(tailX, tailY);
-        ctx.lineTo(s.x, s.y);
-        ctx.strokeStyle = trail;
-        ctx.lineWidth   = 1.5;
-        ctx.stroke();
-        const headGlow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 6);
-        headGlow.addColorStop(0, `rgba(255,255,255,${s.life * s.opacity})`);
-        headGlow.addColorStop(1, `rgba(200,220,255,0)`);
-        ctx.fillStyle = headGlow;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
-        ctx.fill();
-      }
 
       distantStars.forEach(s => drawStar(s, 0, '200,208,255'));
       midStars.forEach(s => {
