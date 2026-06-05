@@ -70,7 +70,7 @@ export default function ScrollBackground() {
     const MOUSE_DIST  = 200;
     const MOUSE_FORCE = 0.08;
     const SPEED_CAP   = 2.2;
-    const COLOR_LERP  = 1; // how fast colors transition
+    const COLOR_LERP  = 0.035;   // how fast colors transition
 
     const onScroll = () => {
       const s = window.scrollY * 0.04;
@@ -97,7 +97,8 @@ export default function ScrollBackground() {
       t += 0.012;
 
       // Work out which section palette to use based on scroll progress
-      const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+      const pageHeight     = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = pageHeight > 0 ? Math.min(window.scrollY / pageHeight, 1) : 0;
       const paletteCount   = SECTION_PALETTES.length;
       const rawIndex       = scrollProgress * (paletteCount - 1);
       const palIndex       = Math.floor(rawIndex);
