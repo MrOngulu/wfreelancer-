@@ -17,7 +17,7 @@ const CheckItem = ({ text }) => (
 function Terminal({ lines }) {
   return (
     <div style={{
-      background: 'transparent', borderRadius: 14, padding: '1.25rem 1.5rem',
+      background: 'rgba(10,10,20,0.25)', borderRadius: 14, padding: '1.25rem 1.5rem',
       fontFamily: 'var(--mono)', fontSize: '0.78rem', lineHeight: 2,
       border: '1px solid var(--border)',
     }}>
@@ -42,7 +42,7 @@ function StatGrid({ stats }) {
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
       {stats.map(([val, lab, col]) => (
         <div key={lab} style={{
-          background: 'transparent', border: '1px solid var(--border)',
+          background: 'rgba(10,10,20,0.18)', border: '1px solid var(--border)',
           borderRadius: 14, padding: '1rem', textAlign: 'center',
         }}>
           <div style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--mono)', color: col || 'var(--green)', marginBottom: 4 }}>{val}</div>
@@ -156,7 +156,7 @@ export default function Spotlights({ onBuy }) {
     <>
       <SpotlightSection
         id="trading-bot"
-        bg="var(--bg)"
+        bg="transparent"
         label="AI Product #01"
         title="WF AI Trading Bot"
         desc="A machine-learning trading algorithm that analyzes markets in real time and executes trades automatically — even when you're offline."
@@ -192,7 +192,7 @@ export default function Spotlights({ onBuy }) {
 
       <SpotlightSection
         id="assistant"
-        bg="var(--bg2)"
+        bg="transparent"
         label="AI Product #02"
         title="WF AI Assistant"
         desc="Drop a smart AI chatbot onto any website. It handles customer questions, qualifies leads, and works around the clock — trained on your content."
