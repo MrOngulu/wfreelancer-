@@ -40,16 +40,6 @@ export default function ScrollBackground() {
     // Current ambient color (lerps toward target)
     const ambient = { r: 8, g: 4, b: 28 };
 
-    // ── Nebula blobs ────────────────────────────────────────────────────────
-    const blobs = [
-      { x:W*0.15, y:H*0.08, r:700, color:[80,20,180],  vx:0.12, vy:0.08, a:0.13 },
-      { x:W*0.80, y:H*0.15, r:580, color:[10,60,160],  vx:-0.10,vy:0.12, a:0.11 },
-      { x:W*0.45, y:H*0.38, r:760, color:[60,10,150],  vx:0.07, vy:-0.09,a:0.10 },
-      { x:W*0.10, y:H*0.62, r:600, color:[100,30,200], vx:0.11, vy:0.07, a:0.11 },
-      { x:W*0.88, y:H*0.70, r:540, color:[15,80,180],  vx:-0.08,vy:-0.11,a:0.10 },
-      { x:W*0.42, y:H*0.90, r:620, color:[60,15,160],  vx:0.09, vy:0.06, a:0.12 },
-    ];
-
     // ── Stars — three depth layers ──────────────────────────────────────────
     const makeStars = (count, rMin, rMax, opMin, opMax, speedMin, speedMax) =>
       Array.from({ length: count }, () => ({
@@ -73,12 +63,6 @@ export default function ScrollBackground() {
     const MOUSE_FORCE = 0.05;
     const SPEED_CAP   = 1.5;
     const LERP        = 0.03;
-
-    const onScroll = () => {
-      const s = window.scrollY * 0.025;
-      blobs.forEach((b, i) => { b._scrollOffset = s * (i % 2 === 0 ? 1 : -0.5); });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
 
     const onMouse = (e) => {
       mouse.x = e.clientX;
@@ -117,18 +101,6 @@ export default function ScrollBackground() {
       ambient.g += (targetG - ambient.g) * LERP;
       ambient.b += (targetB - ambient.b) * LERP;
 
-      // Lerp blob colors
-      blobs.forEach((b, i) => {
-        const tgt = [
-          atmA.blobs[i][0] + (atmB.blobs[i][0] - atmA.blobs[i][0]) * atmFrac,
-          atmA.blobs[i][1] + (atmB.blobs[i][1] - atmA.blobs[i][1]) * atmFrac,
-          atmA.blobs[i][2] + (atmB.blobs[i][2] - atmA.blobs[i][2]) * atmFrac,
-        ];
-        b.color[0] += (tgt[0] - b.color[0]) * LERP;
-        b.color[1] += (tgt[1] - b.color[1]) * LERP;
-        b.color[2] += (tgt[2] - b.color[2]) * LERP;
-      });
-
       // ── Draw background with ambient tint ─────────────────────────────────
       // Base near-black + ambient color wash
       ctx.fillStyle = `rgb(${ambient.r|0},${ambient.g|0},${ambient.b|0})`;
@@ -140,28 +112,6 @@ export default function ScrollBackground() {
       vignette.addColorStop(1, 'rgba(0,0,0,0.55)');
       ctx.fillStyle = vignette;
       ctx.fillRect(0, 0, W, H);
-
-      // ── Nebula blobs ───────────────────────────────────────────────────────
-      blobs.forEach((b, i) => {
-        b.x += b.vx;
-        b.y += b.vy;
-        const floatY = Math.sin(t * 0.5 + i * 1.3) * 25;
-        const floatX = Math.cos(t * 0.35 + i * 0.9) * 18;
-        if (b.x < -b.r || b.x > W + b.r) b.vx *= -1;
-        if (b.y < -b.r || b.y > H + b.r) b.vy *= -1;
-        const drawX = b.x + floatX;
-        const drawY = b.y + floatY + (b._scrollOffset || 0);
-        const [r, g, bl] = b.color;
-        const grad = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, b.r);
-        grad.addColorStop(0,    `rgba(${r|0},${g|0},${bl|0},${b.a})`);
-        grad.addColorStop(0.45, `rgba(${r|0},${g|0},${bl|0},${b.a * 0.45})`);
-        grad.addColorStop(0.8,  `rgba(${r|0},${g|0},${bl|0},${b.a * 0.1})`);
-        grad.addColorStop(1,    `rgba(${r|0},${g|0},${bl|0},0)`);
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(drawX, drawY, b.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
 
       // ── Stars ──────────────────────────────────────────────────────────────
       const drawStar = (s, glowMult, coreColor) => {
@@ -211,7 +161,6 @@ export default function ScrollBackground() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', onMouse);
-      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
     };
   }, []);
