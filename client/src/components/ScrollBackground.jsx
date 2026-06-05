@@ -55,8 +55,8 @@ export default function ScrollBackground() {
       Array.from({ length: count }, () => ({
         x:       Math.random() * W,
         y:       Math.random() * H,
-        vx:      (Math.random() - 0.5) * 0.06,
-        vy:      (Math.random() - 0.5) * 0.06,
+        vx:      (Math.random() - 0.5) * 0.012,
+        vy:      (Math.random() - 0.5) * 0.012,
         r:       Math.random() * (rMax - rMin) + rMin,
         opacity: Math.random() * (opMax - opMin) + opMin,
         phase:   Math.random() * Math.PI * 2,
@@ -68,8 +68,8 @@ export default function ScrollBackground() {
     const closeStars   = makeStars(35,  1.4, 3.0,  0.70, 1.00, 1.0, 2.8);
 
     const MOUSE_DIST  = 160;
-    const MOUSE_FORCE = 0.05;
-    const SPEED_CAP   = 1.5;
+    const MOUSE_FORCE = 0.015;
+    const SPEED_CAP   = 0.4;
     const LERP        = 0.03;
 
     const onScroll = () => {
@@ -172,10 +172,23 @@ export default function ScrollBackground() {
           ctx.arc(s.x, s.y, s.r * glowMult, 0, Math.PI * 2);
           ctx.fill();
         }
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        // 4-point star spike shape
+        ctx.save();
+        ctx.translate(s.x, s.y);
         ctx.fillStyle = `rgba(${coreColor},${tw})`;
+        ctx.beginPath();
+        const spikes = 4;
+        const outerR = s.r;
+        const innerR = s.r * 0.25;
+        for (let k = 0; k < spikes * 2; k++) {
+          const angle = (k * Math.PI) / spikes - Math.PI / 2;
+          const radius = k % 2 === 0 ? outerR : innerR;
+          k === 0 ? ctx.moveTo(Math.cos(angle) * radius, Math.sin(angle) * radius)
+                  : ctx.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+        }
+        ctx.closePath();
         ctx.fill();
+        ctx.restore();
       };
 
       distantStars.forEach(s => drawStar(s, 0, '200,208,255'));
