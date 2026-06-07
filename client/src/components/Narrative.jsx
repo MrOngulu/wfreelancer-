@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Headphones, Rocket, TrendingUp } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
 import { ease } from './ui';
 
@@ -181,14 +182,14 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.22s ease',
+                  transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <div style={{
-                    width: 36, height: 36, borderRadius: 10, background: 'rgba(123,104,238,0.15)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
-                  }}>🤖</div>
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(123,104,238,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}><Headphones size={18} color="rgba(123,104,238,1)" strokeWidth={2} /></div>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ai2)',
                     boxShadow: '0 0 8px var(--ai2)', marginTop: 4 }} />
                 </div>
@@ -215,14 +216,14 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.22s ease',
+                  transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <div style={{
-                    width: 36, height: 36, borderRadius: 10, background: 'rgba(255,160,64,0.15)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
-                  }}>⚡</div>
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(255,160,64,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}><Rocket size={18} color="rgba(255,160,64,1)" strokeWidth={2} /></div>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--amber)',
                     boxShadow: '0 0 8px var(--amber)', marginTop: 4 }} />
                 </div>
@@ -254,15 +255,15 @@ export default function Narrative() {
                 border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                 padding: '1.5rem', background: 'transparent', cursor: 'default',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                transition: 'all 0.22s ease',
+                transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
               }}
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <div style={{
-                    width: 36, height: 36, borderRadius: 10, background: 'rgba(29,233,182,0.12)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
-                  }}>📈</div>
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(29,233,182,0.18)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}><TrendingUp size={18} color="rgba(29,233,182,1)" strokeWidth={2} /></div>
                   <span style={{
                     fontSize: '0.6rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
                     letterSpacing: '0.12em', color: 'var(--green)',
