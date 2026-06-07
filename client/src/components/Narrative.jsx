@@ -181,7 +181,7 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                  transition: 'all 0.08s ease',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -215,7 +215,7 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                  transition: 'all 0.08s ease',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -254,7 +254,7 @@ export default function Narrative() {
                 border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                 padding: '1.5rem', background: 'transparent', cursor: 'default',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                transition: 'all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                transition: 'all 0.08s ease',
               }}
             >
               <div>
