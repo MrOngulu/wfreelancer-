@@ -177,11 +177,12 @@ export default function Narrative() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2, duration: 0.6, ease }}
-                whileHover={{ y: -4, borderColor: 'rgba(123,104,238,0.4)', background: 'rgba(123,104,238,0.06)' }}
+                onMouseEnter={e => { e.currentTarget.style.border='1px solid rgba(123,104,238,0.4)'; e.currentTarget.style.background='rgba(123,104,238,0.06)'; e.currentTarget.style.transform='translateY(-4px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.border='1px solid rgba(255,255,255,0.07)'; e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='translateY(0)'; }}
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.08s ease',
+                  transition: 'border 0.08s, background 0.08s, transform 0.08s',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -211,11 +212,12 @@ export default function Narrative() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.3, duration: 0.6, ease }}
-                whileHover={{ y: -4, borderColor: 'rgba(255,160,64,0.4)', background: 'rgba(255,160,64,0.05)' }}
+                onMouseEnter={e => { e.currentTarget.style.border='1px solid rgba(255,160,64,0.4)'; e.currentTarget.style.background='rgba(255,160,64,0.05)'; e.currentTarget.style.transform='translateY(-4px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.border='1px solid rgba(255,255,255,0.07)'; e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='translateY(0)'; }}
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'all 0.08s ease',
+                  transition: 'border 0.08s, background 0.08s, transform 0.08s',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -249,12 +251,13 @@ export default function Narrative() {
               initial={{ opacity: 0, y: 24 }}
               animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4, duration: 0.6, ease }}
-              whileHover={{ y: -4, borderColor: 'rgba(29,233,182,0.4)', background: 'rgba(29,233,182,0.05)' }}
+              onMouseEnter={e => { e.currentTarget.style.border='1px solid rgba(29,233,182,0.4)'; e.currentTarget.style.background='rgba(29,233,182,0.05)'; e.currentTarget.style.transform='translateY(-4px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.border='1px solid rgba(255,255,255,0.07)'; e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='translateY(0)'; }}
               style={{
                 border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                 padding: '1.5rem', background: 'transparent', cursor: 'default',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                transition: 'all 0.08s ease',
+                transition: 'border 0.08s, background 0.08s, transform 0.08s',
               }}
             >
               <div>
