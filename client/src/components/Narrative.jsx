@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { Headphones, Rocket, TrendingUp } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
 import { ease } from './ui';
 
@@ -189,7 +188,7 @@ export default function Narrative() {
                   <div style={{
                     width: 36, height: 36, borderRadius: 10, background: 'rgba(123,104,238,0.2)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}><Headphones size={18} color="rgba(123,104,238,1)" strokeWidth={2} /></div>
+                  }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(123,104,238,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ai2)',
                     boxShadow: '0 0 8px var(--ai2)', marginTop: 4 }} />
                 </div>
@@ -223,7 +222,7 @@ export default function Narrative() {
                   <div style={{
                     width: 36, height: 36, borderRadius: 10, background: 'rgba(255,160,64,0.2)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}><Rocket size={18} color="rgba(255,160,64,1)" strokeWidth={2} /></div>
+                  }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,160,64,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--amber)',
                     boxShadow: '0 0 8px var(--amber)', marginTop: 4 }} />
                 </div>
@@ -263,7 +262,7 @@ export default function Narrative() {
                   <div style={{
                     width: 36, height: 36, borderRadius: 10, background: 'rgba(29,233,182,0.18)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}><TrendingUp size={18} color="rgba(29,233,182,1)" strokeWidth={2} /></div>
+                  }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(29,233,182,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
                   <span style={{
                     fontSize: '0.6rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
                     letterSpacing: '0.12em', color: 'var(--green)',
