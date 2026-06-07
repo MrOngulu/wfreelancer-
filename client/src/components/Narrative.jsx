@@ -182,7 +182,7 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'border 0.08s, background 0.08s, transform 0.08s',
+                  transition: 'border 0.2s ease, background 0.2s ease, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -217,7 +217,7 @@ export default function Narrative() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                   padding: '1.5rem', background: 'transparent', cursor: 'default',
-                  transition: 'border 0.08s, background 0.08s, transform 0.08s',
+                  transition: 'border 0.2s ease, background 0.2s ease, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
@@ -257,7 +257,7 @@ export default function Narrative() {
                 border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                 padding: '1.5rem', background: 'transparent', cursor: 'default',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                transition: 'border 0.08s, background 0.08s, transform 0.08s',
+                transition: 'border 0.2s ease, background 0.2s ease, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             >
               <div>
