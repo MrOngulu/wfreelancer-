@@ -82,6 +82,7 @@ export default function Narrative() {
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.1 + i * 0.1, duration: 0.5, ease }}
                 whileHover={{ background: HOVER_ACCENT.bg, borderColor: HOVER_ACCENT.border, x: 4 }}
+                transition={{ duration: 0.08 }}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '1.25rem',
                   padding: '1.1rem 1.5rem',
