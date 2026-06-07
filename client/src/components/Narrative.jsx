@@ -15,38 +15,44 @@ const OPPORTUNITIES = [
   { label: 'Ship faster', desc: 'Start with battle-tested templates', color: 'var(--amber)', glow: 'rgba(255,160,64,0.12)' },
 ];
 
-// Individual pain point bar — each has its own scroll trigger
-function PainBar({ point, index, scrollYProgress }) {
-  // Card 01 is visible immediately; cards 02-04 slide in on scroll
-  const start = index === 0 ? 0 : (index - 1) * 0.11 + 0.01;
-  const end   = index === 0 ? 0 : start + 0.11;
+// Accent colors per card drawn from site palette
+const CARD_ACCENTS = [
+  { border: 'rgba(123,104,238,0.5)', bg: 'rgba(123,104,238,0.07)' },
+  { border: 'rgba(29,233,182,0.5)',  bg: 'rgba(29,233,182,0.07)'  },
+  { border: 'rgba(255,160,64,0.5)',  bg: 'rgba(255,160,64,0.07)'  },
+  { border: 'rgba(123,104,238,0.5)', bg: 'rgba(123,104,238,0.07)' },
+];
 
+function PainBar({ point, index, scrollYProgress }) {
+  const start   = index === 0 ? 0 : (index - 1) * 0.11 + 0.01;
+  const end     = index === 0 ? 0 : start + 0.11;
   const x       = useTransform(scrollYProgress, [start, end], ['-100%', '0%']);
   const opacity = useTransform(scrollYProgress, [start, end], [index === 0 ? 1 : 0, 1]);
-
-  // Upside-down staircase: each row steps 28px further right
-  const marginLeft = index * 28;
+  const accent  = CARD_ACCENTS[index];
 
   return (
-    <motion.div style={{ x, opacity, willChange: 'transform, opacity', marginLeft }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: '1.25rem',
-        padding: '1.1rem 1.5rem',
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderRadius: 14,
-        marginBottom: '0.75rem',
-      }}>
-        {/* Index number */}
-        <span style={{
-          fontFamily: 'var(--mono)', fontSize: '0.65rem',
-          color: 'rgba(255,255,255,0.2)', minWidth: 18, flexShrink: 0
-        }}>0{index + 1}</span>
+    <motion.div style={{ x, opacity, willChange: 'transform, opacity' }}>
+      <motion.div
+        whileHover={{
+          background: accent.bg,
+          borderColor: accent.border,
+          x: 4,
+        }}
+        transition={{ duration: 0.18 }}
+        style={{
+          display: 'flex', alignItems: 'center', gap: '1.25rem',
+          padding: '1.1rem 1.5rem',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          borderRadius: 14, marginBottom: '0.75rem',
+          cursor: 'default',
+        }}
+      >
+        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem',
+          color: 'rgba(255,255,255,0.2)', minWidth: 18, flexShrink: 0 }}>0{index + 1}</span>
 
-        {/* Emoji */}
         <span style={{ fontSize: '1.25rem', flexShrink: 0 }}>{point.icon}</span>
 
-        {/* Text */}
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', color: 'rgba(255,255,255,0.3)',
             textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>
@@ -56,7 +62,7 @@ function PainBar({ point, index, scrollYProgress }) {
             {point.text}
           </p>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
