@@ -127,7 +127,7 @@ export default function Narrative() {
                   letterSpacing: '-0.05em', lineHeight: 1.05, marginBottom: '1.5rem' }}
               >
                 Most freelancers waste time building systems
-                <span style={{ color: 'rgba(255,255,255,0.28)', fontStyle: 'italic' }}> instead of earning.</span>
+                <span style={{ color: 'var(--ai2)' }}> instead of earning.</span>
               </motion.h2>
 
               <motion.p
