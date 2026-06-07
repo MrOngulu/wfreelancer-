@@ -17,15 +17,18 @@ const OPPORTUNITIES = [
 
 // Individual pain point bar — each has its own scroll trigger
 function PainBar({ point, index, scrollYProgress }) {
-  // Each card occupies a 0.25 window of the scroll range (0–0.5 covers all 4 cards)
-  const start = index * 0.1;
-  const end = start + 0.12;
+  // Card 01 is visible immediately; cards 02-04 slide in on scroll
+  const start = index === 0 ? 0 : (index - 1) * 0.11 + 0.01;
+  const end   = index === 0 ? 0 : start + 0.11;
 
-  const x = useTransform(scrollYProgress, [start, end], ['-100%', '0%']);
-  const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+  const x       = useTransform(scrollYProgress, [start, end], ['-100%', '0%']);
+  const opacity = useTransform(scrollYProgress, [start, end], [index === 0 ? 1 : 0, 1]);
+
+  // Upside-down staircase: each row steps 28px further right
+  const marginLeft = index * 28;
 
   return (
-    <motion.div style={{ x, opacity, willChange: 'transform, opacity' }}>
+    <motion.div style={{ x, opacity, willChange: 'transform, opacity', marginLeft }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: '1.25rem',
         padding: '1.1rem 1.5rem',
