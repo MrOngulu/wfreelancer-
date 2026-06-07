@@ -22,7 +22,7 @@ export default function Narrative() {
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
-    <section id="narrative" style={{ padding: '9rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
+    <section id="narrative" style={{ padding: '6rem 2.5rem', background: 'transparent', position: 'relative', overflow: 'hidden' }}>
       {/* Parallax gradient bg */}
       <motion.div style={{ y, position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <div style={{
@@ -35,7 +35,7 @@ export default function Narrative() {
       <div ref={ref} style={{ maxWidth: 1140, margin: '0 auto', position: 'relative' }}>
 
         {/* Problem */}
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -52,20 +52,20 @@ export default function Narrative() {
               lineHeight: 1.0, marginBottom: '1.5rem', maxWidth: 700, margin: '0 auto 1.5rem' }}
           >
             Most freelancers waste time building systems
-            <span style={{ color: 'var(--muted)' }}> instead of earning.</span>
+            <span style={{ color: 'rgba(255,255,255,0.28)', fontStyle: 'italic' }}> instead of earning.</span>
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.25, duration: 0.7 }}
-            style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 500, margin: '0 auto 3.5rem', lineHeight: 1.75 }}
+            style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 500, margin: '0 auto 2.5rem', lineHeight: 1.75 }}
           >
             The best digital businesses run on automation. Most freelancers don't have the tools to get there.
           </motion.p>
 
           {/* Pain points */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', maxWidth: 900, margin: '0 auto' }}>
+          <div className="pain-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.875rem', maxWidth: 800, margin: '0 auto' }}>
             {PAIN_POINTS.map((p, i) => (
               <motion.div
                 key={i}
@@ -73,13 +73,14 @@ export default function Narrative() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.15 + i * 0.08, duration: 0.6, ease }}
                 style={{
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-                  borderRadius: 16, padding: '1.25rem', textAlign: 'left',
-                  display: 'flex', alignItems: 'flex-start', gap: '0.875rem',
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 14, padding: '1rem 1.125rem', textAlign: 'left',
+                  display: 'flex', alignItems: 'center', gap: '0.75rem',
                 }}
               >
-                <span style={{ fontSize: '1.25rem', flexShrink: 0 }}>{p.icon}</span>
-                <p style={{ fontSize: '0.85rem', color: 'var(--muted2)', lineHeight: 1.65 }}>{p.text}</p>
+                <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>{p.icon}</span>
+                <p style={{ fontSize: '0.82rem', color: 'var(--muted2)', lineHeight: 1.6, margin: 0 }}>{p.text}</p>
               </motion.div>
             ))}
           </div>
@@ -90,7 +91,7 @@ export default function Narrative() {
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.5, duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '5rem' }}
+          style={{ textAlign: 'center', marginBottom: '3.5rem' }}
         >
           <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
             <div style={{ width: 1, height: 48, background: 'linear-gradient(var(--border),var(--ai))' }} />
@@ -101,7 +102,7 @@ export default function Narrative() {
         </motion.div>
 
         {/* Opportunity */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -128,7 +129,7 @@ export default function Narrative() {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.45, duration: 0.7 }}
-            style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 480, margin: '0 auto 3.5rem', lineHeight: 1.75 }}
+            style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 480, margin: '0 auto 2.5rem', lineHeight: 1.75 }}
           >
             WFreelancers gives you the tools to run like a studio — without a team of 20.
           </motion.p>
@@ -159,7 +160,12 @@ export default function Narrative() {
         </div>
       </div>
 
-      <style>{`@media(max-width:600px){ section:has(.narrative) { padding:5rem 1.25rem !important; } }`}</style>
+      <style>{`
+        @media(max-width:600px){
+          #narrative { padding: 4rem 1.25rem !important; }
+          #narrative .pain-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }
