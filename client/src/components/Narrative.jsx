@@ -111,18 +111,7 @@ export default function Narrative() {
         </div>
       </div>
 
-      {/* ── DIVIDER ── */}
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0 3rem' }}>
-        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-          <div style={{ width: 1, height: 48, background: 'linear-gradient(var(--border),var(--ai))' }} />
-          <div style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: 'linear-gradient(135deg,var(--ai),#6a5acd)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '0.75rem', color: '#fff', boxShadow: '0 0 20px var(--ai-glow)',
-          }}>↓</div>
-        </div>
-      </div>
+
 
       {/* ── OPPORTUNITY ── */}
       <div ref={opportunityRef} style={{ padding: '0 2.5rem 8rem' }}>
