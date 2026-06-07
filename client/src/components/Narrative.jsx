@@ -113,6 +113,11 @@ export default function Narrative() {
 
 
 
+      {/* ── DIVIDER LINE ── */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0 3rem' }}>
+        <div style={{ width: 1, height: 48, background: 'linear-gradient(var(--border), var(--ai))' }} />
+      </div>
+
       {/* ── OPPORTUNITY ── */}
       <div ref={opportunityRef} style={{ padding: '0 2.5rem 8rem' }}>
         <div style={{ maxWidth: 1140, margin: '0 auto' }}>
