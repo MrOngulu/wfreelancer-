@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useCallback, useEffect } from 'react';
+import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ease } from './ui';
 
 const PAIN_POINTS = [
@@ -15,7 +15,6 @@ const OPPORTUNITIES = [
   { label: 'Ship faster', desc: 'Start with battle-tested templates', color: 'var(--amber)', glow: 'rgba(255,160,64,0.12)' },
 ];
 
-// Accent colors per card drawn from site palette
 const CARD_ACCENTS = [
   { border: 'rgba(123,104,238,0.5)', bg: 'rgba(123,104,238,0.07)' },
   { border: 'rgba(29,233,182,0.5)',  bg: 'rgba(29,233,182,0.07)'  },
@@ -23,21 +22,26 @@ const CARD_ACCENTS = [
   { border: 'rgba(123,104,238,0.5)', bg: 'rgba(123,104,238,0.07)' },
 ];
 
-function PainBar({ point, index, scrollYProgress }) {
-  const start   = index === 0 ? 0 : (index - 1) * 0.11 + 0.01;
-  const end     = index === 0 ? 0 : start + 0.11;
-  const x       = useTransform(scrollYProgress, [start, end], ['-100%', '0%']);
-  const opacity = useTransform(scrollYProgress, [start, end], [index === 0 ? 1 : 0, 1]);
-  const accent  = CARD_ACCENTS[index];
+function PainBar({ point, index, progress }) {
+  // Each card slides in at its own threshold of the 0–1 hover-scroll progress
+  const threshold = index / PAIN_POINTS.length;
+  const accent = CARD_ACCENTS[index];
+
+  // Derive x and opacity from the raw progress value
+  const inRange = progress >= threshold;
+  const localProgress = Math.min(1, Math.max(0, (progress - threshold) / (1 / PAIN_POINTS.length)));
 
   return (
-    <motion.div style={{ x, opacity, willChange: 'transform, opacity' }}>
+    <motion.div
+      animate={{
+        x: inRange ? 0 : -60,
+        opacity: inRange ? 1 : 0,
+      }}
+      transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+      style={{ willChange: 'transform, opacity' }}
+    >
       <motion.div
-        whileHover={{
-          background: accent.bg,
-          borderColor: accent.border,
-          x: 4,
-        }}
+        whileHover={{ background: accent.bg, borderColor: accent.border, x: 4 }}
         transition={{ duration: 0.18 }}
         style={{
           display: 'flex', alignItems: 'center', gap: '1.25rem',
@@ -50,9 +54,7 @@ function PainBar({ point, index, scrollYProgress }) {
       >
         <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem',
           color: 'rgba(255,255,255,0.2)', minWidth: 18, flexShrink: 0 }}>0{index + 1}</span>
-
         <span style={{ fontSize: '1.25rem', flexShrink: 0 }}>{point.icon}</span>
-
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', color: 'rgba(255,255,255,0.3)',
             textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>
@@ -68,104 +70,133 @@ function PainBar({ point, index, scrollYProgress }) {
 }
 
 export default function Narrative() {
-  const sectionRef = useRef(null);
   const opportunityRef = useRef(null);
   const opportunityInView = useInView(opportunityRef, { once: true, margin: '-80px' });
+  const headlineRef = useRef(null);
+  const headlineInView = useInView(headlineRef, { once: true, margin: '-80px' });
 
-  // Scroll progress over the whole section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
+  // Hover-driven scroll progress (0 = no cards, 1 = all cards)
+  const [progress, setProgress] = useState(1); // start fully revealed
+  const [isHovered, setIsHovered] = useState(false);
+  const progressRef = useRef(1);
 
-  // Sticky headline fades out as problems finish
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.45, 0.52], [1, 1, 0]);
-  const headlineY = useTransform(scrollYProgress, [0.45, 0.55], ['0%', '-8%']);
+  // Vertical bar scale matches progress
+  const barScaleY = progress;
 
-  // Vertical bar draws down from 0 to full height as problems scroll in
-  const barScaleY = useTransform(scrollYProgress, [0, 0.45], [0, 1]);
+  const handleWheel = useCallback((e) => {
+    if (!isHovered) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const delta = e.deltaY > 0 ? 0.28 : -0.28;
+    const next = Math.min(1, Math.max(0, progressRef.current + delta));
+    progressRef.current = next;
+    setProgress(next);
+  }, [isHovered]);
+
+  const panelRef = useRef(null);
+
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el) return;
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [handleWheel]);
 
   return (
-    <section
-      id="narrative"
-      ref={sectionRef}
-      style={{ position: 'relative', background: 'transparent' }}
-    >
-      {/* ── PROBLEM: tall scroll container ── */}
-      <div style={{ height: '320vh', position: 'relative' }}>
+    <section id="narrative" style={{ background: 'transparent', position: 'relative' }}>
 
-        {/* Sticky frame */}
+      {/* ── PROBLEM ── */}
+      <div style={{ padding: '6rem 2.5rem', position: 'relative' }}>
+
+        {/* Purple glow */}
         <div style={{
-          position: 'sticky', top: 0, height: '100vh',
-          display: 'flex', alignItems: 'center',
-          padding: '0 2.5rem', overflow: 'hidden',
-        }}>
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'radial-gradient(ellipse 70% 50% at 30% 50%, rgba(123,104,238,0.06) 0%, transparent 70%)',
+        }} />
 
-          {/* Parallax purple glow */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 70% 50% at 30% 50%, rgba(123,104,238,0.06) 0%, transparent 70%)',
-          }} />
+        <div style={{ maxWidth: 1140, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', position: 'relative' }}>
 
-          <div style={{ maxWidth: 1140, margin: '0 auto', width: '100%', display: 'flex', gap: '4rem', alignItems: 'center', position: 'relative' }}>
+          {/* LEFT — headline */}
+          <div ref={headlineRef} style={{ flex: '0 0 45%' }}>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={headlineInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, ease }}
+              style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
+                letterSpacing: '0.16em', color: 'var(--muted)', marginBottom: '1.5rem' }}
+            >The problem</motion.p>
 
-            {/* LEFT — sticky headline */}
-            <motion.div style={{ opacity: headlineOpacity, y: headlineY, flex: '0 0 45%' }}>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease }}
-                style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
-                  letterSpacing: '0.16em', color: 'var(--muted)', marginBottom: '1.5rem' }}
-              >The problem</motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              animate={headlineInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, ease, delay: 0.1 }}
+              style={{ fontSize: 'clamp(2rem, 3.5vw, 3.25rem)', fontWeight: 900,
+                letterSpacing: '-0.05em', lineHeight: 1.05, marginBottom: '1.5rem' }}
+            >
+              Most freelancers waste time building systems
+              <span style={{ color: 'var(--ai2)' }}> instead of earning.</span>
+            </motion.h2>
 
-              <motion.h2
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease, delay: 0.1 }}
-                style={{ fontSize: 'clamp(2rem, 3.5vw, 3.25rem)', fontWeight: 900,
-                  letterSpacing: '-0.05em', lineHeight: 1.05, marginBottom: '1.5rem' }}
-              >
-                Most freelancers waste time building systems
-                <span style={{ color: 'var(--ai2)' }}> instead of earning.</span>
-              </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={headlineInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3, duration: 0.7 }}
+              style={{ color: 'var(--muted2)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 380 }}
+            >
+              The best digital businesses run on automation. Most freelancers don't have the tools to get there.
+            </motion.p>
+          </div>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.7 }}
-                style={{ color: 'var(--muted2)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 380 }}
-              >
-                The best digital businesses run on automation. Most freelancers don't have the tools to get there.
-              </motion.p>
-            </motion.div>
+          {/* RIGHT — hover-to-scroll cards panel */}
+          <div
+            ref={panelRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+              flex: 1, position: 'relative', paddingLeft: '2rem',
+              cursor: isHovered ? 'ns-resize' : 'default',
+            }}
+          >
+            {/* Hint label */}
+            <motion.p
+              animate={{ opacity: isHovered ? 0 : 0.4 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                position: 'absolute', top: -28, left: '2rem',
+                fontSize: '0.65rem', fontFamily: 'var(--mono)',
+                color: 'var(--muted)', letterSpacing: '0.12em',
+                textTransform: 'uppercase', pointerEvents: 'none',
+              }}
+            >Scroll inside to reveal ↓</motion.p>
 
-            {/* RIGHT — sliding problem bars */}
-            <div style={{ flex: 1, position: 'relative', paddingLeft: '2rem' }}>
-
-              {/* Vertical track bar */}
-              <div style={{
-                position: 'absolute', left: 0, top: 0, bottom: 0,
-                width: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 2,
-              }}>
-                <motion.div style={{
-                  width: '100%', height: '100%', background: 'linear-gradient(180deg, var(--ai), var(--ai2))',
-                  transformOrigin: 'top', scaleY: barScaleY, borderRadius: 2,
-                }} />
-              </div>
-
-              {/* Problem bars */}
-              {PAIN_POINTS.map((p, i) => (
-                <PainBar key={i} point={p} index={i} scrollYProgress={scrollYProgress} />
-              ))}
+            {/* Vertical track bar */}
+            <div style={{
+              position: 'absolute', left: 0, top: 0, bottom: 0,
+              width: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 2,
+            }}>
+              <motion.div
+                animate={{ scaleY: barScaleY }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                style={{
+                  width: '100%', height: '100%',
+                  background: 'linear-gradient(180deg, var(--ai), var(--ai2))',
+                  transformOrigin: 'top', borderRadius: 2,
+                }}
+              />
             </div>
 
+            {/* Cards */}
+            {PAIN_POINTS.map((p, i) => (
+              <PainBar key={i} point={p} index={i} progress={progress} />
+            ))}
           </div>
+
         </div>
       </div>
 
       {/* ── DIVIDER ── */}
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0 3rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0 3rem' }}>
         <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
           <div style={{ width: 1, height: 48, background: 'linear-gradient(var(--border),var(--ai))' }} />
           <div style={{
@@ -180,7 +211,6 @@ export default function Narrative() {
       {/* ── OPPORTUNITY ── */}
       <div ref={opportunityRef} style={{ padding: '0 2.5rem 8rem' }}>
         <div style={{ maxWidth: 1140, margin: '0 auto' }}>
-
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -241,9 +271,8 @@ export default function Narrative() {
 
       <style>{`
         @media(max-width:768px){
-          #narrative .scroll-split { flex-direction: column !important; gap: 2rem !important; }
-          #narrative .sticky-frame { height: auto !important; position: relative !important; padding: 4rem 1.25rem !important; }
-          #narrative .scroll-container { height: auto !important; }
+          #narrative > div:first-child > div { flex-direction: column !important; gap: 2rem !important; }
+          #narrative > div:first-child { padding: 4rem 1.25rem !important; }
         }
       `}</style>
     </section>
