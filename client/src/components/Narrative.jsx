@@ -120,88 +120,174 @@ export default function Narrative() {
 
       {/* ── OPPORTUNITY ── */}
       <div ref={opportunityRef} style={{ padding: '0 2.5rem 8rem' }}>
-        <div style={{ maxWidth: 1140, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, ease }}
-              style={{ fontSize: '0.7rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
-                letterSpacing: '0.16em', color: 'var(--ai2)', marginBottom: '1.5rem' }}
-            >The opportunity</motion.p>
+        <div style={{ maxWidth: 1140, margin: '0 auto', display: 'flex', gap: '5rem', alignItems: 'center' }}>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 32 }}
-              animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, ease, delay: 0.1 }}
-              style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900,
-                letterSpacing: '-0.05em', lineHeight: 1.0, marginBottom: '1.5rem' }}
-            >
-              <span style={{ textShadow: '0 0 40px rgba(123,104,238,0.6)' }}>AI</span> can automate{' '}
+          {/* LEFT — headline + CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: -32 }}
+            animate={opportunityInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease }}
+            style={{ flex: '0 0 320px' }}
+          >
+            {/* Pill tag */}
+            <div style={{
+              display: 'inline-flex', alignItems: 'center',
+              border: '1px solid rgba(255,255,255,0.12)', borderRadius: 100,
+              padding: '0.3rem 0.75rem', marginBottom: '1.75rem',
+            }}>
+              <span style={{ fontSize: '0.65rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
+                letterSpacing: '0.14em', color: 'rgba(255,255,255,0.45)' }}>System Opportunity</span>
+            </div>
+
+            <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', fontWeight: 900,
+              letterSpacing: '-0.05em', lineHeight: 1.0, marginBottom: '1.25rem' }}>
+              AI automates<br />
               <span style={{
-                background: 'linear-gradient(135deg,var(--ai2),var(--ai3))',
+                background: 'linear-gradient(135deg, var(--ai2), var(--ai3))',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               }}>the hard parts.</span>
-            </motion.h2>
+            </h2>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={opportunityInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.25, duration: 0.7 }}
-              style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 480, margin: '0 auto 1.5rem', lineHeight: 1.75 }}
-            >
-              WFreelancers gives you the tools to run like a studio — without a team of 20.
-            </motion.p>
-          </div>
+            <p style={{ color: 'var(--muted2)', fontSize: '0.95rem', lineHeight: 1.75, marginBottom: '2rem', maxWidth: 300 }}>
+              WFreelancers provides studio-grade infrastructure to deploy complex ML operations—without scaling an expensive headcount of 20+.
+            </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', maxWidth: 960, margin: '0 auto 2.5rem' }}>
-            {OPPORTUNITIES.map((o, i) => (
+            <motion.a
+              href="#store"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                background: '#fff', color: '#0a0a12',
+                padding: '0.75rem 1.5rem', borderRadius: 100,
+                fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none',
+                letterSpacing: '-0.01em',
+              }}
+            >Deploy Infrastructure →</motion.a>
+          </motion.div>
+
+          {/* RIGHT — asymmetric card grid */}
+          <div style={{ flex: 1 }}>
+            {/* Top row: two smaller cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+
+              {/* Automate support */}
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 32 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.7, ease }}
-                whileHover={{
-                  y: -8,
-                  background: o.glowHover,
-                  borderColor: o.borderHover,
-                  boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 40px ${o.glowHover}`,
-                }}
-                transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
+                transition={{ delay: 0.2, duration: 0.6, ease }}
+                whileHover={{ y: -4, borderColor: 'rgba(123,104,238,0.4)', background: 'rgba(123,104,238,0.06)' }}
                 style={{
-                  background: o.glow,
-                  border: `1px solid ${o.glow.replace('0.12','0.25')}`,
-                  borderRadius: 20,
-                  padding: o.hero ? '2rem 2rem 2.5rem' : '1.75rem',
-                  cursor: 'default',
+                  border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
+                  padding: '1.5rem', background: 'transparent', cursor: 'default',
+                  transition: 'all 0.22s ease',
                 }}
               >
-                <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '1rem' }}>{o.icon}</span>
-                <h3 style={{ fontSize: o.hero ? '1.25rem' : '1.1rem', fontWeight: 900,
-                  letterSpacing: '-0.03em', marginBottom: '0.5rem', color: o.color }}>{o.label}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--muted2)', lineHeight: 1.65, margin: 0 }}>{o.desc}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(123,104,238,0.15)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
+                  }}>🤖</div>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ai2)',
+                    boxShadow: '0 0 8px var(--ai2)', marginTop: 4 }} />
+                </div>
+                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', marginBottom: '0.4rem', letterSpacing: '-0.02em' }}>Automate support</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted2)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  Resolve tier-1 tickets instantly with context-aware RAG agents.
+                </p>
+                {/* Terminal snippet */}
+                <div style={{
+                  background: 'rgba(0,0,0,0.4)', borderRadius: 8, padding: '0.6rem 0.75rem',
+                  fontFamily: 'var(--mono)', fontSize: '0.7rem',
+                }}>
+                  <div style={{ color: 'rgba(255,255,255,0.35)', marginBottom: '0.25rem' }}>&gt; User request parsing...</div>
+                  <div style={{ color: 'var(--green)' }}>Action: <span style={{ color: '#fff' }}>Refund initiated</span></div>
+                </div>
               </motion.div>
-            ))}
+
+              {/* Ship faster */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3, duration: 0.6, ease }}
+                whileHover={{ y: -4, borderColor: 'rgba(255,160,64,0.4)', background: 'rgba(255,160,64,0.05)' }}
+                style={{
+                  border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
+                  padding: '1.5rem', background: 'transparent', cursor: 'default',
+                  transition: 'all 0.22s ease',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(255,160,64,0.15)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
+                  }}>⚡</div>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--amber)',
+                    boxShadow: '0 0 8px var(--amber)', marginTop: 4 }} />
+                </div>
+                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', marginBottom: '0.4rem', letterSpacing: '-0.02em' }}>Ship faster</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted2)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  Bypass boilerplate with battle-tested template pipelines.
+                </p>
+                {/* Progress bars */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  {[{ label: 'BUILD', pct: '88%' }, { label: 'TEST', pct: '72%' }].map(b => (
+                    <div key={b.label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)', minWidth: 30 }}>{b.label}</span>
+                      <div style={{ flex: 1, height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
+                        <div style={{ width: b.pct, height: '100%', background: 'var(--amber)', borderRadius: 2 }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Bottom row: wide hero card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.4, duration: 0.6, ease }}
+              whileHover={{ y: -4, borderColor: 'rgba(29,233,182,0.4)', background: 'rgba(29,233,182,0.05)' }}
+              style={{
+                border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
+                padding: '1.5rem', background: 'transparent', cursor: 'default',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                transition: 'all 0.22s ease',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(29,233,182,0.12)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem',
+                  }}>📈</div>
+                  <span style={{
+                    fontSize: '0.6rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
+                    letterSpacing: '0.12em', color: 'var(--green)',
+                    background: 'rgba(29,233,182,0.1)', border: '1px solid rgba(29,233,182,0.25)',
+                    borderRadius: 100, padding: '0.2rem 0.6rem',
+                  }}>Active Module</span>
+                </div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#fff', marginBottom: '0.35rem', letterSpacing: '-0.02em' }}>Automate trading</h3>
+                <p style={{ fontSize: '0.82rem', color: 'var(--muted2)', lineHeight: 1.6, maxWidth: 340 }}>
+                  Execute high-frequency ML strategies 24/7 without manual market supervision.
+                </p>
+              </div>
+              {/* Mini bar chart */}
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', padding: '0 1rem', flexShrink: 0 }}>
+                {[40, 60, 45, 75, 55, 80, 65, 90, 70, 95].map((h, i) => (
+                  <div key={i} style={{
+                    width: 8, height: `${h * 0.6}px`,
+                    background: i >= 7 ? 'var(--green)' : 'rgba(29,233,182,0.35)',
+                    borderRadius: '3px 3px 0 0',
+                  }} />
+                ))}
+              </div>
+            </motion.div>
           </div>
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.55, duration: 0.6 }}
-            style={{ textAlign: 'center' }}
-          >
-            <a
-              href="#store"
-              style={{
-                fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)',
-                textDecoration: 'none', fontFamily: 'var(--mono)',
-                letterSpacing: '0.08em', transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.9)'}
-              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.4)'}
-            >Explore all products →</a>
-          </motion.div>
         </div>
       </div>
 
