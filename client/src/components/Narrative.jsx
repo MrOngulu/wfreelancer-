@@ -10,9 +10,9 @@ const PAIN_POINTS = [
 ];
 
 const OPPORTUNITIES = [
-  { label: 'Automate trading', desc: 'Run ML strategies 24/7 while you sleep', color: 'var(--green)', glow: 'rgba(29,233,182,0.12)' },
-  { label: 'Automate support', desc: 'Answer customers instantly with AI', color: 'var(--ai2)', glow: 'rgba(123,104,238,0.12)' },
-  { label: 'Ship faster', desc: 'Start with battle-tested templates', color: 'var(--amber)', glow: 'rgba(255,160,64,0.12)' },
+  { icon: '📈', label: 'Automate trading', desc: 'Run ML strategies 24/7 while you sleep', color: 'var(--green)', glow: 'rgba(29,233,182,0.12)', glowHover: 'rgba(29,233,182,0.18)', borderHover: 'rgba(29,233,182,0.4)', hero: true },
+  { icon: '🤖', label: 'Automate support', desc: 'Answer customers instantly with AI', color: 'var(--ai2)', glow: 'rgba(123,104,238,0.12)', glowHover: 'rgba(123,104,238,0.18)', borderHover: 'rgba(123,104,238,0.4)', hero: false },
+  { icon: '⚡', label: 'Ship faster', desc: 'Start with battle-tested templates', color: 'var(--amber)', glow: 'rgba(255,160,64,0.12)', glowHover: 'rgba(255,160,64,0.18)', borderHover: 'rgba(255,160,64,0.4)', hero: false },
 ];
 
 const HOVER_ACCENT = { border: 'rgba(123,104,238,0.5)', bg: 'rgba(123,104,238,0.07)' };
@@ -137,7 +137,7 @@ export default function Narrative() {
               style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900,
                 letterSpacing: '-0.05em', lineHeight: 1.0, marginBottom: '1.5rem' }}
             >
-              AI can automate{' '}
+              <span style={{ textShadow: '0 0 40px rgba(123,104,238,0.6)' }}>AI</span> can automate{' '}
               <span style={{
                 background: 'linear-gradient(135deg,var(--ai2),var(--ai3))',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
@@ -148,34 +148,60 @@ export default function Narrative() {
               initial={{ opacity: 0 }}
               animate={opportunityInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.25, duration: 0.7 }}
-              style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 480, margin: '0 auto 2.5rem', lineHeight: 1.75 }}
+              style={{ color: 'var(--muted2)', fontSize: '1.05rem', maxWidth: 480, margin: '0 auto 1.5rem', lineHeight: 1.75 }}
             >
               WFreelancers gives you the tools to run like a studio — without a team of 20.
             </motion.p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', maxWidth: 900, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', maxWidth: 960, margin: '0 auto 2.5rem' }}>
             {OPPORTUNITIES.map((o, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 32 }}
                 animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.1, duration: 0.7, ease }}
-                whileHover={{ y: -6, boxShadow: `0 32px 80px rgba(0,0,0,0.4)` }}
+                whileHover={{
+                  y: -8,
+                  background: o.glowHover,
+                  borderColor: o.borderHover,
+                  boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 40px ${o.glowHover}`,
+                }}
+                transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{
-                  background: o.glow, border: `1px solid ${o.glow.replace('0.12','0.25')}`,
-                  borderRadius: 20, padding: '2rem',
-                  transition: 'box-shadow 0.4s, transform 0.4s',
+                  background: o.glow,
+                  border: `1px solid ${o.glow.replace('0.12','0.25')}`,
+                  borderRadius: 20,
+                  padding: o.hero ? '2rem 2rem 2.5rem' : '1.75rem',
+                  cursor: 'default',
                 }}
               >
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: o.color,
-                  boxShadow: `0 0 12px ${o.color}`, marginBottom: '1.25rem' }} />
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, letterSpacing: '-0.03em',
-                  marginBottom: '0.5rem', color: o.color }}>{o.label}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--muted2)', lineHeight: 1.7 }}>{o.desc}</p>
+                <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '1rem' }}>{o.icon}</span>
+                <h3 style={{ fontSize: o.hero ? '1.25rem' : '1.1rem', fontWeight: 900,
+                  letterSpacing: '-0.03em', marginBottom: '0.5rem', color: o.color }}>{o.label}</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--muted2)', lineHeight: 1.65, margin: 0 }}>{o.desc}</p>
               </motion.div>
             ))}
           </div>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={opportunityInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.55, duration: 0.6 }}
+            style={{ textAlign: 'center' }}
+          >
+            <a
+              href="#store"
+              style={{
+                fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)',
+                textDecoration: 'none', fontFamily: 'var(--mono)',
+                letterSpacing: '0.08em', transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.9)'}
+              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.4)'}
+            >Explore all products →</a>
+          </motion.div>
         </div>
       </div>
 
