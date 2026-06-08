@@ -5,9 +5,7 @@ import ScrollBackground   from "./components/ScrollBackground";
 import Navbar             from "./components/Navbar";
 import Hero               from "./components/Hero";
 import Narrative          from "./components/Narrative";
-import FeaturedProducts   from "./components/FeaturedProducts";
 import Store              from "./components/Store";
-import Spotlights         from "./components/Spotlights";
 import { Services, Testimonials, Process } from "./components/Sections";
 import Contact            from "./components/Contact";
 import Footer             from "./components/Footer";
@@ -35,8 +33,6 @@ function HomePage() {
         <Navbar />
         <Hero onBuy={openBuy} />
         <Narrative />
-        <FeaturedProducts onBuy={openBuy} />
-        <Spotlights onBuy={openBuy} />
         <Store onBuy={openBuy} />
         <Services />
         <Testimonials />
