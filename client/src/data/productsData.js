@@ -5,6 +5,7 @@ export const PRODUCTS_DATA = {
 
   'wf-ai-trading-bot': {
     slug: 'wf-ai-trading-bot',
+    heroVariant: 'trading',
     emoji: '📈',
     badge: 'AI Software',
     badgeVariant: 'ai',
@@ -58,6 +59,7 @@ It scans markets around the clock, identifies high-probability setups using mome
 
   'wf-ai-assistant': {
     slug: 'wf-ai-assistant',
+    heroVariant: 'assistant',
     emoji: '💬',
     badge: 'AI Software',
     badgeVariant: 'green',
