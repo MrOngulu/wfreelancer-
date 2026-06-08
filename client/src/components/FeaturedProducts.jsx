@@ -3,9 +3,16 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { SectionLabel, AnimatedHeadline, ease } from './ui';
 
+
+const ICONS = {
+  bot: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(123,104,238,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>,
+  chat: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(29,233,182,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+  bolt: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,160,64,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+};
+
 const featured = [
   {
-    icon: '🤖', category: 'ALGORITHMIC',
+    icon: 'bot', category: 'ALGORITHMIC',
     tag: 'AUTOMATED EXECUTION', badge: 'AI',
     name: 'WF AI Trading Bot',
     desc: 'Machine-learning algorithm that continuously scans markets and executes positions automatically across Forex, crypto & equities.',
@@ -16,7 +23,7 @@ const featured = [
     stats: [{ val: '87%', label: 'HISTORICAL WIN RATE' }, { val: '24/7', label: 'UPTIME' }, { val: '+12.4%', label: "TODAY'S DELTA" }],
   },
   {
-    icon: '💬', category: 'CONVERSATIONAL',
+    icon: 'chat', category: 'CONVERSATIONAL',
     tag: 'INTELLIGENT SUPPORT', badge: 'New',
     name: 'WF AI Assistant',
     desc: 'Deploy a smart chatbot on any website. Handles customer support, qualifies leads, and answers questions — fully customizable.',
@@ -27,7 +34,7 @@ const featured = [
     stats: [{ val: '60%', label: 'TICKET DROP' }, { val: 'Instant', label: 'RESPONSE' }, { val: '99.9%', label: 'UPTIME' }],
   },
   {
-    icon: '⚡', category: 'DATA PROCESSING',
+    icon: 'bolt', category: 'DATA PROCESSING',
     tag: 'BUSINESS INTELLIGENCE', badge: 'Coming soon',
     name: 'WF Analytics AI',
     desc: 'Ask questions about your business in plain English and get instant charts, summaries and insights from your own data.',
@@ -157,10 +164,10 @@ export default function FeaturedProducts() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
                   <div style={{
                     width: 48, height: 48, borderRadius: 14,
-                    background: `radial-gradient(circle at 30% 30%, ${item.accentGlow}, rgba(255,255,255,0.03))`,
+                    background: item.accentGlow,
                     border: `1px solid ${item.accentBorder}`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem',
-                  }}>{item.icon}</div>
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>{ICONS[item.icon]}</div>
                   <div style={{
                     fontSize: '0.65rem', fontFamily: 'var(--mono)', textTransform: 'uppercase',
                     letterSpacing: '0.12em', color: item.accentColor,
