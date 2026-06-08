@@ -3,6 +3,38 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { SectionLabel, AnimatedHeadline, Badge, ease } from './ui';
 
+function IconBox({ children, bg, border, size = 48, radius = 12 }) {
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: radius,
+      background: bg, border: `1px solid ${border}`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+    }}>{children}</div>
+  );
+}
+
+// Store product icons
+const TradingIcon  = ({c='rgba(123,104,238,1)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+const ChatBotIcon  = ({c='rgba(29,233,182,1)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+const GlobeIcon    = ({c='rgba(255,255,255,0.7)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+const StoreIcon    = ({c='rgba(255,255,255,0.7)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
+const MobileIcon   = ({c='rgba(255,255,255,0.7)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>;
+const LayoutIcon   = ({c='rgba(123,104,238,0.8)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>;
+const ServerIcon   = ({c='rgba(123,104,238,1)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
+const CodeIcon     = ({c='rgba(255,255,255,0.7)'}) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>;
+
+const STORE_ICON_MAP = {
+  '📈': { Comp: TradingIcon, bg: 'rgba(123,104,238,0.15)', border: 'rgba(123,104,238,0.3)', c: 'rgba(123,104,238,1)' },
+  '💬': { Comp: ChatBotIcon, bg: 'rgba(29,233,182,0.12)',  border: 'rgba(29,233,182,0.28)', c: 'rgba(29,233,182,1)' },
+  '🌐': { Comp: GlobeIcon,   bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)', c: 'rgba(255,255,255,0.7)' },
+  '🛍️': { Comp: StoreIcon,   bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)', c: 'rgba(255,255,255,0.7)' },
+  '📱': { Comp: MobileIcon,  bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)', c: 'rgba(255,255,255,0.7)' },
+  '🎨': { Comp: LayoutIcon,  bg: 'rgba(123,104,238,0.1)',  border: 'rgba(123,104,238,0.22)', c: 'rgba(123,104,238,0.8)' },
+  '🚀': { Comp: ServerIcon,  bg: 'rgba(123,104,238,0.15)', border: 'rgba(123,104,238,0.3)',  c: 'rgba(123,104,238,1)' },
+  '✦':  { Comp: CodeIcon,    bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)', c: 'rgba(255,255,255,0.7)' },
+};
+
+
 const FILTERS = [
   { key:'all', label:'All' }, { key:'ai', label:'AI Software' },
   { key:'web', label:'Websites' }, { key:'mob', label:'Mobile' },
@@ -48,10 +80,9 @@ function ProductCard({ p, onBuy, visible }) {
         >
           {/* Thumb */}
           <div style={{
-            height: 120, background: 'linear-gradient(160deg, rgba(123,104,238,0.08), rgba(0,0,0,0.4))',
+            height: 120, background: 'linear-gradient(160deg, rgba(123,104,238,0.06), rgba(0,0,0,0.4))',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2.2rem', position: 'relative',
-            borderBottom: '1px solid var(--border)',
+            position: 'relative', borderBottom: '1px solid var(--border)',
           }}>
             {p.badge && (
               <div style={{ position: 'absolute', top: 10, left: 10 }}>
@@ -62,7 +93,12 @@ function ProductCard({ p, onBuy, visible }) {
               <div style={{ position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: '50%',
                 background: 'var(--green)', boxShadow: '0 0 8px var(--green)' }} />
             )}
-            {p.emoji}
+            {(() => {
+              const ic = STORE_ICON_MAP[p.emoji];
+              if (!ic) return null;
+              const { Comp, bg, border, c } = ic;
+              return <IconBox bg={bg} border={border} size={52} radius={14}><Comp c={c} /></IconBox>;
+            })()}
           </div>
 
           {/* Body */}

@@ -2,6 +2,32 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { SectionLabel, AnimatedHeadline, RevealText, ease } from './ui';
 
+function IconBox({ children, bg, size = 44, radius = 12 }) {
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: radius,
+      background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+    }}>{children}</div>
+  );
+}
+
+const AiIcon       = ({c='rgba(123,104,238,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>;
+const WebIcon      = ({c='rgba(29,233,182,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+const MobileIcon   = ({c='rgba(123,104,238,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>;
+const PenIcon      = ({c='rgba(255,160,64,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>;
+const ServerIcon   = ({c='rgba(123,104,238,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
+const LinkIcon     = ({c='rgba(29,233,182,1)'}) => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
+
+const SERVICE_ICONS = {
+  '🤖': { Comp: AiIcon,     bg: 'rgba(123,104,238,0.15)' },
+  '🌐': { Comp: WebIcon,    bg: 'rgba(29,233,182,0.12)'  },
+  '📱': { Comp: MobileIcon, bg: 'rgba(123,104,238,0.12)' },
+  '🎨': { Comp: PenIcon,    bg: 'rgba(255,160,64,0.12)'  },
+  '⚡': { Comp: ServerIcon, bg: 'rgba(123,104,238,0.15)' },
+  '🔗': { Comp: LinkIcon,   bg: 'rgba(29,233,182,0.1)'   },
+};
+
+
 const SERVICES = [
   { icon:'🤖', name:'Custom AI Tools', desc:'Bespoke AI models, chatbots, and automation built for your specific use case and industry.', from:'From $500', color:'rgba(123,104,238,0.15)' },
   { icon:'🌐', name:'Website Development', desc:'Responsive business sites, landing pages, and full web apps in Node.js, React, and modern stacks.', from:'From $299', color:'rgba(29,233,182,0.12)' },
@@ -145,7 +171,9 @@ export function Testimonials() {
                 background: 'linear-gradient(90deg,transparent,rgba(123,104,238,0.5),transparent)' }} />
 
               <div style={{ color: 'var(--amber)', fontSize: '0.9rem', letterSpacing: 3, marginBottom: '1.25rem' }}>
-                {'★'.repeat(t.stars)}
+                <span style={{ display: 'flex', gap: 2 }}>{Array.from({length: t.stars}).map((_,i) => (
+                  <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,160,64,1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                ))}</span>
               </div>
               <p style={{ fontSize: '0.95rem', color: 'var(--white2)', lineHeight: 1.8, marginBottom: '2rem', fontStyle: 'italic' }}>
                 "{t.text}"
