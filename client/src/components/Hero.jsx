@@ -206,13 +206,13 @@ function TiltCard({ onBuy }) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <span style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--mono)', color: 'var(--white)' }}>$299</span>
-              <span style={{ fontSize: '0.72rem', color: 'var(--muted)', marginLeft: 4 }}>/ license</span>
+              <span style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--mono)', color: 'var(--white)' }}>$30</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--muted)', marginLeft: 4 }}>/ month</span>
             </div>
             <motion.button
               whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(123,104,238,0.5)' }}
               whileTap={{ scale: 0.96 }}
-              onClick={() => onBuy('WF AI Trading Bot','Automated ML-powered trading bot.',299)}
+              onClick={() => onBuy('WF AI Trading Bot','Automated ML-powered trading bot.',30)}
               style={{ background: 'linear-gradient(135deg,var(--ai),#6a5acd)', color: '#fff',
                 padding: '0.5rem 1.1rem', borderRadius: 10, fontSize: '0.8rem', fontWeight: 700,
                 border: 'none', cursor: 'pointer', boxShadow: '0 0 20px var(--ai-glow)' }}

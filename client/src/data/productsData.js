@@ -13,7 +13,9 @@ export const PRODUCTS_DATA = {
     bg: '#060e0a',
     name: 'WF AI Trading Bot',
     tagline: 'A machine-learning algorithm that trades Forex, crypto & stocks — automatically, 24/7.',
-    price: 299,
+    price: 30,
+    priceSuffix: '/mo',
+    billingNote: 'Billed monthly. Cancel anytime.',
     accentColor: 'var(--green)',
     productDesc: 'ML trading bot for Forex, crypto & stocks. Configurable risk, 24/7 execution.',
 
@@ -35,7 +37,7 @@ It scans markets around the clock, identifies high-probability setups using mome
       'Momentum ML model trained on 5 years of historical data',
       'Backtesting dashboard with full performance analytics',
       'Telegram alerts for every trade event',
-      'One-time license — no monthly subscriptions',
+      'Monthly subscription — cancel anytime',
       '30 days post-purchase support included',
       'Detailed setup documentation provided',
     ],
@@ -46,14 +48,15 @@ It scans markets around the clock, identifies high-probability setups using mome
       ['Min. capital', '$200 recommended'],
       ['Execution speed', '~0.3 seconds'],
       ['Backtested win rate', '87% (2019–2024)'],
-      ['License type', 'Single user, lifetime'],
+      ['License type', 'Single user, monthly subscription'],
     ],
 
     faq: [
       { q:'Do I need coding knowledge to use it?', a:'No. The bot comes with a full setup guide. You configure it through a simple config file — no coding required.' },
       { q:'Does it work on a VPS?', a:'Yes, and we recommend running it on a VPS (like DigitalOcean or Hetzner) for 24/7 uptime. The setup guide covers this.' },
       { q:'What if I lose money?', a:'All trading carries risk. Start with small amounts and use the risk management settings. Past performance does not guarantee future results.' },
-      { q:'Can I use it on multiple accounts?', a:'The license covers one account. Contact us for multi-account pricing.' },
+      { q:'Can I use it on multiple accounts?', a:'The subscription covers one account. Contact us for multi-account pricing.' },
+      { q:'Can I cancel anytime?', a:"Yes. It's a monthly subscription with no lock-in — cancel anytime and you won't be billed again." },
     ],
   },
 
@@ -425,7 +428,7 @@ export const ALL_PRODUCTS = Object.values(PRODUCTS_DATA);
 
 // ─── Shared reviews pool (same content/design as homepage Testimonials) ───
 export const ALL_REVIEWS = {
-  trading: { stars:5, text:'The trading bot has been running for 3 months straight. Consistent results, easy to configure risk settings, and Telegram alerts are perfect. Best $299 I spent.', name:'David Kimani', role:'Forex trader · Nairobi', initials:'DK' },
+  trading: { stars:5, text:"The trading bot has been running for 3 months straight. Consistent results, easy to configure risk settings, and Telegram alerts are perfect. $30/month is nothing compared to what it's made me.", name:'David Kimani', role:'Forex trader · Nairobi', initials:'DK' },
   assistant: { stars:5, text:'Deployed the AI Assistant on our site and our support ticket volume dropped by 60%. It handles returns, shipping, everything. Genuinely impressed.', name:'Amina Mwangi', role:'Founder, Duka Online · Nairobi', initials:'AM' },
   starter: { stars:5, text:'Bought the React Native starter kit and saved 3 weeks of setup time. Clean code, well documented. M-Pesa support built in — huge plus for us.', name:'Kwame Osei', role:'Mobile developer · Accra', initials:'KO' },
   landing: { stars:5, text:'Needed a landing page fast for a product launch. Delivered ahead of schedule, looked premium, and converted way better than our old site.', name:'Grace Achieng', role:'Marketing lead · Kisumu', initials:'GA' },

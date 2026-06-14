@@ -25,7 +25,7 @@ const featured = [
     tag: 'AUTOMATED EXECUTION', badge: 'AI',
     name: 'WF AI Trading Bot',
     desc: 'Machine-learning algorithm that continuously scans markets and executes positions automatically across Forex, crypto & equities.',
-    price: '$299', per: '/ per license', slug: 'wf-ai-trading-bot',
+    price: '$30', per: '/ per month', slug: 'wf-ai-trading-bot',
     accentColor: 'rgba(123,104,238,1)',
     accentGlow: 'rgba(123,104,238,0.18)',
     accentBorder: 'rgba(123,104,238,0.35)',

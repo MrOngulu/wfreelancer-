@@ -42,7 +42,7 @@ const FILTERS = [
 ];
 
 const PRODUCTS = [
-  { cat:'ai', emoji:'📈', name:'WF AI Trading Bot', desc:'ML trading bot for Forex, crypto & stocks. Configurable risk, 24/7 execution.', price:299, badge:'AI', badgeV:'ai', hot:true, product:'WF AI Trading Bot', productDesc:'ML trading bot for Forex, crypto & stocks.', slug:'wf-ai-trading-bot', accentColor:'var(--ai2)' },
+  { cat:'ai', emoji:'📈', name:'WF AI Trading Bot', desc:'ML trading bot for Forex, crypto & stocks. Configurable risk, 24/7 execution.', price:30, priceSuffix:'/mo', badge:'AI', badgeV:'ai', hot:true, product:'WF AI Trading Bot', productDesc:'ML trading bot for Forex, crypto & stocks.', slug:'wf-ai-trading-bot', accentColor:'var(--ai2)' },
   { cat:'ai', emoji:'💬', name:'WF AI Assistant', desc:'Intelligent chatbot you embed on any site. Support, leads & Q&A — ready to go.', price:199, badge:'New', badgeV:'green', product:'WF AI Assistant', productDesc:'Intelligent chatbot for websites & apps.', slug:'wf-ai-assistant', accentColor:'var(--green)' },
   { cat:'web', emoji:'🌐', name:'Business Landing Page', desc:'Node.js + EJS landing page. Dark mode, contact form, M-Pesa/PayPal ready.', price:299, badge:'Popular', badgeV:'muted', product:'Business Landing Page', productDesc:'Professional landing page template.', slug:'business-landing-page', accentColor:'var(--white2)' },
   { cat:'web', emoji:'🛍️', name:'E-commerce Store', desc:'Full online store with cart, checkout, M-Pesa & PayPal integration.', price:449, badge:null, product:'E-commerce Store', productDesc:'Full e-commerce template.', slug:'ecommerce-store', accentColor:'var(--white2)' },
@@ -112,7 +112,7 @@ function ProductCard({ p, onBuy, visible }) {
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
               <span style={{ fontSize: '1.15rem', fontWeight: 900, fontFamily: 'var(--mono)', color: p.accentColor }}>
-                ${p.price}
+                ${p.price}{p.priceSuffix && <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--muted)' }}>{p.priceSuffix}</span>}
               </span>
               <div style={{ display: 'flex', gap: '0.4rem' }}>
                 <motion.button

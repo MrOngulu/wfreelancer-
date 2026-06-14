@@ -165,10 +165,10 @@ export default function Spotlights({ onBuy }) {
           'Configurable risk management — set max drawdown and position size',
           'Backtesting dashboard with full historical performance data',
           'Telegram alerts for every trade, profit, and stop-loss hit',
-          'One-time license fee — no monthly subscriptions',
+          'Monthly subscription — cancel anytime',
         ]}
         cta={[
-          { label: 'Buy license — $299', product: 'WF AI Trading Bot', desc: 'ML-powered algorithmic trading bot.', price: 299,
+          { label: 'Subscribe — $30/mo', product: 'WF AI Trading Bot', desc: 'ML-powered algorithmic trading bot.', price: 30,
             stats: [['87%','Win rate','var(--green)'],['24/7','Automated','var(--ai2)'],['12+','Exchanges','var(--amber)'],['0.3s','Execution','var(--white)']] },
           { label: 'Ask a question' },
         ]}

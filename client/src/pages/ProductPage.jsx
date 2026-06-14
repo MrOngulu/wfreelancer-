@@ -151,7 +151,7 @@ function TradingHero({ product, onBuy, navigate }) {
                 padding:'0.8rem 1.75rem', fontWeight:700, fontSize:'0.9rem',
                 cursor:'pointer', transition:'background 0.18s ease', letterSpacing:'-0.01em',
               }}
-            >Buy license — $299</button>
+            >Subscribe — $30/mo</button>
             <button
               onClick={() => navigate('/#contact')}
               onMouseEnter={e => { e.currentTarget.style.background='rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.2)'; }}
@@ -392,8 +392,8 @@ function GenericHero({ product, onBuy, navigate }) {
           <motion.div variants={fadeUp} style={{ display:'flex', alignItems:'center', gap:'1.5rem', flexWrap:'wrap' }}>
             <div>
               <span style={{ fontSize:'2.5rem', fontWeight:900, fontFamily:'var(--mono)',
-                color:product.accentColor, letterSpacing:'-0.04em' }}>${product.price}</span>
-              <span style={{ fontSize:'0.8rem', color:'var(--muted)', marginLeft:6 }}>one-time</span>
+                color:product.accentColor, letterSpacing:'-0.04em' }}>${product.price}{product.priceSuffix}</span>
+              <span style={{ fontSize:'0.8rem', color:'var(--muted)', marginLeft:6 }}>{product.priceSuffix ? 'subscription' : 'one-time'}</span>
             </div>
             <BtnPrimary onClick={onBuy}>Buy now →</BtnPrimary>
             <BtnGhost onClick={() => navigate('/#contact')}>Ask a question</BtnGhost>
@@ -633,10 +633,14 @@ export default function ProductPage() {
             <motion.h2 variants={fadeUp} style={{ fontSize:'clamp(1.6rem,3vw,2.25rem)', fontWeight:900,
               letterSpacing:'-0.04em', marginBottom:'0.75rem' }}>Ready to get started?</motion.h2>
             <motion.p variants={fadeUp} style={{ color:'var(--muted2)', marginBottom:'2rem', lineHeight:1.7 }}>
-              One-time payment. Yours to keep. 30 days support included.
+              {product.priceSuffix
+                ? (product.billingNote || 'Monthly subscription. Cancel anytime.')
+                : 'One-time payment. Yours to keep. 30 days support included.'}
             </motion.p>
             <motion.div variants={fadeUp} style={{ display:'flex', gap:'0.75rem', justifyContent:'center', flexWrap:'wrap' }}>
-              <BtnPrimary onClick={() => setModal(true)}>Buy {product.name} — ${product.price} →</BtnPrimary>
+              <BtnPrimary onClick={() => setModal(true)}>
+                {product.priceSuffix ? 'Subscribe' : 'Buy'} {product.name} — ${product.price}{product.priceSuffix} →
+              </BtnPrimary>
               <BtnGhost onClick={() => navigate('/')}>Browse other products</BtnGhost>
             </motion.div>
           </motion.div>

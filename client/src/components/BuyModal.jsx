@@ -80,7 +80,7 @@ export default function BuyModal({ product, price, desc, onClose }) {
             background:'linear-gradient(135deg,var(--ai2),var(--ai3))',
             WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
             marginBottom:'1.5rem', letterSpacing:'-0.04em' }}>
-            ${price}
+            ${price}{product === 'WF AI Trading Bot' && <span style={{ fontSize:'1rem', WebkitTextFillColor:'var(--muted)' }}>/mo</span>}
           </p>
 
           {/* Payment tabs */}
