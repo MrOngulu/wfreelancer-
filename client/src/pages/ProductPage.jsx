@@ -52,6 +52,28 @@ function FaqItem({ q, a }) {
   );
 }
 
+
+function BackButton({ navigate }) {
+  return (
+    <button
+      onClick={() => navigate('/')}
+      onMouseEnter={e => { e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='rgba(255,255,255,0.2)'; }}
+      onMouseLeave={e => { e.currentTarget.style.color='rgba(255,255,255,0.5)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; }}
+      style={{
+        display:'inline-flex', alignItems:'center', gap:'0.4rem',
+        background:'transparent', border:'1px solid rgba(255,255,255,0.1)',
+        color:'rgba(255,255,255,0.5)', borderRadius:100,
+        padding:'0.4rem 0.9rem', fontSize:'0.78rem', cursor:'pointer',
+        fontFamily:'var(--mono)', letterSpacing:'0.04em',
+        transition:'color 0.15s, border-color 0.15s', marginBottom:'2rem',
+      }}
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to home
+    </button>
+  );
+}
+
 /* ── TRADING BOT HERO ── */
 function TradingHero({ product, onBuy, navigate }) {
   const [tick, setTick] = useState(0);
@@ -83,6 +105,8 @@ function TradingHero({ product, onBuy, navigate }) {
 
         {/* LEFT */}
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" style={{ flex:'0 0 44%' }}>
+          <motion.div variants={fadeUp}><BackButton navigate={navigate} /></motion.div>
+
           <motion.div variants={fadeUp} style={{ display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'1.5rem' }}>
             <div style={{ width:20, height:1, background:'var(--ai2)' }} />
             <span style={{ fontSize:'0.65rem', fontFamily:'var(--mono)', textTransform:'uppercase',
@@ -183,7 +207,7 @@ function TradingHero({ product, onBuy, navigate }) {
 /* ── AI ASSISTANT HERO ── */
 function AssistantHero({ product, onBuy, navigate }) {
   const messages = [
-    { from:'bot', text:"Hi! How can I help you today? 👋" },
+    { from:'bot', text:"Hi! How can I help you today!" },
     { from:'user', text:"What are your prices for a website?" },
     { from:'bot', text:"Our packages start from $299 for a landing page and go up to $800+ for custom apps. Want a quote?" },
     { from:'user', text:"Yes please!" },
@@ -268,6 +292,8 @@ function AssistantHero({ product, onBuy, navigate }) {
 
         {/* RIGHT */}
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" style={{ flex:'0 0 44%' }}>
+          <motion.div variants={fadeUp}><BackButton navigate={navigate} /></motion.div>
+
           <motion.div variants={fadeUp} style={{ display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'1.5rem' }}>
             <div style={{ width:20, height:1, background:'var(--green)' }} />
             <span style={{ fontSize:'0.65rem', fontFamily:'var(--mono)', textTransform:'uppercase',
@@ -341,7 +367,11 @@ function GenericHero({ product, onBuy, navigate }) {
             >← All products</button>
             <Badge variant={product.badgeVariant}>{product.badge}</Badge>
           </motion.div>
-          <motion.div variants={fadeUp} style={{ fontSize:'3.5rem', marginBottom:'1rem' }}>{product.emoji}</motion.div>
+          <motion.div variants={fadeUp} style={{ marginBottom:'1rem' }}>
+          <div style={{ width:64, height:64, borderRadius:18, background: product.accentColor ? product.accentColor.replace('1)','0.12)') : 'rgba(123,104,238,0.12)', border: `1px solid ${product.accentColor ? product.accentColor.replace('1)','0.25)') : 'rgba(123,104,238,0.25)'}`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={product.accentColor || 'rgba(123,104,238,1)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+        </motion.div>
           <motion.h1 variants={fadeUp} style={{ fontSize:'clamp(2rem,5vw,3.5rem)', fontWeight:900,
             letterSpacing:'-0.04em', lineHeight:1.05, marginBottom:'1rem' }}>{product.name}</motion.h1>
           <motion.p variants={fadeUp} style={{ fontSize:'1.1rem', color:'var(--muted2)', maxWidth:560, lineHeight:1.7, marginBottom:'2.5rem' }}>
@@ -375,7 +405,9 @@ export default function ProductPage() {
         <Navbar />
         <div style={{ minHeight:'80vh', display:'flex', flexDirection:'column',
           alignItems:'center', justifyContent:'center', gap:'1.5rem', padding:'2rem', textAlign:'center' }}>
-          <p style={{ fontSize:'3rem' }}>🔍</p>
+          <div style={{ width:64, height:64, borderRadius:18, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
           <h1 style={{ fontSize:'1.5rem', fontWeight:800 }}>Product not found</h1>
           <p style={{ color:'var(--muted2)' }}>That product doesn't exist or the link may be wrong.</p>
           <BtnPrimary onClick={() => navigate('/')}>← Back to store</BtnPrimary>
@@ -501,7 +533,11 @@ export default function ProductPage() {
         borderTop:'1px solid var(--border)', textAlign:'center' }}>
         <div style={{ maxWidth:520, margin:'0 auto' }}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once:true }} variants={staggerContainer}>
-            <motion.div variants={fadeUp} style={{ fontSize:'2.5rem', marginBottom:'1rem' }}>{product.emoji}</motion.div>
+            <motion.div variants={fadeUp} style={{ marginBottom:'1rem', display:'flex', justifyContent:'center' }}>
+            <div style={{ width:52, height:52, borderRadius:16, background: product.accentColor ? product.accentColor.replace('1)','0.12)') : 'rgba(123,104,238,0.12)', border: `1px solid ${product.accentColor ? product.accentColor.replace('1)','0.25)') : 'rgba(123,104,238,0.25)'}`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={product.accentColor || 'rgba(123,104,238,1)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+          </motion.div>
             <motion.h2 variants={fadeUp} style={{ fontSize:'clamp(1.6rem,3vw,2.25rem)', fontWeight:900,
               letterSpacing:'-0.04em', marginBottom:'0.75rem' }}>Ready to get started?</motion.h2>
             <motion.p variants={fadeUp} style={{ color:'var(--muted2)', marginBottom:'2rem', lineHeight:1.7 }}>
