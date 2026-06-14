@@ -422,3 +422,30 @@ export function getProduct(slug) {
 }
 
 export const ALL_PRODUCTS = Object.values(PRODUCTS_DATA);
+
+// ─── Shared reviews pool (same content/design as homepage Testimonials) ───
+export const ALL_REVIEWS = {
+  trading: { stars:5, text:'The trading bot has been running for 3 months straight. Consistent results, easy to configure risk settings, and Telegram alerts are perfect. Best $299 I spent.', name:'David Kimani', role:'Forex trader · Nairobi', initials:'DK' },
+  assistant: { stars:5, text:'Deployed the AI Assistant on our site and our support ticket volume dropped by 60%. It handles returns, shipping, everything. Genuinely impressed.', name:'Amina Mwangi', role:'Founder, Duka Online · Nairobi', initials:'AM' },
+  starter: { stars:5, text:'Bought the React Native starter kit and saved 3 weeks of setup time. Clean code, well documented. M-Pesa support built in — huge plus for us.', name:'Kwame Osei', role:'Mobile developer · Accra', initials:'KO' },
+  landing: { stars:5, text:'Needed a landing page fast for a product launch. Delivered ahead of schedule, looked premium, and converted way better than our old site.', name:'Grace Achieng', role:'Marketing lead · Kisumu', initials:'GA' },
+  ecommerce: { stars:5, text:'The e-commerce store came with M-Pesa and PayPal already wired up. Saved us weeks of integration headaches. Highly recommend.', name:'Tunde Bello', role:'Founder, ShopLagos · Lagos', initials:'TB' },
+  dashboard: { stars:5, text:'Clean, modern dashboard UI kit that fit perfectly into our existing stack. Components were well organized and easy to theme.', name:'Wanjiru Njoroge', role:'Product designer · Nairobi', initials:'WN' },
+  saas: { stars:5, text:'The SaaS boilerplate handled auth, billing, and admin out of the box. We shipped our MVP in half the time we budgeted.', name:'Samuel Otieno', role:'CTO, PayFlex · Nairobi', initials:'SO' },
+  portfolio: { stars:5, text:'Used the developer portfolio template for my own site — clean, fast, and recruiters keep complimenting the design.', name:'Linda Mensah', role:'Frontend developer · Accra', initials:'LM' },
+};
+
+export function getReviews(slug) {
+  const map = {
+    'wf-ai-trading-bot': ['trading', 'assistant', 'starter'],
+    'wf-ai-assistant': ['assistant', 'ecommerce', 'trading'],
+    'business-landing-page': ['landing', 'ecommerce', 'portfolio'],
+    'ecommerce-store': ['ecommerce', 'landing', 'saas'],
+    'react-native-starter': ['starter', 'dashboard', 'saas'],
+    'dashboard-ui-kit': ['dashboard', 'saas', 'starter'],
+    'saas-boilerplate': ['saas', 'dashboard', 'assistant'],
+    'developer-portfolio': ['portfolio', 'landing', 'starter'],
+  };
+  const keys = map[slug] || ['trading', 'assistant', 'starter'];
+  return keys.map(k => ALL_REVIEWS[k]);
+}

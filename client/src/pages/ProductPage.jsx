@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { getProduct } from '../data/productsData';
-import { SectionLabel, Badge, BtnPrimary, BtnGhost, fadeUp, staggerContainer } from '../components/ui';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { getProduct, getReviews } from '../data/productsData';
+import { SectionLabel, Badge, BtnPrimary, BtnGhost, fadeUp, staggerContainer, ease } from '../components/ui';
 import BuyModal from '../components/BuyModal';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ScrollBackground from '../components/ScrollBackground';
 
 function FeatureCheck({ text, color }) {
   return (
@@ -403,6 +404,79 @@ function GenericHero({ product, onBuy, navigate }) {
   );
 }
 
+
+/* ── REVIEWS ── */
+function ReviewsSection({ slug }) {
+  const reviews = getReviews(slug);
+  return (
+    <section style={{ padding:'5rem 2.5rem', background:'transparent', borderTop:'1px solid var(--border)', overflow:'hidden' }}>
+      <div style={{ maxWidth:1140, margin:'0 auto' }}>
+        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-80px' }} transition={{ duration:0.7, ease }}>
+          <SectionLabel center>Client reviews</SectionLabel>
+        </motion.div>
+        <motion.h2
+          initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-80px' }}
+          transition={{ duration:0.7, ease, delay:0.1 }}
+          style={{ fontSize:'clamp(1.8rem, 4vw, 2.75rem)', fontWeight:900, letterSpacing:'-0.05em',
+            lineHeight:1.0, textAlign:'center', marginBottom:'1.25rem' }}
+        >
+          What customers say
+        </motion.h2>
+        <motion.p
+          initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-80px' }}
+          transition={{ duration:0.7, ease, delay:0.2 }}
+          style={{ color:'var(--muted2)', fontSize:'1rem', maxWidth:460, lineHeight:1.75, textAlign:'center', margin:'0 auto 3.5rem' }}
+        >
+          Real feedback from traders, startups, and businesses using WFreelancers products.
+        </motion.p>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:'1.5rem' }}>
+          {reviews.map((t, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity:0, y:40 }}
+              whileInView={{ opacity:1, y:0 }}
+              viewport={{ once:true, margin:'-60px' }}
+              transition={{ duration:0.75, ease, delay:i * 0.1 }}
+              whileHover={{ y:-6, borderColor:'rgba(123,104,238,0.3)', boxShadow:'0 32px 80px rgba(0,0,0,0.4)' }}
+              style={{
+                background:'rgba(255,255,255,0.02)', border:'1px solid var(--border)',
+                borderRadius:24, padding:'2.25rem',
+                transition:'border-color 0.3s, box-shadow 0.4s, transform 0.4s',
+                position:'relative', overflow:'hidden',
+              }}
+            >
+              <div style={{ position:'absolute', top:0, left:'20%', right:'20%', height:1,
+                background:'linear-gradient(90deg,transparent,rgba(123,104,238,0.5),transparent)' }} />
+
+              <div style={{ color:'var(--amber)', fontSize:'0.9rem', letterSpacing:3, marginBottom:'1.25rem' }}>
+                <span style={{ display:'flex', gap:2 }}>{Array.from({length:t.stars}).map((_,j) => (
+                  <svg key={j} width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,160,64,1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                ))}</span>
+              </div>
+              <p style={{ fontSize:'0.95rem', color:'var(--white2)', lineHeight:1.8, marginBottom:'2rem', fontStyle:'italic' }}>
+                "{t.text}"
+              </p>
+              <div style={{ display:'flex', alignItems:'center', gap:'0.875rem' }}>
+                <div style={{
+                  width:42, height:42, borderRadius:'50%',
+                  background:'linear-gradient(135deg,var(--ai),#6a5acd)',
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  fontSize:'0.75rem', fontWeight:800, color:'#fff', flexShrink:0,
+                }}>{t.initials}</div>
+                <div>
+                  <p style={{ fontSize:'0.9rem', fontWeight:700, marginBottom:2 }}>{t.name}</p>
+                  <p style={{ fontSize:'0.72rem', color:'var(--muted)' }}>{t.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── MAIN PRODUCT PAGE ── */
 export default function ProductPage() {
   const { slug } = useParams();
@@ -413,6 +487,8 @@ export default function ProductPage() {
   if (!product) {
     return (
       <>
+        <ScrollBackground />
+        <div style={{ position:'relative', zIndex:1 }}>
         <Navbar />
         <div style={{ minHeight:'80vh', display:'flex', flexDirection:'column',
           alignItems:'center', justifyContent:'center', gap:'1.5rem', padding:'2rem', textAlign:'center' }}>
@@ -424,6 +500,7 @@ export default function ProductPage() {
           <BtnPrimary onClick={() => navigate('/')}>← Back to store</BtnPrimary>
         </div>
         <Footer />
+        </div>
       </>
     );
   }
@@ -432,6 +509,8 @@ export default function ProductPage() {
 
   return (
     <>
+      <ScrollBackground />
+      <div style={{ position:'relative', zIndex:1 }}>
       <Navbar />
 
       {product.heroVariant === 'trading'   && <TradingHero   {...heroProps} />}
@@ -539,6 +618,8 @@ export default function ProductPage() {
         </section>
       )}
 
+      <ReviewsSection slug={slug} />
+
       {/* ── BOTTOM CTA ── */}
       <section style={{ padding:'5rem 2.5rem', background:'transparent',
         borderTop:'1px solid var(--border)', textAlign:'center' }}>
@@ -568,6 +649,7 @@ export default function ProductPage() {
         <BuyModal product={product.name} desc={product.productDesc}
           price={product.price} onClose={() => setModal(false)} />
       )}
+      </div>
 
       <style>{`
         .pp-feat-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
