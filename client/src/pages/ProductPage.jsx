@@ -113,7 +113,7 @@ function TradingHero({ product, onBuy, navigate }) {
       <div style={{ position:'absolute', inset:0, pointerEvents:'none',
         background:'radial-gradient(ellipse 60% 50% at 20% 50%, rgba(123,104,238,0.07) 0%, transparent 70%)' }} />
 
-      <div style={{ maxWidth:1140, margin:'0 auto', display:'flex', gap:'4rem', alignItems:'center' }}>
+      <div className="hero-split" style={{ maxWidth:1140, margin:'0 auto', display:'flex', gap:'4rem', alignItems:'center' }}>
 
         {/* LEFT */}
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" style={{ flex:'0 0 44%' }}>
@@ -186,7 +186,7 @@ function TradingHero({ product, onBuy, navigate }) {
               ))}
             </div>
             {/* Code lines */}
-            <div style={{ padding:'1.25rem 1.25rem 1.5rem', fontFamily:'var(--mono)', fontSize:'0.8rem', lineHeight:1.8 }}>
+            <div className="pp-code-block" style={{ padding:'1.25rem 1.25rem 1.5rem', fontFamily:'var(--mono)', fontSize:'0.8rem', lineHeight:1.8 }}>
               {lines.map((l, i) => (
                 <motion.div key={i} initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }}
                   transition={{ delay:l.delay, duration:0.4 }}
@@ -196,7 +196,7 @@ function TradingHero({ product, onBuy, navigate }) {
           </div>
 
           {/* 2×2 stats grid */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
+          <div className="pp-stats-2x2" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
             {stats.map(s => (
               <div key={s.label} style={{
                 border:'1px solid rgba(255,255,255,0.07)', borderRadius:14,
@@ -237,7 +237,7 @@ function AssistantHero({ product, onBuy, navigate }) {
       <div style={{ position:'absolute', inset:0, pointerEvents:'none',
         background:'radial-gradient(ellipse 60% 50% at 80% 50%, rgba(29,233,182,0.06) 0%, transparent 70%)' }} />
 
-      <div style={{ maxWidth:1140, margin:'0 auto', display:'flex', gap:'4rem', alignItems:'center' }}>
+      <div className="hero-split" style={{ maxWidth:1140, margin:'0 auto', display:'flex', gap:'4rem', alignItems:'center' }}>
 
         {/* LEFT — chat mockup + stats */}
         <motion.div
@@ -287,7 +287,7 @@ function AssistantHero({ product, onBuy, navigate }) {
           </div>
 
           {/* 2×2 stats */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
+          <div className="pp-stats-2x2" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
             {stats.map(s => (
               <div key={s.label} style={{
                 border:'1px solid rgba(255,255,255,0.07)', borderRadius:14,
@@ -430,7 +430,7 @@ function ReviewsSection({ slug }) {
           Real feedback from traders, startups, and businesses using WFreelancers products.
         </motion.p>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:'1.5rem' }}>
+        <div className="pp-reviews-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap:'1.5rem' }}>
           {reviews.map((t, i) => (
             <motion.div
               key={i}
@@ -657,12 +657,25 @@ export default function ProductPage() {
 
       <style>{`
         .pp-feat-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+        @media(max-width:860px) {
+          .hero-split { flex-direction: column !important; gap: 3rem !important; }
+          .hero-split > div { flex: 1 1 auto !important; width: 100% !important; }
+        }
+
         @media(max-width:700px) {
           .pp-feat-specs { grid-template-columns: 1fr !important; gap: 3rem !important; }
           section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
         }
-        @media(max-width:860px) {
-          .hero-split { flex-direction: column !important; }
+
+        @media(max-width:600px) {
+          section { padding-top: 4rem !important; padding-bottom: 3rem !important; }
+          .hero-split { padding-top: 1rem !important; }
+          .pp-reviews-grid { grid-template-columns: 1fr !important; }
+          .pp-stats-2x2 { gap: 0.5rem !important; }
+          .pp-stats-2x2 > div { padding: 0.75rem 1rem !important; }
+          .pp-stats-2x2 > div > div:first-child { font-size: 1.4rem !important; }
+          .pp-code-block { font-size: 0.7rem !important; overflow-x: auto !important; white-space: nowrap !important; }
         }
       `}</style>
     </>

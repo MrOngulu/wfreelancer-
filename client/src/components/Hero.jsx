@@ -392,7 +392,7 @@ export default function Hero({ onBuy }) {
             transition={{ delay: 0.65, duration: 0.7, ease }}
             style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '3rem' }}
           >
-            <BtnPrimary onClick={() => scrollTo('#products')}>Explore products ↓</BtnPrimary>
+            <BtnPrimary onClick={() => scrollTo('#store')}>Explore products ↓</BtnPrimary>
             <BtnGhost onClick={() => scrollTo('#contact')}>Custom project →</BtnGhost>
           </motion.div>
 

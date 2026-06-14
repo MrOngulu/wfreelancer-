@@ -194,7 +194,7 @@ export default function Store({ onBuy }) {
           </motion.div>
         </div>
 
-        <motion.div layout style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(270px,1fr))', gap: '1.1rem' }}>
+        <motion.div layout style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(270px,100%),1fr))', gap: '1.1rem' }}>
           {PRODUCTS.map(p => (
             <ProductCard key={p.name} p={p} onBuy={onBuy} visible={active === 'all' || p.cat === active} />
           ))}

@@ -86,7 +86,7 @@ export function Services() {
         </div>
 
         {/* Services grid — asymmetric */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '1px',
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap: '1px',
           background: 'var(--border)', borderRadius: 24, overflow: 'hidden' }}>
           {SERVICES.map((s, i) => (
             <motion.div
@@ -101,11 +101,18 @@ export function Services() {
                 transition: 'background 0.4s', position: 'relative',
               }}
             >
-              <div style={{ width: 50, height: 50, borderRadius: 16,
-                background: s.color, border: `1px solid ${s.color}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.3rem', marginBottom: '1.25rem',
-              }}>{s.icon}</div>
+              {(() => {
+                const ic = SERVICE_ICONS[s.icon];
+                if (!ic) return null;
+                const { Comp, bg } = ic;
+                return (
+                  <div style={{ width: 50, height: 50, borderRadius: 16,
+                    background: bg, border: `1px solid ${bg.replace('0.15','0.3').replace('0.12','0.25').replace('0.1)','0.2)')}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginBottom: '1.25rem',
+                  }}><Comp /></div>
+                );
+              })()}
               <h3 style={{ fontSize: '1.05rem', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>{s.name}</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--muted2)', lineHeight: 1.7, marginBottom: '1rem' }}>{s.desc}</p>
               <span style={{ fontSize: '0.75rem', fontFamily: 'var(--mono)', color: 'var(--ai2)', fontWeight: 600 }}>{s.from}</span>
@@ -150,7 +157,7 @@ export function Testimonials() {
           </RevealText>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap: '1.5rem' }}>
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={i}
@@ -226,7 +233,7 @@ export function Process() {
         </div>
 
         {/* Steps — horizontal timeline on desktop */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 1,
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(220px,100%),1fr))', gap: 1,
           background: 'var(--border)', borderRadius: 24, overflow: 'hidden' }}>
           {STEPS.map((s, i) => (
             <motion.div

@@ -140,7 +140,7 @@ export default function Narrative() {
 
       {/* ── OPPORTUNITY ── */}
       <div ref={opportunityRef} style={{ padding: '0 2.5rem 8rem' }}>
-        <div style={{ maxWidth: 1140, margin: '0 auto', display: 'flex', gap: '5rem', alignItems: 'center' }}>
+        <div className="opp-split" style={{ maxWidth: 1140, margin: '0 auto', display: 'flex', gap: '5rem', alignItems: 'center' }}>
 
           {/* LEFT — headline + CTA */}
           <motion.div
@@ -190,7 +190,7 @@ export default function Narrative() {
           {/* RIGHT — asymmetric card grid */}
           <div style={{ flex: 1 }}>
             {/* Top row: two smaller cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="opp-top-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
 
               {/* Automate support */}
               <motion.div
@@ -267,6 +267,7 @@ export default function Narrative() {
               transition={{ delay: 0.4, duration: 0.6, ease }}
               onMouseEnter={e => { e.currentTarget.style.border='1px solid rgba(29,233,182,0.4)'; e.currentTarget.style.background='rgba(29,233,182,0.05)'; e.currentTarget.style.transform='translateY(-4px)'; }}
               onMouseLeave={e => { e.currentTarget.style.border='1px solid rgba(255,255,255,0.07)'; e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='translateY(0)'; }}
+              className="opp-hero-card"
               style={{
                 border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18,
                 padding: '1.5rem', background: 'transparent', cursor: 'default',
@@ -290,7 +291,7 @@ export default function Narrative() {
                 </p>
               </div>
               {/* Mini bar chart */}
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', padding: '0 1rem', flexShrink: 0 }}>
+              <div className="opp-bar-chart" style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', padding: '0 1rem', flexShrink: 0 }}>
                 {[40, 60, 45, 75, 55, 80, 65, 90, 70, 95].map((h, i) => (
                   <div key={i} style={{
                     width: 8, height: `${h * 0.6}px`,
@@ -309,6 +310,16 @@ export default function Narrative() {
         @media(max-width:768px){
           #narrative > div:first-child > div { flex-direction: column !important; gap: 2rem !important; }
           #narrative > div:first-child { padding: 4rem 1.25rem !important; }
+
+          .opp-split { flex-direction: column !important; gap: 2.5rem !important; align-items: flex-start !important; }
+          .opp-split > div:first-child { flex: 1 1 auto !important; width: 100% !important; }
+          #narrative > div:nth-child(3) { padding: 0 1.25rem 5rem !important; }
+        }
+
+        @media(max-width:640px){
+          .opp-top-row { grid-template-columns: 1fr !important; }
+          .opp-hero-card { flex-direction: column !important; align-items: flex-start !important; gap: 1.25rem; }
+          .opp-bar-chart { padding: 0 !important; align-self: stretch; justify-content: flex-end; }
         }
       `}</style>
     </section>

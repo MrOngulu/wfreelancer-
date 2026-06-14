@@ -2,11 +2,10 @@ import { motion } from 'framer-motion';
 import { ease } from './ui';
 
 const LINKS = [
-  { label: 'Products', href: '#products' },
-  { label: 'AI Trading Bot', href: '#trading-bot' },
-  { label: 'AI Assistant', href: '#assistant' },
+  { label: 'Products', href: '#store' },
   { label: 'Services', href: '#services' },
   { label: 'Reviews', href: '#reviews' },
+  { label: 'Process', href: '#process' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -17,7 +16,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="footer" style={{
+    <footer id="footer" className="footer-section" style={{
       background: 'var(--bg2)', borderTop: '1px solid var(--border)',
       padding: '4rem 2.5rem 3rem', position: 'relative', overflow: 'hidden',
     }}>
@@ -42,7 +41,7 @@ export default function Footer() {
             The OS for modern freelancing.
           </p>
           <motion.button
-            onClick={() => scrollTo('#products')}
+            onClick={() => scrollTo('#store')}
             whileHover={{ scale: 1.04, y: -2, boxShadow: '0 0 40px rgba(123,104,238,0.35)' }}
             whileTap={{ scale: 0.96 }}
             style={{
@@ -60,7 +59,7 @@ export default function Footer() {
         <div style={{ height: 1, background: 'var(--border)', marginBottom: '2.5rem' }} />
 
         {/* Bottom row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
+        <div className="footer-bottom-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
@@ -94,6 +93,14 @@ export default function Footer() {
           </p>
         </div>
       </div>
+
+      <style>{`
+        @media(max-width:640px){
+          .footer-section { padding: 3rem 1.25rem 2rem !important; }
+          .footer-bottom-row { flex-direction: column !important; align-items: flex-start !important; text-align: left; }
+          .footer-bottom-row > div:nth-child(2) { gap: 1.25rem !important; }
+        }
+      `}</style>
     </footer>
   );
 }
