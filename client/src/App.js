@@ -57,9 +57,18 @@ function HomePage() {
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+
+  // Disable browser's native scroll restoration so it doesn't fight our reset
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
   return null;
 }
 
