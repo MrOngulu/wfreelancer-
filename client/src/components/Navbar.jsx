@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-
 import { ease } from './ui';
 
 const links = [
-  { label: 'Products', href: '#products' },
+  { label: 'Products', href: '#store' },
   { label: 'Services', href: '#services' },
   { label: 'Reviews', href: '#reviews' },
   { label: 'Process', href: '#process' },
@@ -103,7 +103,7 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <motion.button
             className="nav-ghost-btn"
-            onClick={() => scrollTo('#products')}
+            onClick={() => scrollTo('#store')}
             whileHover={{ borderColor: 'var(--border3)', background: 'rgba(255,255,255,0.05)' }}
             whileTap={{ scale: 0.97 }}
             style={{
