@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollBackground   from "./components/ScrollBackground";
 import Navbar             from "./components/Navbar";
@@ -54,9 +54,19 @@ function HomePage() {
   );
 }
 
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/"              element={<HomePage />} />
         <Route path="/product/:slug" element={<ProductPage />} />
