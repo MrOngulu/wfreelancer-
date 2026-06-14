@@ -57,15 +57,26 @@ function BackButton({ navigate }) {
   return (
     <button
       onClick={() => navigate('/')}
-      onMouseEnter={e => { e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='rgba(255,255,255,0.2)'; }}
-      onMouseLeave={e => { e.currentTarget.style.color='rgba(255,255,255,0.5)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; }}
+      onMouseEnter={e => {
+        e.currentTarget.style.color = '#fff';
+        e.currentTarget.style.borderColor = 'rgba(123,104,238,0.6)';
+        e.currentTarget.style.background = 'rgba(123,104,238,0.12)';
+        e.currentTarget.style.boxShadow = '0 0 24px rgba(123,104,238,0.25)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.color = 'var(--ai2)';
+        e.currentTarget.style.borderColor = 'rgba(123,104,238,0.3)';
+        e.currentTarget.style.background = 'rgba(123,104,238,0.06)';
+        e.currentTarget.style.boxShadow = 'none';
+      }}
       style={{
         display:'inline-flex', alignItems:'center', gap:'0.4rem',
-        background:'transparent', border:'1px solid rgba(255,255,255,0.1)',
-        color:'rgba(255,255,255,0.5)', borderRadius:100,
+        background:'rgba(123,104,238,0.06)', border:'1px solid rgba(123,104,238,0.3)',
+        color:'var(--ai2)', borderRadius:100,
         padding:'0.4rem 0.9rem', fontSize:'0.78rem', cursor:'pointer',
         fontFamily:'var(--mono)', letterSpacing:'0.04em',
-        transition:'color 0.15s, border-color 0.15s', marginBottom:'2rem',
+        transition:'color 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease',
+        marginBottom:'2rem',
       }}
     >
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
