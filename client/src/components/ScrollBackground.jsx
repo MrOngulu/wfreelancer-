@@ -18,26 +18,8 @@ export default function ScrollBackground() {
       H = document.documentElement.scrollHeight;
       canvas.width  = W;
       canvas.height = H;
-      canvas.style.width  = W + 'px';
-      canvas.style.height = H + 'px';
     };
     setSize();
-
-    // Re-measure after content settles (images, accordions, animations
-    // can change document height after the initial mount).
-    const resizeObserver = new ResizeObserver(() => {
-      const newH = document.documentElement.scrollHeight;
-      const newW = window.innerWidth;
-      if (newH !== H || newW !== W) {
-        setSize();
-        clusterCentres.forEach(c => { c.x = Math.random()*W; c.y = Math.random()*H; });
-        [...distantStars, ...midStars, ...closeStars].forEach(p => {
-          const pos = clusteredPos(0.3);
-          p.x = pos.x; p.y = pos.y;
-        });
-      }
-    });
-    resizeObserver.observe(document.body);
 
     const ATMOSPHERES = [
       { bg:[8,4,28]  }, { bg:[3,8,28]  }, { bg:[14,4,28] }, { bg:[2,14,10] },
@@ -140,7 +122,6 @@ export default function ScrollBackground() {
       cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('resize', onResize);
-      resizeObserver.disconnect();
     };
   }, []);
 
@@ -148,8 +129,9 @@ export default function ScrollBackground() {
     <canvas
       ref={canvasRef}
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: 0, left: 0,
+        width: '100%', height: '100%',
         zIndex: 0,
         pointerEvents: 'none',
       }}
